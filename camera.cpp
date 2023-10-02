@@ -34,8 +34,8 @@ HRESULT CCamera::Init(void)
 {
 	ZeroMemory(&m_camera,sizeof(Camera));
 
-	m_camera.posV = D3DXVECTOR3(0.0f, 50.0f, -500.0f);
-	m_camera.posVOld = D3DXVECTOR3(0.0f, 30.0f, -450.0f);
+	m_camera.posV = D3DXVECTOR3(0.0f, 50.0f, 500.0f);
+	m_camera.posVOld = D3DXVECTOR3(0.0f, 30.0f, 500.0f);
 	m_camera.posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_camera.posVDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_camera.posRDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -309,9 +309,9 @@ void CCamera::SetPosV(void)
 {
 	m_camera.posV =
 	{
-		m_camera.posR.x + sinf(m_camera.rot.x) * sinf(m_camera.rot.y) * m_camera.fLength,
-		m_camera.posR.y + cosf(m_camera.rot.x) * m_camera.fLength,
-		m_camera.posR.z + sinf(m_camera.rot.x) * cosf(m_camera.rot.y) * m_camera.fLength
+		m_camera.posR.x - sinf(m_camera.rot.x) * sinf(m_camera.rot.y) * m_camera.fLength,
+		m_camera.posR.y - cosf(m_camera.rot.x) * m_camera.fLength,
+		m_camera.posR.z - sinf(m_camera.rot.x) * cosf(m_camera.rot.y) * m_camera.fLength
 	};
 }
 
@@ -368,6 +368,11 @@ void CCamera::SetCamera(void)
 
 	//ビューマトリックス設定
 	pDevice->SetTransform(D3DTS_VIEW, &m_camera.mtxView);
+
+#ifdef _DEBUG
+	CManager::GetDebugProc()->Print("\n視点の位置：[%f,%f,%f]", m_camera.posV.x, m_camera.posV.y, m_camera.posV.z);
+	CManager::GetDebugProc()->Print("\n注視点の位置：[%f,%f,%f]", m_camera.posR.x, m_camera.posR.y, m_camera.posR.z);
+#endif
 }
 
 //====================================================

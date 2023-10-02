@@ -1,44 +1,17 @@
-﻿  animation2D.cpp
-  bg.cpp
-  billboard.cpp
-  camera.cpp
-  collision.cpp
-  debugproc.cpp
-  effect2D.cpp
-  effect3D.cpp
-  fade.cpp
+﻿  camera.cpp
   game.cpp
-  input.cpp
-  inputjoypad.cpp
-  inputkeyboard.cpp
-  inputmouse.cpp
-  light.cpp
-  main.cpp
   manager.cpp
-  model.cpp
   motion.cpp
-  number.cpp
-  コンパイル中...
-  object.cpp
-  object2D.cpp
-  object3D.cpp
-  objectmanager.cpp
-  objectX.cpp
-  orbit.cpp
-  particle.cpp
-  parts.cpp
-  ranking.cpp
-  renderer.cpp
   scene.cpp
   score.cpp
   sound.cpp
-  texture.cpp
   timer.cpp
   title.cpp
   tutorial.cpp
-  universal.cpp
   コード生成しています。
-  All 375 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  3 of 375 functions ( 0.8%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   00_proto.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\00_proto.exe
   00_proto.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\00_proto.pdb (Full PDB)

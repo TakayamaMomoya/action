@@ -398,11 +398,6 @@ void CManager::Update(void)
 //=====================================================
 void CManager::Draw(void)
 {
-	if (m_pDebugProc != nullptr)
-	{
-		m_pDebugProc->Print("\nƒXƒRƒA[%d]\n",m_nScore);
-	}
-
 	if (m_pScene != nullptr)
 	{
 		m_pScene->Draw();

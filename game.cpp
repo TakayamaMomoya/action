@@ -24,6 +24,8 @@
 #include "objectmanager.h"
 #include "sound.h"
 #include "scene.h"
+#include "player.h"
+#include "field.h"
 
 //*****************************************************
 // マクロ定義
@@ -80,6 +82,11 @@ HRESULT CGame::Init(void)
 	{// タイマー生成
 		m_pTimer = CTimer::Create();
 	}
+
+	// プレイヤー生成
+	CPlayer::Create();
+
+	CField::Create();
 
 	return S_OK;
 }
@@ -140,10 +147,11 @@ void CGame::Update(void)
 
 	CFade *pFade = CManager::GetFade();
 
-	CCamera *pCamera = CManager::GetCamera();
-
 	// シーンの更新
 	CScene::Update();
+
+	// カメラ更新
+	UpdateCamera();
 
 	if (pKeyboard != nullptr)
 	{
@@ -155,6 +163,22 @@ void CGame::Update(void)
 			}
 		}
 	}
+}
+
+//=====================================================
+// カメラの更新
+//=====================================================
+void CGame::UpdateCamera(void)
+{
+	CCamera *pCamera = CManager::GetCamera();
+
+	if (pCamera == nullptr)
+	{
+		return;
+	}
+
+	// プレイヤーの追従
+	pCamera->Control();
 }
 
 //=====================================================

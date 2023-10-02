@@ -50,6 +50,8 @@ public:
 	static STATE GetState(void) { return m_state; }
 
 private:
+	void UpdateCamera(void);
+
 	static CScore *m_pScore;	// スコアのポインタ
 	static CTimer *m_pTimer;	// タイマーのポインタ
 	static STATE m_state;	// 状態

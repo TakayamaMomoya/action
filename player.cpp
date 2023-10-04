@@ -89,8 +89,8 @@ HRESULT CPlayer::Init(void)
 	{// 立方体の当たり判定
 		m_pCollisionCube = CCollisionCube::Create(CCollision::TAG_PLAYER, this);
 
-		D3DXVECTOR3 vtxMax = { 100.0f,300.0f,100.0f };
-		D3DXVECTOR3 vtxMin = { -100.0f,0.0f,-100.0f };
+		D3DXVECTOR3 vtxMax = { 0.1f,3.0f,0.1f };
+		D3DXVECTOR3 vtxMin = { -0.1f,0.0f,-0.1f };
 
 		if (m_pCollisionCube != nullptr)
 		{
@@ -231,11 +231,11 @@ void CPlayer::ManageMotion(void)
 
 	if (move.x * move.x > LINE_STOP * LINE_STOP)
 	{// ある程度動いていれば歩きモーション
-		//SetMotion(MOTION_MOVE);
+		SetMotion(MOTION_MOVE);
 	}
 	else
 	{// 待機モーションへ移行
-		//SetMotion(MOTION_NEUTRAL);
+		SetMotion(MOTION_NEUTRAL);
 
 		m_nCntAfterImage = 0;
 	}
@@ -269,11 +269,6 @@ void CPlayer::ManageCollision(void)
 	{// 当たり判定の管理
 
 		m_pCollisionCube->SetPosition(GetPosition());
-
-		D3DXVECTOR3 vtxMax = { 100.0f,300.0f,100.0f };
-		D3DXVECTOR3 vtxMin = { -100.0f,0.0f,-100.0f };
-
-		m_pCollisionCube->SetVtx(vtxMax, vtxMin);
 
 		D3DXVECTOR3 move = GetMove();
 

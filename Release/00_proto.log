@@ -1,21 +1,8 @@
-﻿  afterimage.cpp
-  block.cpp
-  camera.cpp
-  edit.cpp
-  field.cpp
-  game.cpp
-  manager.cpp
-  motion.cpp
-  object.cpp
-  objectX.cpp
-  parts.cpp
-  player.cpp
-  title.cpp
-  tutorial.cpp
+﻿  player.cpp
   コード生成しています。
-  182 of 503 functions (36.2%) were compiled, the rest were copied from previous compilation.
-    78 functions were new in current compilation
-    84 functions had inline decision re-evaluated but remain unchanged
+  1 of 505 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   00_proto.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\00_proto.exe
   00_proto.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\00_proto.pdb (Full PDB)

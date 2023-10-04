@@ -27,16 +27,24 @@
 #include "game.h"
 #include <stdio.h>
 #include "motion.h"
+#include "afterimage.h"
 
 //*****************************************************
 // マクロ定義
 //*****************************************************
-#define BODY_PATH	"data\\MOTION\\motionArms00.txt"	// 見た目のパス
-#define SPEED_MOVE	(2.0f)	// 移動速度
-#define GRAVITY	(0.98f)	// 重力
-#define JUMP_POW	(1.2f)	// ジャンプ力
+#define BODY_PATH	"data\\MOTION\\rayleigh.txt"	// 見た目のパス
+#define SPEED_MOVE	(0.3f)	// 移動速度
+#define GRAVITY	(0.09f)	// 重力
+#define JUMP_POW	(3.0f)	// ジャンプ力
 #define MOVE_FACT	(0.8f)	// 移動量減衰
 #define ROLL_FACT	(0.2f)	// 回転係数
+#define LINE_STOP	(0.3f)	// 動いてる判定のしきい値
+#define TIME_AFTERIMAGE	(4)	// 残像を出す頻度
+
+//*****************************************************
+// 静的メンバ変数宣言
+//*****************************************************
+CPlayer *CPlayer::m_pPlayer = nullptr;	// 自身のポインタ
 
 //=====================================================
 // 優先順位を決めるコンストラクタ
@@ -44,13 +52,16 @@
 CPlayer::CPlayer(int nPriority)
 {
 	m_nLife = 0;
+	m_nCntAfterImage = 0;
 	m_pos = { 0.0f,0.0f,0.0f };
 	m_posOld = { 0.0f,0.0f,0.0f };
 	m_rot = { 0.0f,0.0f,0.0f };
 	m_rotDest = { 0.0f,0.0f,0.0f };
 	m_move = { 0.0f,0.0f,0.0f };
+	m_bJump = false;
 	m_bSprint = false;
 	m_pBody = nullptr;
+	m_pCollisionCube = false;
 }
 
 //=====================================================
@@ -74,6 +85,19 @@ HRESULT CPlayer::Init(void)
 		m_pBody = CMotion::Create(BODY_PATH);
 	}
 
+	if (m_pCollisionCube == nullptr)
+	{// 立方体の当たり判定
+		m_pCollisionCube = CCollisionCube::Create(CCollision::TAG_PLAYER, this);
+
+		D3DXVECTOR3 vtxMax = { 100.0f,300.0f,100.0f };
+		D3DXVECTOR3 vtxMin = { -100.0f,0.0f,-100.0f };
+
+		if (m_pCollisionCube != nullptr)
+		{
+			m_pCollisionCube->SetVtx(vtxMax, vtxMin);
+		}
+	}
+
 	return S_OK;
 }
 
@@ -86,6 +110,17 @@ void CPlayer::Uninit(void)
 	{// 体の破棄
 		m_pBody->Uninit();
 		m_pBody = nullptr;
+	}
+
+	if (m_pCollisionCube != nullptr)
+	{// 当たり判定破棄
+		m_pCollisionCube->Uninit();
+		m_pCollisionCube = nullptr;
+	}
+
+	if (m_pPlayer != nullptr)
+	{// 自身のポインタを空にする
+		m_pPlayer = nullptr;
 	}
 
 	// 自身の破棄
@@ -103,11 +138,17 @@ void CPlayer::Update(void)
 	// 操作処理
 	Input();
 
+	// モーションの管理
+	ManageMotion();
+
 	// 目標方向を向く処理
 	RotDest();
 
 	// 位置に移動量を反映
 	m_pos += m_move;
+
+	// 当たり判定管理
+	ManageCollision();
 
 	if (m_pBody != nullptr)
 	{// 体の追従
@@ -116,7 +157,8 @@ void CPlayer::Update(void)
 	}
 
 	// 移動量減衰
-	m_move *= MOVE_FACT;
+	m_move.x *= MOVE_FACT;
+	m_move.y -= GRAVITY;
 }
 
 //=====================================================
@@ -159,8 +201,101 @@ void CPlayer::InputMove(void)
 		m_rotDest.y = -D3DX_PI * 0.5f;
 	}
 
+	// ジャンプ操作
+	if (m_bJump == false)
+	{
+		if (pKeyboard->GetTrigger(DIK_SPACE))
+		{// 右移動
+			move.y += JUMP_POW;
+
+			m_bJump = true;
+		}
+	}
+
 	// 移動量加算
 	SetMove(GetMove() + move);
+}
+
+//=====================================================
+// モーションの管理
+//=====================================================
+void CPlayer::ManageMotion(void)
+{
+	if (m_pBody == nullptr)
+	{
+		return;
+	}
+
+	// 移動量の取得
+	D3DXVECTOR3 move = GetMove();
+
+	if (move.x * move.x > LINE_STOP * LINE_STOP)
+	{// ある程度動いていれば歩きモーション
+		//SetMotion(MOTION_MOVE);
+	}
+	else
+	{// 待機モーションへ移行
+		//SetMotion(MOTION_NEUTRAL);
+
+		m_nCntAfterImage = 0;
+	}
+
+	// 移動量の計算
+	float fSpeed = D3DXVec3Length(&move);
+
+	if (fSpeed * fSpeed > LINE_STOP * LINE_STOP)
+	{
+		m_nCntAfterImage++;
+
+		if (m_nCntAfterImage >= TIME_AFTERIMAGE)
+		{
+			// 残像の生成
+			m_pBody->SetAfterImage(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f), 20);
+
+			m_nCntAfterImage = 0;
+		}
+	}
+}
+
+//=====================================================
+// 当たり判定の管理
+//=====================================================
+void CPlayer::ManageCollision(void)
+{
+	bool bLandFloor = false;
+	bool bLandBlock = false;
+
+	if (m_pCollisionCube != nullptr)
+	{// 当たり判定の管理
+
+		m_pCollisionCube->SetPosition(GetPosition());
+
+		D3DXVECTOR3 vtxMax = { 100.0f,300.0f,100.0f };
+		D3DXVECTOR3 vtxMin = { -100.0f,0.0f,-100.0f };
+
+		m_pCollisionCube->SetVtx(vtxMax, vtxMin);
+
+		D3DXVECTOR3 move = GetMove();
+
+		// 押し出しの当たり判定
+		bLandBlock = m_pCollisionCube->CubeCollision(CCollision::TAG_BLOCK, &move);
+
+		SetMove(move);
+	}
+
+	// 仮の床判定=============
+	if (m_pos.y <= 0.0f)
+	{
+		m_pos.y = 0.0f;
+		m_move.y = 0.0f;
+		bLandFloor = true;
+	}
+	// =======================
+
+	if (bLandBlock || bLandFloor)
+	{
+		m_bJump = false;
+	}
 }
 
 //=====================================================
@@ -226,6 +361,23 @@ void CPlayer::Hit(float fDamage)
 }
 
 //=====================================================
+// モーション設定
+//=====================================================
+void CPlayer::SetMotion(MOTION motion)
+{
+	if (m_pBody == nullptr)
+	{
+		return;
+	}
+
+	if (m_pBody->GetMotion() != motion)
+	{
+		// モーション設定
+		m_pBody->SetMotion(motion);
+	}
+}
+
+//=====================================================
 // 描画処理
 //=====================================================
 void CPlayer::Draw(void)
@@ -264,17 +416,15 @@ void CPlayer::Draw(void)
 //=====================================================
 CPlayer *CPlayer::Create(void)
 {
-	CPlayer *pPlayer = nullptr;
-
-	if (pPlayer == nullptr)
+	if (m_pPlayer == nullptr)
 	{// インスタンス生成
-		pPlayer = new CPlayer;
+		m_pPlayer = new CPlayer;
 
 		// 初期化処理
-		pPlayer->Init();
+		m_pPlayer->Init();
 	}
 
-	return pPlayer;
+	return m_pPlayer;
 }
 
 //=====================================================

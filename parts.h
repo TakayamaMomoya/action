@@ -51,6 +51,8 @@ public:
 	float GetRadius(void) { return m_fRadius; }
 	D3DXMATRIX *GetMatrix(void) { return &m_mtxWorld; }
 	void SetMatrix(void);
+	CModel::Model *GetModel(void) { return m_pModel; }
+	void SetModel(CModel::Model *pModel) { m_pModel = pModel; }
 
 private:
 	D3DXVECTOR3 m_pos;								//位置
@@ -59,7 +61,7 @@ private:
 	D3DXVECTOR3 m_move;	// 移動量
 	D3DXVECTOR3 m_rot;								//向き
 	D3DXMATRIX m_mtxWorld;							//ワールドマトリックス
-	CModel::Model *m_pModel;
+	CModel::Model *m_pModel;	// モデル情報
 	int m_IdxModel;	// モデルの番号
 	float m_fRadius;	// モデルの半径
 };

@@ -17,6 +17,7 @@
 #include "debugproc.h"
 #include "game.h"
 #include "objectmanager.h"
+#include "player.h"
 
 //*****************************************************
 // マクロ定義
@@ -26,6 +27,8 @@
 #define MOVE_FACT					(0.3f)						//移動減衰係数
 #define LIMIT_HEIGHT	(50)	// 位置を制限する高さ
 #define INITIAL_ANGLE	(45.0f)	// 初期の視野角
+#define ANGLE_GAME	(D3DX_PI * 0.4f)	// ゲーム中のカメラの角度
+#define RATE_CAMERA_MOVE	(1.5f)	// カメラがどれだけプレイヤーの先を見るかの倍率
 
 //====================================================
 // 初期化処理
@@ -130,9 +133,7 @@ void CCamera::UpdateTitle(void)
 //====================================================
 void CCamera::UpdateGame(void)
 {
-#ifdef DEBUG
-	CManager::GetDebugProc()->Print("\n視点の位置：[%f,%f,%f]", m_camera.posV.x, m_camera.posV.y, m_camera.posV.z);
-#endif
+
 }
 
 //====================================================
@@ -249,7 +250,29 @@ void CCamera::Control(void)
 //====================================================
 void CCamera::FollowPlayer(void)
 {
+	// プレイヤー取得
+	CPlayer *pPlayer = CPlayer::GetInstance();
 
+	if (pPlayer == nullptr)
+	{
+		return;
+	}
+
+	D3DXVECTOR3 pos = pPlayer->GetPosition();
+	D3DXVECTOR3 move = pPlayer->GetMove();
+
+	m_camera.posRDest = pos + move * RATE_CAMERA_MOVE;
+
+	m_camera.posVDest =
+	{
+		m_camera.posRDest.x + sinf(ANGLE_GAME) * sinf(D3DX_PI) * m_camera.fLength,
+		m_camera.posRDest.y + cosf(ANGLE_GAME) * m_camera.fLength,
+		m_camera.posRDest.z + sinf(ANGLE_GAME) * cosf(D3DX_PI) * m_camera.fLength
+	};
+
+	// 位置の補正
+	m_camera.posR += (m_camera.posRDest - m_camera.posR) * MOVE_FACT;
+	m_camera.posV += (m_camera.posVDest - m_camera.posV) * MOVE_FACT;
 }
 
 //====================================================
@@ -303,20 +326,20 @@ void CCamera::SetQuake(float fQuakeSizeH, float fQuakeSizeV, int nTime)
 }
 
 //====================================================
-//視点設定
+// 視点設定
 //====================================================
 void CCamera::SetPosV(void)
 {
 	m_camera.posV =
 	{
-		m_camera.posR.x - sinf(m_camera.rot.x) * sinf(m_camera.rot.y) * m_camera.fLength,
-		m_camera.posR.y - cosf(m_camera.rot.x) * m_camera.fLength,
-		m_camera.posR.z - sinf(m_camera.rot.x) * cosf(m_camera.rot.y) * m_camera.fLength
+		m_camera.posR.x + sinf(m_camera.rot.x) * sinf(m_camera.rot.y) * m_camera.fLength,
+		m_camera.posR.y + cosf(m_camera.rot.x) * m_camera.fLength,
+		m_camera.posR.z + sinf(m_camera.rot.x) * cosf(m_camera.rot.y) * m_camera.fLength
 	};
 }
 
 //====================================================
-//注視点設定
+// 注視点設定
 //====================================================
 void CCamera::SetPosR(void)
 {
@@ -329,7 +352,7 @@ void CCamera::SetPosR(void)
 }
 
 //====================================================
-//設定処理
+// 設定処理
 //====================================================
 void CCamera::SetCamera(void)
 {
@@ -372,11 +395,12 @@ void CCamera::SetCamera(void)
 #ifdef _DEBUG
 	CManager::GetDebugProc()->Print("\n視点の位置：[%f,%f,%f]", m_camera.posV.x, m_camera.posV.y, m_camera.posV.z);
 	CManager::GetDebugProc()->Print("\n注視点の位置：[%f,%f,%f]", m_camera.posR.x, m_camera.posR.y, m_camera.posR.z);
+	CManager::GetDebugProc()->Print("\nカメラ距離：[%f]", m_camera.fLength);
 #endif
 }
 
 //====================================================
-//情報取得処理
+// 情報取得
 //====================================================
 CCamera::Camera *CCamera::GetCamera(void)
 {

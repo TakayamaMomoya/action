@@ -16,6 +16,7 @@
 #include "debugproc.h"
 #include "particle.h"
 #include "sound.h"
+#include "afterimage.h"
 
 //*****************************************************
 // マクロ定義
@@ -636,6 +637,23 @@ float CMotion::GetRadiusMax(void)
 	}
 
 	return fRadiusMax;
+}
+
+//=====================================================
+// 残像の設定
+//=====================================================
+void CMotion::SetAfterImage(D3DXCOLOR col, int m_nLife)
+{
+	for (int nCntParts = 0; nCntParts < m_nNumParts; nCntParts++)
+	{
+		if (m_apParts[nCntParts] != nullptr)
+		{// 残像設定
+			D3DXMATRIX *pMtx = m_apParts[nCntParts]->m_pParts->GetMatrix();
+			CModel::Model *model = m_apParts[nCntParts]->m_pParts->GetModel();
+
+			CAfterImage::Create(*m_apParts[nCntParts]->m_pParts->GetMatrix(), m_apParts[nCntParts]->m_pParts->GetIdxModel(),col,m_nLife);
+		}
+	}
 }
 
 //=====================================================

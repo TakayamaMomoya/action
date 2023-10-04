@@ -33,6 +33,7 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+	void JustDraw(void);
 	static CObjectX *Create(D3DXVECTOR3 pos = { 0.0f,0.0f,0.0f }, D3DXVECTOR3 rot = { 0.0f,0.0f,0.0f });
 	float GetWidth(void) { return 0.0f; }	// サイズ取得
 	float GetHeight(void) { return 0.0f; }	// サイズ取得
@@ -50,13 +51,17 @@ public:
 	void SetRadius(void);
 	float GetRadius(void) { return m_fRadius; }
 	D3DXMATRIX *GetMatrix(void) { return &m_mtxWorld; }
-	void SetMatrix(void);
+	void SetMatrix(D3DXMATRIX mtx) { m_mtxWorld = mtx; }
+	void CalcMatrix(void);
 	D3DXVECTOR3 GetVtxMax(void) { return m_vtxMax; }	// 取得処理
 	D3DXVECTOR3 GetVtxMin(void) { return m_vtxMin; }	// 取得処理
 	void SetEmissiveCol(D3DXCOLOR col) { m_col = col; m_bChangeCol = true; }
+	D3DXCOLOR GetEmissiveCol(void);
 	void ResetColor(void) { m_bChangeCol = false; }
 	float GetScale(void) { return m_fScale; }
 	void SetScale(float fScale) { m_fScale = fScale; }
+	CModel::Model *GetModel(void) { return m_pModel; }
+	void SetModel(CModel::Model *pModel) { m_pModel = pModel; }
 
 private:
 	D3DXVECTOR3 m_pos;								//位置
@@ -65,7 +70,7 @@ private:
 	D3DXVECTOR3 m_rot;								//向き
 	D3DXMATRIX m_mtxWorld;							//ワールドマトリックス
 	D3DXCOLOR m_col;	// 色
-	CModel::Model *m_pModel;
+	CModel::Model *m_pModel;	// モデル情報
 	int m_nIdxModel;	// モデルの番号
 	float m_fRadius;	// モデルの半径
 	float m_fScale;	// スケール

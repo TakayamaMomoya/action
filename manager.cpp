@@ -33,6 +33,7 @@
 #include "particle.h"
 #include "fade.h"
 #include "objectmanager.h"
+#include "block.h"
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -219,6 +220,9 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	// パーティクルの読込
 	CParticle::Load();
 
+	// ブロック番号読込
+	CBlock::LoadModel();
+
 	SetMode(m_mode);
 
 	return S_OK;
@@ -247,6 +251,12 @@ void CManager::Uninit(void)
 
 	// パーティクル情報破棄
 	CParticle::Unload();
+
+	// ブロック情報削除
+	CBlock::DeleteAll();
+
+	// ブロック番号削除
+	CBlock::DeleteIdx();
 
 	if (m_pRenderer != nullptr)
 	{// レンダラーの終了・破棄
@@ -415,6 +425,11 @@ void CManager::Draw(void)
 //=====================================================
 void CManager::SetMode(CScene::MODE mode)
 {
+	if (m_pCamera != nullptr)
+	{
+		m_pCamera->Init();
+	}
+
 	// シーンを破棄
 	if (m_pScene != nullptr)
 	{
@@ -429,9 +444,4 @@ void CManager::SetMode(CScene::MODE mode)
 
 	// モード設定
 	m_mode = mode;
-
-	if (m_pCamera != nullptr)
-	{
-		m_pCamera->Init();
-	}
 }

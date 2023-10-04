@@ -47,6 +47,8 @@ HRESULT CObjectX::Init(void)
 
 	m_fScale = 1.0f;
 
+	m_col = { 1.0f,1.0f,1.0f,1.0f };
+
 	return S_OK;
 }
 
@@ -75,7 +77,7 @@ void CObjectX::Draw(void)
 	if (m_pModel != nullptr)
 	{
 		// マトリックスの設定
-		SetMatrix();
+		CalcMatrix();
 
 		// デバイスの取得
 		LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
@@ -123,9 +125,64 @@ void CObjectX::Draw(void)
 }
 
 //=====================================================
+// 描画のみを行う
+//=====================================================
+void CObjectX::JustDraw(void)
+{
+	// デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+
+	//ワールドマトリックス設定
+	pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
+
+	if (m_pModel != nullptr)
+	{
+		D3DXMATERIAL *pMat;				// マテリアルデータへのポインタ
+		D3DMATERIAL9 matDef;			// 現在のマテリアル保存用
+		LPDIRECT3DTEXTURE9 pTexture;
+
+		// 現在のマテリアル取得
+		pDevice->GetMaterial(&matDef);
+
+		// マテリアルデータへのポインタを取得
+		pMat = (D3DXMATERIAL*)m_pModel->pBuffMat->GetBufferPointer();
+
+		for (int nCntMat = 0; nCntMat < (int)m_pModel->dwNumMat; nCntMat++)
+		{
+			// マテリアルの保存
+			matDef = pMat[nCntMat].MatD3D;
+
+			if (m_bChangeCol)
+			{
+				// 色の設定
+				pMat[nCntMat].MatD3D.Diffuse = m_col;
+			}
+
+			// マテリアル設定
+			pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
+
+			// テクスチャの取得
+			pTexture = CManager::GetTexture()->GetAddress(m_pModel->pIdxTexture[nCntMat]);
+
+			// テクスチャ設定
+			pDevice->SetTexture(0, pTexture);
+
+			// モデル（パーツ）描画
+			m_pModel->pMesh->DrawSubset(nCntMat);
+
+			// 色を戻す
+			pMat[nCntMat].MatD3D = matDef;
+		}
+
+		// マテリアルを戻す
+		pDevice->SetMaterial(&matDef);
+	}
+}
+
+//=====================================================
 // マトリックス設定処理
 //=====================================================
-void CObjectX::SetMatrix(void)
+void CObjectX::CalcMatrix(void)
 {
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
@@ -147,9 +204,9 @@ void CObjectX::SetMatrix(void)
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
 
 	// スケール反映
-	m_mtxWorld._11 *= m_fScale;
-	m_mtxWorld._22 *= m_fScale;
-	m_mtxWorld._33 *= m_fScale;
+	//m_mtxWorld._11 *= m_fScale;
+	//m_mtxWorld._22 *= m_fScale;
+	//m_mtxWorld._33 *= m_fScale;
 
 	//ワールドマトリックス設定
 	pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
@@ -262,4 +319,12 @@ void CObjectX::BindModel(int nIdx)
 
 	// 半径設定
 	SetRadius();
+}
+
+//=====================================================
+// 色の取得
+//=====================================================
+D3DXCOLOR CObjectX::GetEmissiveCol(void)
+{
+	return m_col;
 }

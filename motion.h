@@ -99,6 +99,7 @@ public:
 	bool IsFinish(void) { return m_bFinish; }
 	void SetMatrix(void);
 	float GetRadiusMax(void);
+	void SetAfterImage(D3DXCOLOR col = { 0.0f,0.0f,0.0f,0.0f }, int m_nLife = 10);
 
 private:
 	Parts *m_apParts[MAX_PARTS];	// パーツの構造体

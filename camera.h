@@ -45,6 +45,7 @@ public:
 	void SetCamera(void);
 	void SetPosV(void);
 	void SetPosR(void);
+	void SetDist(float fDist) { m_camera.fLength = fDist; }
 	void Control(void);
 	Camera *GetCamera(void);
 	void FollowPlayer(void);

@@ -26,6 +26,8 @@
 #include "scene.h"
 #include "player.h"
 #include "field.h"
+#include "block.h"
+#include "edit.h"
 
 //*****************************************************
 // マクロ定義
@@ -83,10 +85,30 @@ HRESULT CGame::Init(void)
 		m_pTimer = CTimer::Create();
 	}
 
+	// カメラ距離の設定
+	CCamera *pCamera = CManager::GetCamera();
+
+	if (pCamera != nullptr)
+	{
+		pCamera->SetDist(100.0f);
+	}
+
+	// プレイヤーの追従
+	pCamera->FollowPlayer();
+
 	// プレイヤー生成
 	CPlayer::Create();
 
-	CField::Create();
+	//CField::Create();
+
+	// ブロック配置読込
+	CBlock::Load();
+
+#ifdef _DEBUG
+
+	CEdit::Create();
+
+#endif
 
 	return S_OK;
 }
@@ -159,7 +181,7 @@ void CGame::Update(void)
 		{
 			if (pFade != nullptr)
 			{
-				pFade->SetFade(CScene::MODE_RANKING);
+				//pFade->SetFade(CScene::MODE_RANKING);
 			}
 		}
 	}
@@ -178,7 +200,7 @@ void CGame::UpdateCamera(void)
 	}
 
 	// プレイヤーの追従
-	pCamera->Control();
+	pCamera->FollowPlayer();
 }
 
 //=====================================================

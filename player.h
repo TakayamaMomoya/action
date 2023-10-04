@@ -12,11 +12,12 @@
 // インクルード
 //*****************************************************
 #include "object.h"
+#include "motion.h"
 
 //*****************************************************
 // 前方宣言
 //*****************************************************
-class CMotion;
+class CCollisionCube;
 
 //*****************************************************
 // マクロ定義
@@ -37,7 +38,6 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-	HRESULT Load(void);	// 読込
 	static void Unload(void);
 	void Hit(float fDamage);
 	void SetPosition(D3DXVECTOR3 pos) { m_pos = pos; }
@@ -48,6 +48,7 @@ public:
 	D3DXVECTOR3 GetPositionOld(void) { return m_posOld; }
 	void SetRot(D3DXVECTOR3 rot) { m_rot = rot; }
 	D3DXVECTOR3 GetRot(void) { return m_rot; }
+	static CPlayer *GetInstance(void) { return m_pPlayer; }
 
 private:
 	enum MOTION
@@ -60,9 +61,13 @@ private:
 	void Input(void);
 	void InputMove(void);
 	void InputCamera(void);
+	void ManageMotion(void);
+	void ManageCollision(void);
 	void RotDest(void);
+	void SetMotion(MOTION motion);
 
 	int m_nLife;	// 体力
+	int m_nCntAfterImage;	// 残像を出すカウンター
 	bool m_bSprint;	// ダッシュ状態かどうか
 	bool m_bJump;	// ジャンプしているかどうか
 	D3DXVECTOR3 m_pos;	// 位置
@@ -71,6 +76,9 @@ private:
 	D3DXVECTOR3 m_rot;	// 向き
 	D3DXVECTOR3 m_rotDest;	// 目標の向き
 	CMotion *m_pBody;	// 体のポインタ
+	CCollisionCube *m_pCollisionCube;	// 立方体の当たり判定
+
+	static CPlayer *m_pPlayer;	// 自信のポインタ
 };
 
 #endif

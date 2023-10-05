@@ -186,6 +186,11 @@ void CPlayer::InputMove(void)
 	CInputMouse *pMouse = CManager::GetMouse();
 	CInputJoypad *pJoypad = CManager::GetJoypad();
 
+	if (pKeyboard == nullptr || pMouse == nullptr)
+	{
+		return;
+	}
+
 	// 変数宣言
 	D3DXVECTOR3 move = { 0.0f,0.0f,0.0f }, rot = { 0.0f,0.0f,0.0f };
 	D3DXVECTOR3 vecStick;
@@ -209,7 +214,14 @@ void CPlayer::InputMove(void)
 			move.y += JUMP_POW;
 
 			m_bJump = true;
+
+			SetMotion(MOTION_JUMP);
 		}
+	}
+
+	if (pMouse->GetTrigger(CInputMouse::BUTTON_LMB))
+	{// 攻撃
+		SetMotion(MOTION_ATTACK);
 	}
 
 	// 移動量加算
@@ -229,15 +241,28 @@ void CPlayer::ManageMotion(void)
 	// 移動量の取得
 	D3DXVECTOR3 move = GetMove();
 
-	if (move.x * move.x > LINE_STOP * LINE_STOP)
-	{// ある程度動いていれば歩きモーション
-		SetMotion(MOTION_MOVE);
+	if (m_bJump == false)
+	{
+		if (m_pBody->GetMotion() != MOTION_ATTACK)
+		{
+			if (move.x * move.x > LINE_STOP * LINE_STOP)
+			{// ある程度動いていれば歩きモーション
+				SetMotion(MOTION_MOVE);
+			}
+			else
+			{// 待機モーションへ移行
+				SetMotion(MOTION_NEUTRAL);
+
+				m_nCntAfterImage = 0;
+			}
+		}
 	}
 	else
-	{// 待機モーションへ移行
-		SetMotion(MOTION_NEUTRAL);
-
-		m_nCntAfterImage = 0;
+	{
+		if (move.y < 0.0f)
+		{// 落下モーション
+			SetMotion(MOTION_FALL);
+		}
 	}
 
 	// 移動量の計算

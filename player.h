@@ -55,6 +55,9 @@ private:
 	{
 		MOTION_NEUTRAL = 0,	// 待機状態
 		MOTION_MOVE,	// 移動モーション
+		MOTION_JUMP,	// ジャンプモーション
+		MOTION_FALL,	// 落下モーション
+		MOTION_ATTACK,	// 攻撃モーション
 		MOTION_MAX
 	};
 

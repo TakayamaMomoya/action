@@ -35,9 +35,7 @@ public:
 	typedef enum
 	{// 敵の種類
 		TYPE_NONE = 0,	// 何でもない
-		TYPE_MOVE,	// 移動する敵
-		TYPE_TANK,	// 戦車敵
-		TYPE_ATTACK,	// 攻撃してくる敵
+		TYPE_SHOT,	// 撃ってくる敵
 		TYPE_MAX
 	}TYPE;
 
@@ -49,14 +47,6 @@ public:
 		STATE_DEATH,	// 死亡状態
 		STATE_MAX
 	}STATE;
-
-	enum MOVESTATE
-	{// 移動状態
-		MOVESTATE_NONE = 0,	// 何でもない状態
-		MOVESTATE_CHASE,	// 目標追跡状態
-		MOVESTATE_AVOID,	// 障害物を避ける状態
-		MOVESTATE_MAX
-	};
 
 	CEnemy();	// コンストラクタ
 	~CEnemy();	// デストラクタ
@@ -79,10 +69,6 @@ public:
 	CEnemy *GetNext(void) { return m_pNext; }
 	int GetScore(void) { return m_nScore; }
 	void SetScore(int nScore) { m_nScore = nScore; }
-
-protected:
-	void AvoidCollisions(void);
-	void ManagePosDest(void);
 
 private:
 	void ManageState(void);

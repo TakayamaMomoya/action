@@ -18,6 +18,7 @@
 // 前方宣言
 //*****************************************************
 class CCollisionCube;
+class CCollisionSphere;
 
 //*****************************************************
 // マクロ定義
@@ -38,7 +39,7 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-	static void Unload(void);
+	void Load(void);
 	void Hit(float fDamage);
 	void SetPosition(D3DXVECTOR3 pos) { m_pos = pos; }
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }
@@ -60,14 +61,25 @@ private:
 		MOTION_ATTACK,	// 攻撃モーション
 		MOTION_MAX
 	};
+	struct AttackInfo
+	{// 攻撃の情報
+		int nIdxMotion;	// モーション番号
+		int nIdxParent;	// 親パーツ番号
+		D3DXVECTOR3 pos;	// オフセット位置
+		int nKey;	// キー番号
+		int nFrame;	// 発生するフレーム
+		float fRadius;	// 半径
+	};
 
 	void Input(void);
 	void InputMove(void);
+	void InputAttack(void);
 	void InputCamera(void);
 	void ManageMotion(void);
 	void ManageCollision(void);
 	void RotDest(void);
 	void SetMotion(MOTION motion);
+	void ManageAttack(void);
 
 	int m_nLife;	// 体力
 	int m_nCntAfterImage;	// 残像を出すカウンター
@@ -80,8 +92,10 @@ private:
 	D3DXVECTOR3 m_rotDest;	// 目標の向き
 	CMotion *m_pBody;	// 体のポインタ
 	CCollisionCube *m_pCollisionCube;	// 立方体の当たり判定
+	CCollisionSphere *m_pClsnAttack;	// 攻撃の当たり判定
+	AttackInfo m_attackInfo;	// 攻撃の情報
 
-	static CPlayer *m_pPlayer;	// 自信のポインタ
+	static CPlayer *m_pPlayer;	// 自身のポインタ
 };
 
 #endif

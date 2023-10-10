@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include "player.h"
 #include "game.h"
+#include "enemyshot.h"
 
 //*****************************************************
 // マクロ定義
@@ -123,17 +124,21 @@ CEnemy *CEnemy::Create(D3DXVECTOR3 pos, TYPE type)
 	{// インスタンス生成
 		switch (type)
 		{
-		case TYPE_MOVE:
-			break;
-		case TYPE_TANK:
-			break;
-		case TYPE_ATTACK:
+		case TYPE_SHOT:
+
+			pEnemy = new CEnemyShot;
+
+			pEnemy->CMotion::Load("data\\MOTION\\robot00.txt");
+
+			pEnemy->SetMotion(0);
+
 			break;
 		default:
 			break;
 		}
 
-		pEnemy->SetPosition(D3DXVECTOR3(pos));
+		// 位置設定
+		pEnemy->SetPosition(pos);
 
 		// 初期化処理
 		pEnemy->Init();
@@ -147,7 +152,7 @@ CEnemy *CEnemy::Create(D3DXVECTOR3 pos, TYPE type)
 //=====================================================
 HRESULT CEnemy::Init(void)
 {
-	// 変数宣言
+	// 最も大きいパーツの半径取得
 	float fRadius = GetRadiusMax();
 
 	// 継承クラスの初期化
@@ -232,8 +237,6 @@ void CEnemy::ManageCollision(void)
 {
 	if (m_pCollisionSphere != nullptr)
 	{// 球の当たり判定の管理
-		float fRadius = GetRadiusMax();
-
 		m_pCollisionSphere->SetPositionOld(m_pCollisionSphere->GetPosition());
 
 		m_pCollisionSphere->SetPosition(GetPosition());
@@ -308,21 +311,7 @@ void CEnemy::SetLife(float fLife)
 //=====================================================
 void CEnemy::Hit(float fDamage)
 {
-	// スコア取得
-	CScore *pScore = CGame::GetScore();
-
-	if (m_state != STATE_NORMAL)
-	{// ダメージ状態なら通らない
-		return;
-	}
-
-	// 体力減少
-	SetLife(GetLife() - fDamage);
-
-	if (GetLife() <= 0)
-	{// 死亡判定
-		Death();
-	}
+	Death();
 }
 
 //=====================================================
@@ -344,6 +333,11 @@ void CEnemy::Draw(void)
 
 	// 継承クラスの描画
 	CMotion::Draw();
+
+#ifdef _DEBUG
+	CManager::GetDebugProc()->Print("\n敵の位置：[%f,%f,%f]", GetPosition().x, GetPosition().y, GetPosition().z);
+	CManager::GetDebugProc()->Print("\n敵の半径：[%f]", m_pCollisionSphere->GetRadius());
+#endif
 }
 
 //=====================================================

@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include "motion.h"
 #include "afterimage.h"
+#include "effect3D.h"
 
 //*****************************************************
 // マクロ定義
@@ -61,7 +62,9 @@ CPlayer::CPlayer(int nPriority)
 	m_bJump = false;
 	m_bSprint = false;
 	m_pBody = nullptr;
-	m_pCollisionCube = false;
+	m_pCollisionCube = nullptr;
+	m_pClsnAttack = nullptr;
+	ZeroMemory(&m_attackInfo, sizeof(AttackInfo));
 }
 
 //=====================================================
@@ -77,6 +80,9 @@ CPlayer::~CPlayer()
 //=====================================================
 HRESULT CPlayer::Init(void)
 {
+	// 情報の読込
+	Load();
+
 	// 値の初期化
 	m_nLife = INITIAL_LIFE_PLAYER;
 	
@@ -98,6 +104,17 @@ HRESULT CPlayer::Init(void)
 		}
 	}
 
+	if (m_pClsnAttack == nullptr)
+	{// 球の当たり判定生成
+		m_pClsnAttack = CCollisionSphere::Create(CCollision::TAG_NONE, CCollision::TYPE_SPHERE, this);
+
+		if (m_pClsnAttack != nullptr)
+		{// 情報の設定
+			m_pClsnAttack->SetPosition(D3DXVECTOR3(0.0f,0.0f,0.0f));
+			m_pClsnAttack->SetRadius(m_attackInfo.fRadius);
+		}
+	}
+
 	return S_OK;
 }
 
@@ -116,6 +133,12 @@ void CPlayer::Uninit(void)
 	{// 当たり判定破棄
 		m_pCollisionCube->Uninit();
 		m_pCollisionCube = nullptr;
+	}
+
+	if (m_pClsnAttack != nullptr)
+	{// 攻撃当たり判定破棄
+		m_pClsnAttack->Uninit();
+		m_pClsnAttack = nullptr;
 	}
 
 	if (m_pPlayer != nullptr)
@@ -172,6 +195,9 @@ void CPlayer::Input(void)
 	// 移動操作
 	InputMove();
 
+	// 攻撃操作
+	InputAttack();
+
 	// カメラ操作
 	InputCamera();
 }
@@ -219,13 +245,29 @@ void CPlayer::InputMove(void)
 		}
 	}
 
+	// 移動量加算
+	SetMove(GetMove() + move);
+}
+
+//=====================================================
+// 攻撃操作
+//=====================================================
+void CPlayer::InputAttack(void)
+{
+	// 情報入手
+	CInputKeyboard *pKeyboard = CManager::GetKeyboard();
+	CInputMouse *pMouse = CManager::GetMouse();
+	CInputJoypad *pJoypad = CManager::GetJoypad();
+
+	if (pKeyboard == nullptr || pMouse == nullptr)
+	{
+		return;
+	}
+
 	if (pMouse->GetTrigger(CInputMouse::BUTTON_LMB))
 	{// 攻撃
 		SetMotion(MOTION_ATTACK);
 	}
-
-	// 移動量加算
-	SetMove(GetMove() + move);
 }
 
 //=====================================================
@@ -244,7 +286,7 @@ void CPlayer::ManageMotion(void)
 	if (m_bJump == false)
 	{
 		if (m_pBody->GetMotion() != MOTION_ATTACK)
-		{
+		{// 移動モーション
 			if (move.x * move.x > LINE_STOP * LINE_STOP)
 			{// ある程度動いていれば歩きモーション
 				SetMotion(MOTION_MOVE);
@@ -254,6 +296,13 @@ void CPlayer::ManageMotion(void)
 				SetMotion(MOTION_NEUTRAL);
 
 				m_nCntAfterImage = 0;
+			}
+		}
+		else
+		{// 攻撃モーション管理
+			if (m_pBody->IsFinish() == true)
+			{
+				SetMotion(MOTION_NEUTRAL);
 			}
 		}
 	}
@@ -315,6 +364,47 @@ void CPlayer::ManageCollision(void)
 	if (bLandBlock || bLandFloor)
 	{
 		m_bJump = false;
+	}
+
+	// 攻撃判定の管理
+	ManageAttack();
+}
+
+//=====================================================
+// 攻撃判定の管理
+//=====================================================
+void CPlayer::ManageAttack(void)
+{
+	if (m_pClsnAttack == nullptr)
+	{// 判定のエラー
+		return;
+	}
+
+	if (m_pBody == nullptr)
+	{// モーションのエラー
+		return;
+	}
+
+	if (m_pBody->GetMotion() == MOTION_ATTACK)
+	{// 攻撃モーション中の判定
+		int nFrame = m_pBody->GetFrame();
+		int nKey = m_pBody->GetKey();
+		D3DXVECTOR3 pos = GetPosition() + m_attackInfo.pos;
+
+		if (nFrame == m_attackInfo.nFrame && nKey == m_attackInfo.nKey)
+		{// 当たり判定の生成
+			m_pClsnAttack->SetPosition(pos);
+			bool bHit = false;
+			bHit = m_pClsnAttack->SphereCollision(CCollision::TAG_ENEMY);
+			CObject *pObj = m_pClsnAttack->GetOther();
+
+			CEffect3D::Create(pos, m_attackInfo.fRadius, 10, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+
+			if (bHit == true && pObj != nullptr)
+			{
+				pObj->Hit(1.0f);
+			}
+		}
 	}
 }
 
@@ -448,9 +538,89 @@ CPlayer *CPlayer::Create(void)
 }
 
 //=====================================================
-// テクスチャ破棄
+// 情報読込
 //=====================================================
-void CPlayer::Unload(void)
+void CPlayer::Load(void)
 {
+	// 変数宣言
+	char cTemp[256];
 
+	// ファイルから読み込む
+	FILE *pFile = fopen("data\\player.txt", "r");
+
+	if (pFile != nullptr)
+	{// ファイルが開けた場合
+		while (true)
+		{
+			// 文字読み込み
+			fscanf(pFile, "%s", &cTemp[0]);
+
+			if (strcmp(cTemp, "ATTACKSET") == 0)
+			{// パラメーター読込開始
+				while (true)
+				{
+					// 文字読み込み
+					fscanf(pFile, "%s", &cTemp[0]);
+
+					if (strcmp(cTemp, "MOTION") == 0)
+					{// モーションの種類
+						fscanf(pFile, "%s", &cTemp[0]);
+
+						fscanf(pFile, "%d", &m_attackInfo.nIdxMotion);
+					}
+
+					if (strcmp(cTemp, "PARENT") == 0)
+					{// 親パーツ番号の種類
+						fscanf(pFile, "%s", &cTemp[0]);
+
+						fscanf(pFile, "%d", &m_attackInfo.nIdxMotion);
+					}
+
+					if (strcmp(cTemp, "POS") == 0)
+					{//位置読み込み
+						fscanf(pFile, "%s", &cTemp[0]);
+
+						for (int nCntPos = 0; nCntPos < 3; nCntPos++)
+						{
+							fscanf(pFile, "%f", &m_attackInfo.pos[nCntPos]);
+						}
+					}
+
+					if (strcmp(cTemp, "KEY") == 0)
+					{// キーの番号
+						fscanf(pFile, "%s", &cTemp[0]);
+
+						fscanf(pFile, "%d", &m_attackInfo.nKey);
+					}
+
+					if (strcmp(cTemp, "FRAME") == 0)
+					{// フレーム番号
+						fscanf(pFile, "%s", &cTemp[0]);
+
+						fscanf(pFile, "%d", &m_attackInfo.nFrame);
+					}
+
+					if (strcmp(cTemp, "RADIUS") == 0)
+					{// 半径
+						fscanf(pFile, "%s", &cTemp[0]);
+
+						fscanf(pFile, "%f", &m_attackInfo.fRadius);
+					}
+
+					if (strcmp(cTemp, "END_ATTACKSET") == 0)
+					{// パラメーター読込終了
+						break;
+					}
+				}
+			}
+
+			if (strcmp(cTemp, "END_SCRIPT") == 0)
+			{// 終了条件
+				break;
+			}
+		}
+
+		// ファイルを閉じる
+		fclose(pFile);
+	}
 }

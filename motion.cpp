@@ -548,6 +548,65 @@ void CMotion::Load(char *pPath)
 						nCntParticle++;
 					}
 
+					//if (strcmp(cTemp, "NUM_COLLISION") == 0)
+					//{// 当たり判定数判断
+					//	fscanf(pFile, "%s", &cTemp[0]);
+
+					//	fscanf(pFile, "%d", &m_aMotionInfo[m_nNumMotion].nNumCollision);
+
+					//	if (m_aMotionInfo[m_nNumMotion].nNumCollision != 0)
+					//	{
+					//		// 当たり判定情報を生成
+					//		m_aMotionInfo[m_nNumMotion].pCollision = new COLLISION_INFO[m_aMotionInfo[m_nNumMotion].nNumCollision];
+
+					//		// 当たり判定情報初期化
+					//		ZeroMemory(m_aMotionInfo[m_nNumMotion].pCollision, sizeof(COLLISION_INFO) * m_aMotionInfo[m_nNumMotion].nNumCollision);
+					//	}
+					//}
+
+					//if (strcmp(cTemp, "COLLISIONSET") == 0 && m_aMotionInfo[m_nNumMotion].pCollision != 0)
+					//{// 当たり判定情報設定
+					//	while (strcmp(cTemp, "END_COLLISIONSET") != 0)
+					//	{//終わりまで当たり判定設定
+					//		fscanf(pFile, "%s", &cTemp[0]);
+
+					//		if (strcmp(cTemp, "KEY") == 0)
+					//		{// 再生キー取得
+					//			fscanf(pFile, "%s", &cTemp[0]);
+
+					//			fscanf(pFile, "%d", &m_aMotionInfo[m_nNumMotion].pParticle[nCntParticle].nKey);
+					//		}
+
+					//		if (strcmp(cTemp, "FRAME") == 0)
+					//		{// 再生フレーム取得
+					//			fscanf(pFile, "%s", &cTemp[0]);
+
+					//			fscanf(pFile, "%d", &m_aMotionInfo[m_nNumMotion].pParticle[nCntParticle].nFrame);
+					//		}
+
+					//		if (strcmp(cTemp, "POS") == 0)
+					//		{//位置読み込み
+					//			D3DXVECTOR3 pos;
+
+					//			fscanf(pFile, "%s", &cTemp[0]);
+
+					//			for (int nCntPos = 0; nCntPos < 3; nCntPos++)
+					//			{
+					//				fscanf(pFile, "%f", &m_aMotionInfo[m_nNumMotion].pParticle[nCntParticle].offset[nCntPos]);
+					//			}
+					//		}
+
+					//		if (strcmp(cTemp, "PARENT") == 0)
+					//		{// 親パーツ番号取得
+					//			fscanf(pFile, "%s", &cTemp[0]);
+
+					//			fscanf(pFile, "%d", &m_aMotionInfo[m_nNumMotion].pParticle[nCntParticle].nIdxParent);
+					//		}
+					//	}
+
+					//	nCntParticle++;
+					//}
+
 					if (strcmp(cTemp, "KEYSET") == 0)
 					{//キースタート
 						while (strcmp(cTemp, "END_KEYSET") != 0)

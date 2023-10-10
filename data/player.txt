@@ -1,0 +1,18 @@
+#====================================================================
+#
+# プレイヤー情報ファイル[player.txt]
+# Author：Momoya Takayama
+#
+#====================================================================
+SCRIPT
+
+ATTACKSET
+	MOTION = 3
+	PARENT = 8
+	POS = 10.0 7.0 0.0
+	KEY = 1
+	FRAME = 8
+	RADIUS = 1.0
+END_ATTACKSET
+
+END_SCRIPT

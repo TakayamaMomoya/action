@@ -29,6 +29,7 @@
 #include "block.h"
 #include "edit.h"
 #include "enemy.h"
+#include "skybox.h"
 
 //*****************************************************
 // マクロ定義
@@ -99,6 +100,9 @@ HRESULT CGame::Init(void)
 
 	// プレイヤー生成
 	CPlayer::Create();
+
+	// スカイボックス
+	CSkybox::Create();
 
 	// 仮敵配置
 	CEnemy::Create(D3DXVECTOR3(0.0f,0.0f,0.0f),CEnemy::TYPE_SHOT);

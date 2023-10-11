@@ -628,55 +628,6 @@ bool CCollisionCube::CubeCollision(TAG tag, D3DXVECTOR3 *pMove)
 					posOwn.y <= vtxMax.y)
 				{//上下で当っている場合
 					if (posOwn.z >= vtxMin.z - vtxMaxOwn.z &&
-						posOwn.z <= vtxMax.z + vtxMaxOwn.z)
-					{//横からの当たり判定
-						if (posOwnOld.x >= vtxMax.x - vtxMinOwn.x &&
-							posOwn.x < vtxMax.x - vtxMinOwn.x)
-						{//右から当たった場合
-							//右に戻す
-							posOwn.x = vtxMax.x - vtxMinOwn.x + 0.2f;
-
-							//移動量をなくす
-							pMove->x = 0;
-						}
-
-						if (posOwnOld.x <= vtxMin.x - vtxMaxOwn.x &&
-							posOwn.x > vtxMin.x - vtxMaxOwn.x)
-						{//左から当たった場合
-							//左に戻す
-							posOwn.x = vtxMin.x - vtxMaxOwn.x - 0.2f;
-
-							//移動量をなくす
-							pMove->x = 0;
-						}
-					}
-
-					if (posOwn.x >= vtxMin.x - vtxMaxOwn.x &&
-						posOwn.x <= vtxMax.x - vtxMinOwn.x)
-					{//奥行きの当たり判定
-
-						if (posOwnOld.z <= vtxMin.z - vtxMaxOwn.z &&
-							posOwn.z > vtxMin.z - vtxMaxOwn.z)
-						{//手前から当たった場合
-							//手前に戻す
-							posOwn.z = vtxMin.z - vtxMaxOwn.z - 0.2f;
-
-							//移動量をなくす
-							pMove->z = 0;
-						}
-
-						if (posOwnOld.z >= vtxMax.z - vtxMinOwn.z &&
-							posOwn.z < vtxMax.z - vtxMinOwn.z)
-						{//手前から当たった場合
-						 //手前に戻す
-							posOwn.z = vtxMax.z - vtxMinOwn.z + 0.2f;
-
-							//移動量をなくす
-							pMove->z = 0;
-						}
-					}
-
-					if (posOwn.z >= vtxMin.z - vtxMaxOwn.z &&
 						posOwn.z <= vtxMax.z + vtxMaxOwn.z &&
 						posOwn.x >= vtxMin.x - vtxMaxOwn.x &&
 						posOwn.x <= vtxMax.x - vtxMinOwn.x)
@@ -693,6 +644,57 @@ bool CCollisionCube::CubeCollision(TAG tag, D3DXVECTOR3 *pMove)
 							pMove->y = 0.0f;
 
 							bLand = true;
+						}
+					}
+				}
+
+				GetOwner()->SetPosition(posOwn);
+			}
+		}
+	}
+
+	for (int nCnt = 0; nCnt < NUM_OBJECT; nCnt++)
+	{
+		if (ppCollision[nCnt] != nullptr)
+		{
+			if (ppCollision[nCnt]->GetType() == TYPE_CUBE)
+			{
+				if (ppCollision[nCnt]->GetTag() != tag && tag != TAG_NONE)
+				{// タグに合わなければ繰り返し
+					continue;
+				}
+
+				// 相手の位置を取得
+				pos = ppCollision[nCnt]->GetPosition();
+
+				// 相手の最大頂点を取得
+				vtxMax = ppCollision[nCnt]->GetVtxMax() + ppCollision[nCnt]->GetPosition();
+				vtxMin = ppCollision[nCnt]->GetVtxMin() + ppCollision[nCnt]->GetPosition();
+
+				if (posOwn.y >= vtxMin.y - vtxMaxOwn.y &&
+					posOwn.y <= vtxMax.y)
+				{//上下で当っている場合
+					if (posOwn.z >= vtxMin.z - vtxMaxOwn.z &&
+						posOwn.z <= vtxMax.z + vtxMaxOwn.z)
+					{//横からの当たり判定
+						if (posOwnOld.x >= vtxMax.x - vtxMinOwn.x &&
+							posOwn.x <= vtxMax.x - vtxMinOwn.x)
+						{//右から当たった場合
+							//右に戻す
+							posOwn.x = vtxMax.x - vtxMinOwn.x;
+
+							//移動量をなくす
+							pMove->x = 0;
+						}
+
+						if (posOwnOld.x <= vtxMin.x - vtxMaxOwn.x &&
+							posOwn.x >= vtxMin.x - vtxMaxOwn.x)
+						{//左から当たった場合
+							//左に戻す
+							posOwn.x = vtxMin.x - vtxMaxOwn.x;
+
+							//移動量をなくす
+							pMove->x = 0;
 						}
 					}
 				}

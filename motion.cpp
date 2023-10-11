@@ -17,6 +17,7 @@
 #include "particle.h"
 #include "sound.h"
 #include "afterimage.h"
+#include "universal.h"
 
 //*****************************************************
 // マクロ定義
@@ -89,6 +90,9 @@ void CMotion::Update(void)
 		return;
 	}
 
+	// 汎用処理取得
+	CUniversal *pUniversal = CManager::GetUniversal();
+
 	// 現在の位置を保存
 	m_posOld = m_pos;
 
@@ -153,6 +157,10 @@ void CMotion::Update(void)
 		float DiffRotZ = m_aMotionInfo[m_motionType].aKeyInfo[nNextKey].aKey[nCntParts].fRotZ -
 			m_aKeyOld[nCntParts].fRotZ;
 
+		pUniversal->LimitRot(&DiffRotX);
+		pUniversal->LimitRot(&DiffRotY);
+		pUniversal->LimitRot(&DiffRotZ);
+
 		//目的の値=======================================================================================================
 		float DestPosX = pos.x + m_aKeyOld[nCntParts].fPosX +
 			DiffPosX * (float)(1.0f / (float)m_aMotionInfo[m_motionType].aKeyInfo[m_nKey].nFrame) * m_nCounterMotion;
@@ -175,7 +183,13 @@ void CMotion::Update(void)
 		//パーツの向き・位置設定
 		m_apParts[nCntParts]->m_pParts->SetPosition(D3DXVECTOR3(DestPosX, DestPosY, DestPosZ));
 
-		m_apParts[nCntParts]->m_pParts->SetRot(D3DXVECTOR3(DestRotX, DestRotY, DestRotZ));
+		pUniversal->LimitRot(&DestRotX);
+		pUniversal->LimitRot(&DestRotY);
+		pUniversal->LimitRot(&DestRotZ);
+
+		rot = D3DXVECTOR3(DestRotX, DestRotY, DestRotZ);
+
+		m_apParts[nCntParts]->m_pParts->SetRot(rot);
 	}
 
 	m_nCounterMotion++;
@@ -325,8 +339,14 @@ void CMotion::MultiplyMtx(void)
 //=====================================================
 void CMotion::Draw(void)
 {
+	// デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+
+	pDevice->SetRenderState(D3DRS_STENCILENABLE, TRUE);
+
 	// マトリックスをかけ合わせる処理
 	MultiplyMtx();
+
 }
 
 //=====================================================

@@ -23,7 +23,15 @@ class CBlock : public CObjectX
 public:
 	typedef enum
 	{// 種類
-		TYPE_BILL000,	// ビル1
+		TYPE_FLOOR,	// 床
+		TYPE_CHAIR,	// 椅子
+		TYPE_DESK,	// 机
+		TYPE_DOCUMENT,	// 書類
+		TYPE_FUN,	// 換気扇
+		TYPE_LOCKER,	// ロッカー
+		TYPE_WINDOW,	// 窓
+		TYPE_FLOORBIG,	// でか床
+		TYPE_WINDOWBIG,	// でか窓
 		TYPE_MAX
 	}TYPE;
 
@@ -37,7 +45,7 @@ public:
 	CBlock(int nPriority = 3);	// コンストラクタ
 	~CBlock();	// デストラクタ
 
-	static CBlock *Create(D3DXVECTOR3 pos,TYPE type);
+	static CBlock *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot,TYPE type);
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);

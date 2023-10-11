@@ -34,7 +34,7 @@ int *CBlock::m_pIdxObject = nullptr;	// 番号のポインタ
 //=====================================================
 CBlock::CBlock(int nPriority)
 {
-	m_type = TYPE_BILL000;
+	m_type = TYPE_FLOOR;
 
 	for (int nCntBlock = 0;nCntBlock < NUM_OBJECT;nCntBlock++)
 	{
@@ -111,7 +111,7 @@ void CBlock::Draw(void)
 //=====================================================
 // 生成処理
 //=====================================================
-CBlock *CBlock::Create(D3DXVECTOR3 pos, TYPE type)
+CBlock *CBlock::Create(D3DXVECTOR3 pos,D3DXVECTOR3 rot ,TYPE type)
 {
 	CBlock *pBlock = nullptr;
 
@@ -125,6 +125,7 @@ CBlock *CBlock::Create(D3DXVECTOR3 pos, TYPE type)
 		pBlock = new CBlock;
 
 		pBlock->SetPosition(pos);
+		pBlock->SetRot(rot);
 
 		// 初期化処理
 		pBlock->m_type = type;
@@ -225,7 +226,7 @@ HRESULT CBlock::Load(void)
 			fread(&memBlock, sizeof(MemBlock), 1, pFile);
 
 			// ブロックの生成
-			Create(memBlock.pos, memBlock.type);
+			Create(memBlock.pos, memBlock.rot,memBlock.type);
 		}
 
 		//ファイルを閉じる
@@ -245,7 +246,15 @@ void CBlock::LoadModel(void)
 {
 	char *pPath[CBlock::TYPE_MAX] =
 	{
-		"data\\MODEL\\BLOCK\\bill00.x",	// ビル１
+		"data\\MODEL\\BLOCK\\floor.x",	// 床
+		"data\\MODEL\\BLOCK\\chair00.x",	// 椅子
+		"data\\MODEL\\BLOCK\\desk00.x",	// 机
+		"data\\MODEL\\BLOCK\\document.x",	// 書類
+		"data\\MODEL\\BLOCK\\fun00.x",	// 換気扇
+		"data\\MODEL\\BLOCK\\locker00.x",	// ロッカー
+		"data\\MODEL\\BLOCK\\window.x",	// 窓
+		"data\\MODEL\\BLOCK\\floorbig.x",	// でか床
+		"data\\MODEL\\BLOCK\\windowbig.x",	// でか窓
 	};
 
 	if (m_pIdxObject == nullptr)

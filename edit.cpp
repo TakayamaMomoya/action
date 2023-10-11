@@ -18,7 +18,8 @@
 //*****************************************************
 // マクロ定義
 //*****************************************************
-#define SPEED_MOVE	(3.0f)	// 移動速度
+#define SPEED_MOVE	(0.5f)	// 移動速度
+#define SPEED_ROTATION	(0.01f)	// 回転
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -32,7 +33,7 @@ CEdit::CEdit()
 {
 	m_pObjectCursor = nullptr;
 	m_nIdxObject = 0;
-	m_type = CBlock::TYPE_BILL000;
+	m_type = CBlock::TYPE_FLOOR;
 }
 
 //=====================================================
@@ -72,7 +73,7 @@ HRESULT CEdit::Init(void)
 	m_pObjectCursor = CObjectX::Create();
 
 	// タイプの初期設定
-	m_type = CBlock::TYPE_BILL000;
+	m_type = CBlock::TYPE_FLOOR;
 
 	// モデル番号の設定
 	m_pObjectCursor->SetIdxModel(pIdx[m_type]);
@@ -104,6 +105,7 @@ void CEdit::Update(void)
 
 	// 変数宣言
 	D3DXVECTOR3 pos = { 0.0f,0.0f,0.0f };
+	D3DXVECTOR3 rot = { 0.0f,0.0f,0.0f };
 	float fSpeed = SPEED_MOVE;
 	CBlock **pBlock = CBlock::GetBlock();
 
@@ -139,9 +141,24 @@ void CEdit::Update(void)
 			pos.y -= fSpeed;
 		}
 
+		// 回転
+		if (pKeyboard->GetPress(DIK_N))
+		{
+			rot.y += SPEED_ROTATION;
+		}
+		if (pKeyboard->GetPress(DIK_M))
+		{
+			rot.y -= SPEED_ROTATION;
+		}
+
+		if (pKeyboard->GetTrigger(DIK_B))
+		{
+			m_pObjectCursor->SetRot(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		}
+
 		if (pKeyboard->GetTrigger(DIK_RETURN))
 		{// ブロックの生成
-			CBlock::Create(m_pObjectCursor->GetPosition(),m_type);
+			CBlock::Create(m_pObjectCursor->GetPosition(), m_pObjectCursor->GetRot(),m_type);
 		}
 
 		if (pKeyboard->GetTrigger(DIK_0) && CBlock::GetNumAll() != 0)
@@ -157,6 +174,15 @@ void CEdit::Update(void)
 			{
 				pBlock[m_nIdxObject]->SetEmissiveCol(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
 			}
+		}
+
+		if (pKeyboard->GetTrigger(DIK_6))
+		{
+			m_type = (CBlock::TYPE)((m_type + CBlock::TYPE_MAX - 1) % CBlock::TYPE_MAX);
+
+			// モデル番号の設定
+			m_pObjectCursor->SetIdxModel(pIdx[m_type]);
+			m_pObjectCursor->BindModel(pIdx[m_type]);
 		}
 
 		if (pKeyboard->GetTrigger(DIK_7))
@@ -179,14 +205,16 @@ void CEdit::Update(void)
 		}
 
 		if (m_pObjectCursor != nullptr)
-		{// カーソルの移動
+		{// カーソルのトランスフォーム
 			m_pObjectCursor->SetPosition(m_pObjectCursor->GetPosition() + pos);
+			m_pObjectCursor->SetRot(m_pObjectCursor->GetRot() + rot);
 		}
 
 		CManager::GetDebugProc()->Print("\n//=======================\n");
 		CManager::GetDebugProc()->Print("// エディター\n");
 		CManager::GetDebugProc()->Print("//=======================\n");
 		CManager::GetDebugProc()->Print("エディターの位置：[%f,%f,%f]\n", m_pObjectCursor->GetPosition().x, m_pObjectCursor->GetPosition().y, m_pObjectCursor->GetPosition().z);
+		CManager::GetDebugProc()->Print("エディターの向き：[%f,%f,%f]\n", m_pObjectCursor->GetRot().x, m_pObjectCursor->GetRot().y, m_pObjectCursor->GetRot().z);
 		CManager::GetDebugProc()->Print("移動[IJKL]\n");
 		CManager::GetDebugProc()->Print("上下移動[UO]\n");
 		CManager::GetDebugProc()->Print("設置[ENTER]\n");

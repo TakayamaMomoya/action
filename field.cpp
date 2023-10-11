@@ -17,7 +17,8 @@
 //=====================================================
 CField::CField()
 {
-
+	m_pField = nullptr;
+	ZeroMemory(&m_apPolygon[0],sizeof(m_apPolygon));
 }
 
 //=====================================================
@@ -33,9 +34,6 @@ CField::~CField()
 //=====================================================
 HRESULT CField::Init(void)
 {
-	// 継承クラスの初期化
-	CObject3D::Init();
-
 	return S_OK;
 }
 
@@ -44,8 +42,7 @@ HRESULT CField::Init(void)
 //=====================================================
 void CField::Uninit(void)
 {
-	// 継承クラスの終了
-	CObject3D::Uninit();
+
 }
 
 //=====================================================
@@ -53,8 +50,7 @@ void CField::Uninit(void)
 //=====================================================
 void CField::Update(void)
 {
-	// 継承クラスの更新
-	CObject3D::Update();
+
 }
 
 //=====================================================
@@ -62,14 +58,13 @@ void CField::Update(void)
 //=====================================================
 void CField::Draw(void)
 {
-	// 継承クラスの描画
-	CObject3D::Draw();
+
 }
 
 //=====================================================
 // 生成処理
 //=====================================================
-CField *CField::Create(D3DXVECTOR2 tex,D3DXVECTOR3 pos,float width,float height)
+CField *CField::Create(D3DXVECTOR3 pos,float width,float height)
 {
 	CField *pField = nullptr;
 
@@ -80,14 +75,13 @@ CField *CField::Create(D3DXVECTOR2 tex,D3DXVECTOR3 pos,float width,float height)
 		if (pField != nullptr)
 		{
 			pField->SetPosition(pos);
-			pField->SetSize(width, height);
 
 			// 初期化処理
 			pField->Init();
 
 			// テクスチャの読込
 			int nIdx = CManager::GetTexture()->Regist("data\\TEXTURE\\BG\\metal000.jpg");
-			pField->SetIdxTexture(nIdx);
+			//pField->SetIdxTexture(nIdx);
 		}
 	}
 

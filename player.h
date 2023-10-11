@@ -59,6 +59,7 @@ private:
 		MOTION_JUMP,	// ジャンプモーション
 		MOTION_FALL,	// 落下モーション
 		MOTION_ATTACK,	// 攻撃モーション
+		MOTION_AIRATTACK,	// 空中攻撃モーション
 		MOTION_MAX
 	};
 	struct AttackInfo
@@ -93,7 +94,8 @@ private:
 	CMotion *m_pBody;	// 体のポインタ
 	CCollisionCube *m_pCollisionCube;	// 立方体の当たり判定
 	CCollisionSphere *m_pClsnAttack;	// 攻撃の当たり判定
-	AttackInfo m_attackInfo;	// 攻撃の情報
+	int m_nNumAttack;	// 攻撃判定の数
+	AttackInfo *m_pAttackInfo;	// 攻撃の情報ポインタ
 
 	static CPlayer *m_pPlayer;	// 自身のポインタ
 };

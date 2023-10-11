@@ -32,6 +32,10 @@ public:
 		TYPE_WINDOW,	// ‘‹
 		TYPE_FLOORBIG,	// ‚Å‚©°
 		TYPE_WINDOWBIG,	// ‚Å‚©‘‹
+		TYPE_CASE00,	// ‘‹‚Ó‚«‚P
+		TYPE_CASE01,	// ‘‹‚Ó‚«ò
+		TYPE_CASE02,	// ‘‹‚Ó‚«ò
+		TYPE_FLOOR4,	// °~‚S
 		TYPE_MAX
 	}TYPE;
 

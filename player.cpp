@@ -36,12 +36,12 @@
 #define BODY_PATH	"data\\MOTION\\rayleigh.txt"	// 見た目のパス
 #define SPEED_MOVE	(0.3f)	// 移動速度
 #define GRAVITY	(0.09f)	// 重力
-#define JUMP_POW	(3.0f)	// ジャンプ力
+#define JUMP_POW	(2.7f)	// ジャンプ力
 #define MOVE_FACT	(0.8f)	// 移動量減衰
 #define ROLL_FACT	(0.2f)	// 回転係数
 #define LINE_STOP	(0.3f)	// 動いてる判定のしきい値
 #define TIME_AFTERIMAGE	(4)	// 残像を出す頻度
-#define ATTACK_JUMP	(2.5f)	// 空中攻撃のジャンプ力
+#define ATTACK_JUMP	(2.7f)	// 空中攻撃のジャンプ力
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -388,6 +388,10 @@ void CPlayer::ManageCollision(void)
 	if (bLandBlock || bLandFloor)
 	{
 		m_bJump = false;
+	}
+	else
+	{
+		m_bJump = true;
 	}
 
 	// 攻撃判定の管理

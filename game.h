@@ -51,10 +51,12 @@ public:
 
 private:
 	void UpdateCamera(void);
+	void Debug(void);
 
 	static CScore *m_pScore;	// スコアのポインタ
 	static CTimer *m_pTimer;	// タイマーのポインタ
 	static STATE m_state;	// 状態
+	bool m_bStop;	// 停止状態
 };
 
 #endif

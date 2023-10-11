@@ -116,6 +116,8 @@ HRESULT CGame::Init(void)
 
 #endif
 
+	m_bStop = false;
+
 	return S_OK;
 }
 
@@ -175,8 +177,20 @@ void CGame::Update(void)
 
 	CFade *pFade = CManager::GetFade();
 
-	// シーンの更新
-	CScene::Update();
+	if (m_bStop == false)
+	{
+		// シーンの更新
+		CScene::Update();
+	}
+	else
+	{
+		CEdit *pEdit = CEdit::GetInstatnce();
+
+		if (pEdit != nullptr)
+		{
+			pEdit->Update();
+		}
+	}
 
 	// カメラ更新
 	UpdateCamera();
@@ -190,6 +204,29 @@ void CGame::Update(void)
 				//pFade->SetFade(CScene::MODE_RANKING);
 			}
 		}
+	}
+
+#ifdef _DEBUG
+	Debug();
+#endif
+}
+
+//=====================================================
+// デバッグ処理
+//=====================================================
+void CGame::Debug(void)
+{
+	// 入力取得
+	CInputKeyboard *pKeyboard = CManager::GetKeyboard();
+
+	if (pKeyboard == nullptr)
+	{
+		return;
+	}
+
+	if (pKeyboard->GetTrigger(DIK_F))
+	{
+		m_bStop = m_bStop ? false : true;
 	}
 }
 
@@ -205,8 +242,16 @@ void CGame::UpdateCamera(void)
 		return;
 	}
 
-	// プレイヤーの追従
-	pCamera->FollowPlayer();
+	if (m_bStop == false)
+	{
+		// プレイヤーの追従
+		pCamera->FollowPlayer();
+	}
+	else
+	{
+		// 操作
+		pCamera->Control();
+	}
 }
 
 //=====================================================

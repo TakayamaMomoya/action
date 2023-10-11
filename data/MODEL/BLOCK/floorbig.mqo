@@ -2,13 +2,13 @@ Metasequoia Document
 Format Text Ver 1.0
 
 Scene {
-	pos 364.9448 -194.1552 25165.8281
+	pos 364.9448 -194.1552 15728.6426
 	lookat 0.0000 0.0000 0.0000
-	head 19.3964
-	pich 0.2736
+	head 15.4663
+	pich -0.0064
 	bank 0.0000
 	ortho 0
-	zoom2 0.2980
+	zoom2 0.4768
 	amb 0.250 0.250 0.250
 	dirlights 1 {
 		light {
@@ -17,11 +17,12 @@ Scene {
 		}
 	}
 }
-Material 4 {
+Material 5 {
 	"kuroitoko" col(0.000 0.000 0.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) proj_type(1) proj_pos(0.000 0.000 0.000) proj_scale(100.000 100.000 100.000) proj_angle(0.000 -84.500 0.000)
 	"moyou" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("C:\Users\student\Documents\Visual Studio 2015\Projects\å„ä˙êßçÏââèK\00_proto\data\TEXTURE\MATERIAL\floor.jpg")
 	"mado" col(0.741 1.000 0.953 0.490) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00)
 	"mat1" col(0.820 0.820 0.820 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00)
+	"mat2" col(0.682 0.898 0.914 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00)
 }
 Object "floor" {
 	visible 0

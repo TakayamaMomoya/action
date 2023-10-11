@@ -255,6 +255,10 @@ void CBlock::LoadModel(void)
 		"data\\MODEL\\BLOCK\\window.x",	// ‘‹
 		"data\\MODEL\\BLOCK\\floorbig.x",	// ‚Å‚©°
 		"data\\MODEL\\BLOCK\\windowbig.x",	// ‚Å‚©‘‹
+		"data\\MODEL\\BLOCK\\case00.x",	// ‘‹‚Ó‚«Šî‘b
+		"data\\MODEL\\BLOCK\\case01.x",	// ‘‹‚Ó‚«ò
+		"data\\MODEL\\BLOCK\\case02.x",	// ‘‹‚Ó‚«ò
+		"data\\MODEL\\BLOCK\\floor4.x",	// °~‚S
 	};
 
 	if (m_pIdxObject == nullptr)

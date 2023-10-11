@@ -89,7 +89,15 @@ HRESULT CEdit::Init(void)
 //=====================================================
 void CEdit::Uninit(void)
 {
-	m_pObjectCursor = nullptr;
+	if (m_pObjectCursor != nullptr)
+	{
+		m_pObjectCursor->Uninit();
+		m_pObjectCursor = nullptr;
+	}
+
+	m_pEdit = nullptr;
+
+	Release();
 }
 
 //=====================================================

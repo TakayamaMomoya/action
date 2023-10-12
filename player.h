@@ -59,6 +59,7 @@ private:
 		MOTION_JUMP,	// ジャンプモーション
 		MOTION_FALL,	// 落下モーション
 		MOTION_ATTACK,	// 攻撃モーション
+		MOTION_ATTACKTURN,	// 反転攻撃モーション
 		MOTION_AIRATTACK,	// 空中攻撃モーション
 		MOTION_MAX
 	};
@@ -86,6 +87,7 @@ private:
 	int m_nCntAfterImage;	// 残像を出すカウンター
 	bool m_bSprint;	// ダッシュ状態かどうか
 	bool m_bJump;	// ジャンプしているかどうか
+	bool m_bAttack;	// 攻撃フラグ
 	D3DXVECTOR3 m_pos;	// 位置
 	D3DXVECTOR3 m_posOld;	// 前回の位置
 	D3DXVECTOR3 m_move;	// 移動量

@@ -46,6 +46,7 @@ public:
 		TYPE_WALL2,	// •Ç2
 		TYPE_WALL3,	// •Ç3
 		TYPE_SIDEWINDOWBIG,	// ‚Å‚©‰¡‘‹
+		TYPE_FRONTWINDOW4,	// Žè‘O‘‹4
 		TYPE_MAX
 	}TYPE;
 

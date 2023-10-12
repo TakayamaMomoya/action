@@ -62,6 +62,7 @@ CPlayer::CPlayer(int nPriority)
 	m_move = { 0.0f,0.0f,0.0f };
 	m_bJump = false;
 	m_bSprint = false;
+	m_bAttack = false;
 	m_pBody = nullptr;
 	m_pCollisionCube = nullptr;
 	m_pClsnAttack = nullptr;
@@ -283,7 +284,38 @@ void CPlayer::InputAttack(void)
 		}
 		else
 		{// 地上攻撃
-			SetMotion(MOTION_ATTACK);
+			if (m_pBody->GetMotion() == MOTION_ATTACK || m_pBody->GetMotion() == MOTION_ATTACKTURN)
+			{
+				m_bAttack = true;
+			}
+			else
+			{
+				SetMotion(MOTION_ATTACK);
+
+				m_bAttack = true;
+			}
+		}
+	}
+
+	if (m_pBody != nullptr)
+	{// 連撃の処理
+		if (m_pBody->IsFinish())
+		{
+			if (m_bAttack == true)
+			{
+				if (m_pBody->GetMotion() == MOTION_ATTACK)
+				{
+					SetMotion(MOTION_ATTACKTURN);
+
+					m_bAttack = false;
+				}
+				else
+				{
+					SetMotion(MOTION_ATTACK);
+
+					m_bAttack = false;
+				}
+			}
 		}
 	}
 }
@@ -306,7 +338,8 @@ void CPlayer::ManageMotion(void)
 
 	if (m_bJump == false)
 	{
-		if (nMotion != MOTION_ATTACK)
+		if (m_bAttack == false &&
+			(m_pBody->GetMotion() != MOTION_ATTACK && m_pBody->GetMotion() != MOTION_ATTACKTURN))
 		{// 移動モーション
 			if (move.x * move.x > LINE_STOP * LINE_STOP)
 			{// ある程度動いていれば歩きモーション
@@ -565,6 +598,7 @@ void CPlayer::Draw(void)
 	CManager::GetDebugProc()->Print("\nプレイヤーの位置：[%f,%f,%f]", GetPosition().x, GetPosition().y, GetPosition().z);
 	CManager::GetDebugProc()->Print("\nプレイヤー体力[%d]", m_nLife);
 	CManager::GetDebugProc()->Print("\nモーション[%d]", m_pBody->GetMotion());
+	CManager::GetDebugProc()->Print("\n攻撃[%d]", m_bAttack);
 	CManager::GetDebugProc()->Print("\nリセット[F3]");
 #else
 	CManager::GetDebugProc()->Print("\n\n\n\n\n\n\n\n\n\n\n");

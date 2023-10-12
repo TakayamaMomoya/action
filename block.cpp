@@ -269,6 +269,7 @@ void CBlock::LoadModel(void)
 		"data\\MODEL\\BLOCK\\wall2.x",	// •Ç2
 		"data\\MODEL\\BLOCK\\wall3.x",	// •Ç3
 		"data\\MODEL\\BLOCK\\windowsidebig.x",	// ‚Å‚©‰¡‘‹
+		"data\\MODEL\\BLOCK\\windowFront4.x",	// Žè‘O‘‹4
 	};
 
 	if (m_pIdxObject == nullptr)

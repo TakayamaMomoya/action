@@ -36,12 +36,12 @@
 #define BODY_PATH	"data\\MOTION\\rayleigh.txt"	// 見た目のパス
 #define SPEED_MOVE	(0.3f)	// 移動速度
 #define GRAVITY	(0.09f)	// 重力
-#define JUMP_POW	(2.7f)	// ジャンプ力
+#define JUMP_POW	(2.5f)	// ジャンプ力
 #define MOVE_FACT	(0.8f)	// 移動量減衰
 #define ROLL_FACT	(0.2f)	// 回転係数
 #define LINE_STOP	(0.3f)	// 動いてる判定のしきい値
 #define TIME_AFTERIMAGE	(4)	// 残像を出す頻度
-#define ATTACK_JUMP	(2.7f)	// 空中攻撃のジャンプ力
+#define ATTACK_JUMP	(2.8f)	// 空中攻撃のジャンプ力
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -413,26 +413,46 @@ void CPlayer::ManageAttack(void)
 		return;
 	}
 
+	CUniversal *pUniversal = CManager::GetUniversal();
+
 	for (int i = 0; i < m_nNumAttack; i++)
 	{
 		if (m_pBody->GetMotion() == m_pAttackInfo[i].nIdxMotion)
 		{// 攻撃モーション中の判定
 			int nFrame = m_pBody->GetFrame();
 			int nKey = m_pBody->GetKey();
-			D3DXVECTOR3 pos = GetPosition() + m_pAttackInfo[i].pos;
+			D3DXVECTOR3 pos;
 
 			if (nFrame == m_pAttackInfo[i].nFrame && nKey == m_pAttackInfo[i].nKey)
 			{// 当たり判定の設定
-				m_pClsnAttack->SetPosition(pos);
 				bool bHit = false;
-				bHit = m_pClsnAttack->SphereCollision(CCollision::TAG_ENEMY);
-				CObject *pObj = m_pClsnAttack->GetOther();
+				D3DXMATRIX mtx;
+
+				pUniversal->SetOffSet(&mtx, *m_pBody->GetMatrix(), m_pAttackInfo[i].pos);
+
+				pos =
+				{
+					mtx._41,
+					mtx._42,
+					mtx._43
+				};
+
+				// 位置設定
+				m_pClsnAttack->SetPosition(pos);
+				
+				// 半径の設定
 				m_pClsnAttack->SetRadius(m_pAttackInfo[i].fRadius);
 
 				CEffect3D::Create(pos, m_pAttackInfo[i].fRadius, 10, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
+				// 命中したかの判定
+				bHit = m_pClsnAttack->SphereCollision(CCollision::TAG_ENEMY);
+				
+				// 命中したオブジェクトの取得
+				CObject *pObj = m_pClsnAttack->GetOther();
+
 				if (bHit == true && pObj != nullptr)
-				{
+				{// 命中時のヒット処理
 					pObj->Hit(1.0f);
 				}
 			}

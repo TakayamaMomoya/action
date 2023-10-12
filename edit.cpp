@@ -14,6 +14,7 @@
 #include "manager.h"
 #include "debugproc.h"
 #include "block.h"
+#include "enemy.h"
 
 //*****************************************************
 // マクロ定義
@@ -167,6 +168,11 @@ void CEdit::Update(void)
 		if (pKeyboard->GetTrigger(DIK_RETURN))
 		{// ブロックの生成
 			CBlock::Create(m_pObjectCursor->GetPosition(), m_pObjectCursor->GetRot(),m_type);
+		}
+
+		if (pKeyboard->GetTrigger(DIK_BACKSPACE))
+		{// 敵の生成
+			CEnemy::Create(m_pObjectCursor->GetPosition(),CEnemy::TYPE_SHOT);
 		}
 
 		if (pKeyboard->GetTrigger(DIK_0) && CBlock::GetNumAll() != 0)

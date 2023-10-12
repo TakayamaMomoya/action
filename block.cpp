@@ -259,14 +259,18 @@ void CBlock::LoadModel(void)
 		"data\\MODEL\\BLOCK\\case01.x",	// ‘‹‚Ó‚«ò
 		"data\\MODEL\\BLOCK\\case02.x",	// ‘‹‚Ó‚«ò
 		"data\\MODEL\\BLOCK\\floor4.x",	// °~‚S
+		"data\\MODEL\\BLOCK\\rooftopbig.x",	// ‰®ã°
+		"data\\MODEL\\BLOCK\\rooftop4.x",	// ‰®ã°~‚S
+		"data\\MODEL\\BLOCK\\rooftop1.x",	// ‰®ã°~‚P
+		"data\\MODEL\\BLOCK\\heliport.x",	// ƒwƒŠƒ|[ƒg
+		"data\\MODEL\\BLOCK\\windowFront.x",	// è‘O‚Ì‘‹
+		"data\\MODEL\\BLOCK\\windowside.x",	// ‰¡‚Ì‘‹
 	};
 
 	if (m_pIdxObject == nullptr)
 	{
 		// ”Ô†‚Ì¶¬
 		m_pIdxObject = new int[CBlock::TYPE_MAX];
-
-		sizeof(m_pIdxObject);
 
 		// ’l‚Ì‰Šú‰»
 		ZeroMemory(m_pIdxObject,sizeof(int) * CBlock::TYPE_MAX);

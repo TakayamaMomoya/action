@@ -36,6 +36,12 @@ public:
 		TYPE_CASE01,	// ‘‹‚Ó‚«ò
 		TYPE_CASE02,	// ‘‹‚Ó‚«ò
 		TYPE_FLOOR4,	// °~‚S
+		TYPE_ROOFTOPBIG,	// ‰®ã°
+		TYPE_ROOFTOP4,	// ‰®ã°~‚S
+		TYPE_ROOFTOP1,	// ‰®ã°~‚P
+		TYPE_HELIPORT,	// ƒwƒŠƒ|[ƒg
+		TYPE_FRONTWINDOW,	// Žè‘O‚Ì‘‹
+		TYPE_SIDEWINDOW,	// ‰¡‚Ì‘‹
 		TYPE_MAX
 	}TYPE;
 

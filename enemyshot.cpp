@@ -83,8 +83,6 @@ void CEnemyShot::Update(void)
 //=====================================================
 void CEnemyShot::Draw(void)
 {
-	SetMatrix();
-
 	// åpè≥ÉNÉâÉXÇÃï`âÊ
 	CEnemy::Draw();
 }

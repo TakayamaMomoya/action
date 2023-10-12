@@ -377,11 +377,23 @@ void CPlayer::ManageCollision(void)
 	}
 
 	// âºÇÃè∞îªíË=============
-	if (m_pos.y <= 0.0f)
+	if (m_pos.y <= -190.0f)
 	{
-		/*m_pos.y = 0.0f;
-		m_move.y = 0.0f;
-		bLandFloor = true;*/
+		m_pos = 
+		{
+			0.0f,
+			10.0f,
+			0.0f
+		};
+
+		m_posOld = m_pos;
+
+		m_move =
+		{
+			0.0f,
+			0.0f,
+			0.0f
+		};
 	}
 	// =======================
 

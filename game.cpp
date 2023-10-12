@@ -92,7 +92,7 @@ HRESULT CGame::Init(void)
 
 	if (pCamera != nullptr)
 	{
-		pCamera->SetDist(100.0f);
+		pCamera->SetDist(180.0f);
 	}
 
 	// ƒvƒŒƒCƒ„[‚Ì’Ç]

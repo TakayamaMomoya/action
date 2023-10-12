@@ -265,6 +265,10 @@ void CBlock::LoadModel(void)
 		"data\\MODEL\\BLOCK\\heliport.x",	// ヘリポート
 		"data\\MODEL\\BLOCK\\windowFront.x",	// 手前の窓
 		"data\\MODEL\\BLOCK\\windowside.x",	// 横の窓
+		"data\\MODEL\\BLOCK\\wall.x",	// 壁
+		"data\\MODEL\\BLOCK\\wall2.x",	// 壁2
+		"data\\MODEL\\BLOCK\\wall3.x",	// 壁3
+		"data\\MODEL\\BLOCK\\windowsidebig.x",	// でか横窓
 	};
 
 	if (m_pIdxObject == nullptr)
@@ -298,7 +302,6 @@ void CBlock::Save(void)
 
 	if (pFile != nullptr)
 	{//ファイルが開けた場合
-
 		fwrite(&m_nNumAll, sizeof(int), 1, pFile);
 
 		for (int nCntBlock = 0; nCntBlock < m_nNumAll; nCntBlock++)

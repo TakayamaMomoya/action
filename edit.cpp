@@ -190,6 +190,21 @@ void CEdit::Update(void)
 			}
 		}
 
+		if (pKeyboard->GetTrigger(DIK_MINUS) && CBlock::GetNumAll() != 0)
+		{// オブジェクト選択処理
+			if (pBlock[m_nIdxObject] != nullptr)
+			{
+				pBlock[m_nIdxObject]->ResetColor();
+			}
+			
+			m_nIdxObject = (m_nIdxObject + CBlock::GetNumAll() - 1) % CBlock::GetNumAll();
+
+			if (pBlock[m_nIdxObject] != nullptr)
+			{
+				pBlock[m_nIdxObject]->SetEmissiveCol(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+			}
+		}
+
 		if (pKeyboard->GetTrigger(DIK_6))
 		{
 			m_type = (CBlock::TYPE)((m_type + CBlock::TYPE_MAX - 1) % CBlock::TYPE_MAX);

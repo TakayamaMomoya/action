@@ -42,6 +42,10 @@ public:
 		TYPE_HELIPORT,	// ヘリポート
 		TYPE_FRONTWINDOW,	// 手前の窓
 		TYPE_SIDEWINDOW,	// 横の窓
+		TYPE_WALL,	// 壁
+		TYPE_WALL2,	// 壁2
+		TYPE_WALL3,	// 壁3
+		TYPE_SIDEWINDOWBIG,	// でか横窓
 		TYPE_MAX
 	}TYPE;
 

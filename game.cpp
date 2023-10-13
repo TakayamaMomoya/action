@@ -104,9 +104,6 @@ HRESULT CGame::Init(void)
 	// スカイボックス
 	CSkybox::Create();
 
-	// 仮敵配置
-	CEnemy::Create(D3DXVECTOR3(0.0f,0.0f,0.0f),CEnemy::TYPE_SHOT);
-
 	// ブロック配置読込
 	CBlock::Load();
 

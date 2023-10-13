@@ -72,6 +72,13 @@ private:
 		int nFrame;	// 発生するフレーム
 		float fRadius;	// 半径
 	};
+	enum JUMPSTATE
+	{// ジャンプ状態
+		JUMPSTATE_NONE = 0,
+		JUMPSTATE_NORMAL,
+		JUMPSTATE_ATTACK,
+		JUMPSTATE_MAX
+	};
 
 	void Input(void);
 	void InputMove(void);
@@ -86,7 +93,6 @@ private:
 	int m_nLife;	// 体力
 	int m_nCntAfterImage;	// 残像を出すカウンター
 	bool m_bSprint;	// ダッシュ状態かどうか
-	bool m_bJump;	// ジャンプしているかどうか
 	bool m_bAttack;	// 攻撃フラグ
 	D3DXVECTOR3 m_pos;	// 位置
 	D3DXVECTOR3 m_posOld;	// 前回の位置
@@ -98,6 +104,7 @@ private:
 	CCollisionSphere *m_pClsnAttack;	// 攻撃の当たり判定
 	int m_nNumAttack;	// 攻撃判定の数
 	AttackInfo *m_pAttackInfo;	// 攻撃の情報ポインタ
+	JUMPSTATE m_jump;	// ジャンプ状態
 
 	static CPlayer *m_pPlayer;	// 自身のポインタ
 };

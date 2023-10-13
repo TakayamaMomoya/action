@@ -60,13 +60,13 @@ CPlayer::CPlayer(int nPriority)
 	m_rot = { 0.0f,0.0f,0.0f };
 	m_rotDest = { 0.0f,0.0f,0.0f };
 	m_move = { 0.0f,0.0f,0.0f };
-	m_bJump = false;
 	m_bSprint = false;
 	m_bAttack = false;
 	m_pBody = nullptr;
 	m_pCollisionCube = nullptr;
 	m_pClsnAttack = nullptr;
 	m_pAttackInfo = nullptr;
+	m_jump = JUMPSTATE_NONE;
 }
 
 //=====================================================
@@ -89,7 +89,8 @@ HRESULT CPlayer::Init(void)
 
 	// ílÇÃèâä˙âª
 	m_nLife = INITIAL_LIFE_PLAYER;
-	
+	m_jump = JUMPSTATE_NORMAL;
+
 	if (m_pBody == nullptr)
 	{// ëÃÇÃê∂ê¨
 		m_pBody = CMotion::Create(BODY_PATH);
@@ -239,13 +240,13 @@ void CPlayer::InputMove(void)
 		}
 
 		// ÉWÉÉÉìÉvëÄçÏ
-		if (m_bJump == false)
+		if (m_jump == JUMPSTATE_NONE)
 		{
 			if (pKeyboard->GetTrigger(DIK_SPACE))
-			{// âEà⁄ìÆ
+			{
 				move.y += JUMP_POW;
 
-				m_bJump = true;
+				m_jump = JUMPSTATE_NORMAL;
 
 				SetMotion(MOTION_JUMP);
 			}
@@ -273,7 +274,7 @@ void CPlayer::InputAttack(void)
 
 	if (pMouse->GetTrigger(CInputMouse::BUTTON_LMB))
 	{// çUåÇ
-		if (m_bJump)
+		if (m_jump == JUMPSTATE_NORMAL)
 		{// ãÛíÜçUåÇ
 			SetMotion(MOTION_AIRATTACK);
 
@@ -281,8 +282,10 @@ void CPlayer::InputAttack(void)
 
 			// à⁄ìÆó â¡éZ
 			SetMove(move);
+
+			m_jump = JUMPSTATE_ATTACK;
 		}
-		else
+		else if(m_jump == JUMPSTATE_NONE)
 		{// ínè„çUåÇ
 			if (m_pBody->GetMotion() == MOTION_ATTACK || m_pBody->GetMotion() == MOTION_ATTACKTURN)
 			{
@@ -292,7 +295,7 @@ void CPlayer::InputAttack(void)
 			{
 				SetMotion(MOTION_ATTACK);
 
-				m_bAttack = true;
+				m_bAttack = false;
 			}
 		}
 	}
@@ -336,7 +339,7 @@ void CPlayer::ManageMotion(void)
 	bool bFinish = m_pBody->IsFinish();
 	int nMotion = m_pBody->GetMotion();
 
-	if (m_bJump == false)
+	if (m_jump == JUMPSTATE_NONE)
 	{
 		if (m_bAttack == false &&
 			(m_pBody->GetMotion() != MOTION_ATTACK && m_pBody->GetMotion() != MOTION_ATTACKTURN))
@@ -407,6 +410,12 @@ void CPlayer::ManageCollision(void)
 		bLandBlock = m_pCollisionCube->CubeCollision(CCollision::TAG_BLOCK, &move);
 
 		SetMove(move);
+
+		if (m_jump != JUMPSTATE_NONE && 
+			bLandBlock)
+		{
+			m_jump = JUMPSTATE_NONE;
+		}
 	}
 
 	// âºÇÃè∞îªíË=============
@@ -429,15 +438,6 @@ void CPlayer::ManageCollision(void)
 		};
 	}
 	// =======================
-
-	if (bLandBlock || bLandFloor)
-	{
-		m_bJump = false;
-	}
-	else
-	{
-		m_bJump = true;
-	}
 
 	// çUåÇîªíËÇÃä«óù
 	ManageAttack();

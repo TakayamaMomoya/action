@@ -12,6 +12,13 @@
 #include "enemyManager.h"
 #include "manager.h"
 #include "enemyshot.h"
+#include "enemydrone.h"
+#include <stdio.h>
+
+//*****************************************************
+// マクロ定義
+//*****************************************************
+#define FILE_PATH	"data\\MAP\\enemies.txt"	// 配置データのパス
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -56,6 +63,13 @@ CEnemyManager *CEnemyManager::Create(void)
 //=====================================================
 CEnemy *CEnemyManager::CreateEnemy(D3DXVECTOR3 pos, CEnemy::TYPE type)
 {
+	char *apPath[CEnemy::TYPE_MAX] = 
+	{
+		nullptr,
+		"data\\MOTION\\robot00.txt",
+		"data\\MOTION\\drone00.txt"
+	};
+
 	CEnemy *pEnemy = nullptr;
 
 	if (pEnemy == nullptr)
@@ -66,20 +80,28 @@ CEnemy *CEnemyManager::CreateEnemy(D3DXVECTOR3 pos, CEnemy::TYPE type)
 
 			pEnemy = new CEnemyShot;
 
-			pEnemy->CMotion::Load("data\\MOTION\\robot00.txt");
+			break;
+		case CEnemy::TYPE_DRONE:
 
-			pEnemy->SetMotion(0);
+			pEnemy = new CEnemyDrone;
 
 			break;
 		default:
 			break;
 		}
 
-		// 位置設定
-		pEnemy->SetPosition(pos);
+		if (pEnemy != nullptr)
+		{
+			// モーション読込
+			pEnemy->CMotion::Load(apPath[type]);
+			pEnemy->SetMotion(0);
 
-		// 初期化処理
-		pEnemy->Init();
+			// 位置設定
+			pEnemy->SetPosition(pos);
+
+			// 初期化処理
+			pEnemy->Init();
+		}
 	}
 
 	return pEnemy;
@@ -90,7 +112,76 @@ CEnemy *CEnemyManager::CreateEnemy(D3DXVECTOR3 pos, CEnemy::TYPE type)
 //=====================================================
 HRESULT CEnemyManager::Init(void)
 {
+	// 読込処理
+	Load();
+
 	return S_OK;
+}
+
+//=====================================================
+// 読込処理
+//=====================================================
+void CEnemyManager::Load(void)
+{
+	// 変数宣言
+	char cTemp[256];
+	int nCntAttack = 0;
+
+	// ファイルから読み込む
+	FILE *pFile = fopen(FILE_PATH, "r");
+
+	if (pFile != nullptr)
+	{// ファイルが開けた場合
+		while (true)
+		{
+			// 文字読み込み
+			fscanf(pFile, "%s", &cTemp[0]);
+
+			if (strcmp(cTemp, "ENEMYSET") == 0)
+			{
+				CEnemy::TYPE type;
+				D3DXVECTOR3 pos;
+
+				while (true)
+				{
+					// 文字読み込み
+					fscanf(pFile, "%s", &cTemp[0]);
+
+					if (strcmp(cTemp, "POS") == 0)
+					{// 位置
+						fscanf(pFile, "%s", &cTemp[0]);
+
+						for (int nCntPos = 0; nCntPos < 3; nCntPos++)
+						{
+							fscanf(pFile, "%f", &pos[nCntPos]);
+						}
+					}
+
+					if (strcmp(cTemp, "TYPE") == 0)
+					{// 種類
+						fscanf(pFile, "%s", &cTemp[0]);
+						
+						fscanf(pFile, "%d", &type);
+					}
+
+					if (strcmp(cTemp, "END_ENEMYSET") == 0)
+					{
+						CreateEnemy(pos,type);
+
+						break;
+					}
+				}
+			}
+
+			if (strcmp(cTemp, "END_SCRIPT") == 0)
+			{// 終了条件
+				break;
+			}
+		}
+
+		// ファイルを閉じる
+		fclose(pFile);
+	}
 }
 
 //=====================================================

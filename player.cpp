@@ -130,7 +130,7 @@ HRESULT CPlayer::Init(void)
 		if (m_pClsnHit != nullptr)
 		{// î•ñ‚ÌÝ’è
 			m_pClsnHit->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-			m_pClsnHit->SetRadius(10.0f);
+			m_pClsnHit->SetRadius(0.1f);
 		}
 	}
 
@@ -448,8 +448,22 @@ void CPlayer::ManageCollision(void)
 
 	if (m_pClsnHit != nullptr)
 	{
-		m_pClsnHit->SetPositionOld(m_pClsnHit->GetPosition());
-		m_pClsnHit->SetPosition(GetPosition());
+		if (m_pBody != nullptr)
+		{
+			if (m_pBody->GetParts(0) != nullptr)
+			{
+				D3DXMATRIX mtx = *m_pBody->GetParts(0)->m_pParts->GetMatrix();
+				D3DXVECTOR3 pos =
+				{
+					mtx._41,
+					mtx._42,
+					mtx._43,
+				};
+
+				m_pClsnHit->SetPositionOld(m_pClsnHit->GetPosition());
+				m_pClsnHit->SetPosition(pos);
+			}
+		}
 	}
 
 	// —Ž‰ºŽ€”»’è=============

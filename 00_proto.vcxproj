@@ -166,6 +166,7 @@
     <ClCompile Include="effect2D.cpp" />
     <ClCompile Include="effect3D.cpp" />
     <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="enemydrone.cpp" />
     <ClCompile Include="enemyManager.cpp" />
     <ClCompile Include="enemyshot.cpp" />
     <ClCompile Include="fade.cpp" />
@@ -216,6 +217,7 @@
     <ClInclude Include="effect2D.h" />
     <ClInclude Include="effect3D.h" />
     <ClInclude Include="enemy.h" />
+    <ClInclude Include="enemydrone.h" />
     <ClInclude Include="enemyManager.h" />
     <ClInclude Include="enemyshot.h" />
     <ClInclude Include="fade.h" />

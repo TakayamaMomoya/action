@@ -25,7 +25,9 @@
 #define INITIAL_SCORE	(500)	// 初期スコア
 #define TIME_SHOT	(240)	// 射撃までのカウンター
 #define ROLL_FACT	(0.1f)	// 回転係数
-#define BULLET_SPEED	(0.6f)	// 弾の速度
+#define BULLET_SPEED	(2.0f)	// 弾の速度
+#define BULLET_SIZE	(2.5f)	// 弾の大きさ
+#define GRAVITY	(0.3f)	// 重力
 
 //=====================================================
 // コンストラクタ
@@ -85,6 +87,13 @@ void CEnemyShot::Update(void)
 
 	// 目標を向く処理
 	RotDest();
+
+	// 重力
+	D3DXVECTOR3 move = GetMove();
+
+	move.y -= GRAVITY;
+
+	SetMove(move);
 }
 
 //=====================================================
@@ -118,7 +127,7 @@ void CEnemyShot::ManageAttack(void)
 			cosf(fRot) * BULLET_SPEED
 		};
 
-		CBullet::Create(pos, -move, 500, CBullet::TYPE_ENEMY);
+		CBullet::Create(pos, -move, 500, CBullet::TYPE_ENEMY,false,BULLET_SIZE,5.0f,D3DXCOLOR(1.0f,0.0f,0.0f,1.0f));
 
 		SetAttackCounter(0);
 	}

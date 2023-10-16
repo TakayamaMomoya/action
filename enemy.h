@@ -36,6 +36,7 @@ public:
 	{// “G‚ÌŽí—Þ
 		TYPE_NONE = 0,	// ‰½‚Å‚à‚È‚¢
 		TYPE_SHOT,	// Œ‚‚Á‚Ä‚­‚é“G
+		TYPE_DRONE,	// ƒhƒ[ƒ““G
 		TYPE_MAX
 	}TYPE;
 

@@ -29,7 +29,7 @@
 //*****************************************************
 #define SPEED_MOVE	(7.0f)	// à⁄ìÆë¨ìx
 #define ROLL_SPEED	(0.1f)	// âÒì]ë¨ìx
-#define EDGE_ORBIT	(13)	// ãOê’ÇÃï”ÇÃêî
+#define EDGE_ORBIT	(50)	// ãOê’ÇÃï”ÇÃêî
 
 //*****************************************************
 // ê√ìIÉÅÉìÉoïœêîêÈåæ
@@ -81,24 +81,9 @@ HRESULT CBullet::Init(void)
 
 	Draw();
 
-	if (m_apOrbit[0] == nullptr)
-	{// ãOê’ÇÃê∂ê¨
-		m_apOrbit[0] = COrbit::Create(m_mtxWorld, D3DXVECTOR3(m_fSize, 0.0f, 0.0f), D3DXVECTOR3(-m_fSize, 0.0f, 0.0f), m_col, EDGE_ORBIT);
-	}
-
 	if (m_apOrbit[1] == nullptr)
 	{// ãOê’ÇÃê∂ê¨
 		m_apOrbit[1] = COrbit::Create(m_mtxWorld, D3DXVECTOR3(0.0f, m_fSize, 0.0f), D3DXVECTOR3(0.0f, -m_fSize, 0.0f), m_col, EDGE_ORBIT);
-	}
-
-	if (m_apOrbit[2] == nullptr)
-	{// ãOê’ÇÃê∂ê¨
-		m_apOrbit[2] = COrbit::Create(m_mtxWorld, D3DXVECTOR3(m_fSize, m_fSize, 0.0f), D3DXVECTOR3(-m_fSize, -m_fSize, 0.0f), m_col, EDGE_ORBIT);
-	}
-
-	if (m_apOrbit[3] == nullptr)
-	{// ãOê’ÇÃê∂ê¨
-		m_apOrbit[3] = COrbit::Create(m_mtxWorld, D3DXVECTOR3(m_fSize, -m_fSize, 0.0f), D3DXVECTOR3(-m_fSize, m_fSize, 0.0f), m_col, EDGE_ORBIT);
 	}
 
 	for (int nCnt = 0; nCnt < 6; nCnt++)
@@ -184,12 +169,6 @@ void CBullet::Update(void)
 			Death();
 		}
 	}
-
-	// ãOê’ÇÃÉçÅ[ÉãâÒì]
-	m_rot.z += ROLL_SPEED;
-
-	// ílÇÃï‚ê≥
-	pUniversal->LimitRot(&m_rot.z);
 
 	if (bHit == false)
 	{

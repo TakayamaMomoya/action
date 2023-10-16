@@ -23,7 +23,7 @@ public:
 	CEnemyManager();	// コンストラクタ
 	~CEnemyManager();	// デストラクタ
 
-	static CEnemy *CreateEnemy(D3DXVECTOR3 pos, CEnemy::TYPE type);
+	CEnemy *CreateEnemy(D3DXVECTOR3 pos, CEnemy::TYPE type);
 	static CEnemyManager *Create(void);
 	HRESULT Init(void);
 	void Uninit(void);
@@ -36,6 +36,8 @@ public:
 	static CEnemyManager *GetInstance(void) { return m_pEnemyManager; }
 
 private:
+	void Load(void);
+
 	CEnemy *m_pHead;	// 先頭のアドレス
 	CEnemy *m_pTail;	// 最後尾のアドレス
 	

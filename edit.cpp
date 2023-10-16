@@ -16,6 +16,7 @@
 #include "block.h"
 #include "enemy.h"
 #include "enemyManager.h"
+#include <assert.h>
 
 //*****************************************************
 // ƒ}ƒNƒ’è‹`
@@ -173,7 +174,14 @@ void CEdit::Update(void)
 
 		if (pKeyboard->GetTrigger(DIK_BACKSPACE))
 		{// “G‚Ì¶¬
-			CEnemyManager::CreateEnemy(m_pObjectCursor->GetPosition(),CEnemy::TYPE_SHOT);
+			CEnemyManager *pEnemyManager = nullptr;
+
+			pEnemyManager = CEnemyManager::GetInstance();
+
+			if (pEnemyManager != nullptr)
+			{
+				pEnemyManager->CreateEnemy(m_pObjectCursor->GetPosition(), CEnemy::TYPE_DRONE);
+			}
 		}
 
 		if (pKeyboard->GetTrigger(DIK_0) && CBlock::GetNumAll() != 0)

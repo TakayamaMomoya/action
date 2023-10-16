@@ -1,12 +1,26 @@
-﻿  block.cpp
+﻿  afterimage.cpp
+  block.cpp
+  bullet.cpp
+  camera.cpp
+  collision.cpp
   edit.cpp
+  enemy.cpp
+  enemyManager.cpp
+  enemyshot.cpp
   game.cpp
   manager.cpp
+  motion.cpp
+  object.cpp
+  objectX.cpp
+  particle.cpp
   player.cpp
+  ranking.cpp
+  renderer.cpp
+  skybox.cpp
   コード生成しています。
-  9 of 569 functions ( 1.6%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    7 functions had inline decision re-evaluated but remain unchanged
+  148 of 609 functions (24.3%) were compiled, the rest were copied from previous compilation.
+    34 functions were new in current compilation
+    92 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   00_proto.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\00_proto.exe
   00_proto.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\00_proto.pdb (Full PDB)

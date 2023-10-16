@@ -15,6 +15,7 @@
 #include "debugproc.h"
 #include "block.h"
 #include "enemy.h"
+#include "enemyManager.h"
 
 //*****************************************************
 // ƒ}ƒNƒ’è‹`
@@ -172,7 +173,7 @@ void CEdit::Update(void)
 
 		if (pKeyboard->GetTrigger(DIK_BACKSPACE))
 		{// “G‚Ì¶¬
-			CEnemy::Create(m_pObjectCursor->GetPosition(),CEnemy::TYPE_SHOT);
+			CEnemyManager::CreateEnemy(m_pObjectCursor->GetPosition(),CEnemy::TYPE_SHOT);
 		}
 
 		if (pKeyboard->GetTrigger(DIK_0) && CBlock::GetNumAll() != 0)

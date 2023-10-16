@@ -61,7 +61,6 @@ public:
 	void SetLife(float fLife);
 	float GetLife(void) { return m_fLife; }
 	void Hit(float fDamage);
-	static CEnemy *GetEnemy(void) { return m_pHead; }
 	void SetSpherePosition(D3DXVECTOR3 pos);
 	void Death(void);
 	STATE GetState(void) { return m_state; }
@@ -69,6 +68,8 @@ public:
 	CEnemy *GetNext(void) { return m_pNext; }
 	int GetScore(void) { return m_nScore; }
 	void SetScore(int nScore) { m_nScore = nScore; }
+	int GetAttackCounter(void) { return m_nCntAttack; }
+	void SetAttackCounter(int nCounter) { m_nCntAttack = nCounter; }
 
 private:
 	void ManageState(void);
@@ -81,9 +82,8 @@ private:
 	CCollisionCube *m_pCollisionCube;	// 立方体の当たり判定
 	STATE m_state;	// 状態
 	int m_nScore;	// スコア値
+	unsigned int m_nCntAttack;	// 攻撃カウンタ
 
-	static CEnemy *m_pHead;	// 先頭のアドレス
-	static CEnemy *m_pTail;	// 最後尾のアドレス
 	CEnemy *m_pPrev;	// 前のアドレス
 	CEnemy *m_pNext;	// 次のアドレス
 };

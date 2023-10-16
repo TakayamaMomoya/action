@@ -102,6 +102,7 @@ private:
 	CMotion *m_pBody;	// 体のポインタ
 	CCollisionCube *m_pCollisionCube;	// 立方体の当たり判定
 	CCollisionSphere *m_pClsnAttack;	// 攻撃の当たり判定
+	CCollisionSphere *m_pClsnHit;	// 被弾当たり判定
 	int m_nNumAttack;	// 攻撃判定の数
 	AttackInfo *m_pAttackInfo;	// 攻撃の情報ポインタ
 	JUMPSTATE m_jump;	// ジャンプ状態

@@ -69,6 +69,9 @@ private:
 	D3DXVECTOR3 m_move;	// 移動量
 	D3DXVECTOR3 m_rot;								//向き
 	D3DXMATRIX m_mtxWorld;							//ワールドマトリックス
+	D3DXMATRIX m_mtxRot;	// 回転マトリックス保存用
+	D3DXQUATERNION m_quat;	// クォータニオン
+	D3DXVECTOR3 m_vecAxis;	// 回転軸
 	D3DXCOLOR m_col;	// 色
 	CModel::Model *m_pModel;	// モデル情報
 	int m_nIdxModel;	// モデルの番号

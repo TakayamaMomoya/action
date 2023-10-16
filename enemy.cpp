@@ -19,6 +19,7 @@
 #include "player.h"
 #include "game.h"
 #include "enemyshot.h"
+#include "enemyManager.h"
 
 //*****************************************************
 // マクロ定義
@@ -33,8 +34,6 @@
 // 静的メンバ変数宣言
 //*****************************************************
 int CEnemy::m_nNumAll = 0;	// 総数
-CEnemy *CEnemy::m_pHead = nullptr;	// 先頭のアドレス
-CEnemy *CEnemy::m_pTail = nullptr;	// 最後尾のアドレス
 
 //=====================================================
 // コンストラクタ
@@ -44,8 +43,20 @@ CEnemy::CEnemy()
 	// 総数カウントアップ
 	m_nNumAll++;
 
+	// 先頭、最後尾アドレス取得
+	CEnemyManager *pManager = CEnemyManager::GetInstance();
+	CEnemy *pHead = nullptr;
+	CEnemy *pTail = nullptr;
+
+	if (pManager != nullptr)
+	{
+		pHead = pManager->GetHead();
+		pTail = pManager->GetTail();
+	}
+
 	m_fLife = 0;
 	m_nScore = 0;
+	m_nCntAttack = 0;
 	m_nTimerState = 0;
 	m_pCollisionSphere = nullptr;
 	m_state = STATE_NORMAL;
@@ -54,22 +65,25 @@ CEnemy::CEnemy()
 	m_pPrev = nullptr;
 	m_pNext = nullptr;
 
-	if (m_pHead == nullptr)
+	if (pHead == nullptr)
 	{// 先頭と最後尾アドレスの代入
-		m_pHead = this;
-		m_pTail = this;
+		pManager->SetHead(this);
+		pManager->SetTail(this);
 
 		return;
 	}
 
 	// 前のアドレスに最後尾のアドレスを代入する
-	m_pPrev = m_pTail;
+	pManager->SetTail(m_pPrev);
 
 	// 最後尾のアドレスを自分にする
-	m_pTail = this;
+	pManager->SetTail(this);
 
-	// 前のオブジェクトの次のアドレスを自分にする
-	m_pPrev->m_pNext = this;
+	if (m_pPrev != nullptr)
+	{
+		// 前のオブジェクトの次のアドレスを自分にする
+		m_pPrev->m_pNext = this;
+	}
 }
 
 //=====================================================
@@ -77,16 +91,27 @@ CEnemy::CEnemy()
 //=====================================================
 CEnemy::~CEnemy()
 {
+	// 先頭、最後尾アドレス取得
+	CEnemyManager *pManager = CEnemyManager::GetInstance();
+	CEnemy *pHead = nullptr;
+	CEnemy *pTail = nullptr;
+
+	if (pManager != nullptr)
+	{
+		pHead = pManager->GetHead();
+		pTail = pManager->GetTail();
+	}
+
 	if (m_state != STATE_DEATH)
 	{
 		m_nNumAll--;
 	}
 
-	if (m_pHead == this)
+	if (pHead == this)
 	{// 先頭アドレスの破棄
-	 //if (m_pNext != nullptr)
+		//if (m_pNext != nullptr)
 		{// 先頭アドレスを次のアドレスに引き継ぐ
-			m_pHead = m_pNext;
+			pManager->SetHead(m_pNext);
 
 			if (m_pNext != nullptr)
 			{
@@ -94,22 +119,28 @@ CEnemy::~CEnemy()
 			}
 		}
 	}
-	else if (m_pTail == this)
+	else if (pTail == this)
 	{// 最後尾アドレスの破棄
 		if (m_pPrev != nullptr)
 		{// 最後尾アドレスを前のアドレスに引き継ぐ
-			m_pTail = m_pPrev;
+			pManager->SetTail(m_pPrev);
 
 			m_pPrev->m_pNext = nullptr;
 		}
 	}
 	else
 	{// 真ん中のアドレスの破棄
-	 // 前のアドレスから次のアドレスをつなぐ
-		m_pPrev->m_pNext = m_pNext;
+		if (m_pPrev != nullptr)
+		{
+			// 前のアドレスから次のアドレスをつなぐ
+			m_pPrev->m_pNext = m_pNext;
+		}
 
-		// 次のアドレスから前のアドレスをつなぐ
-		m_pNext->m_pPrev = m_pPrev;
+		if (m_pNext != nullptr)
+		{
+			// 次のアドレスから前のアドレスをつなぐ
+			m_pNext->m_pPrev = m_pPrev;
+		}
 	}
 }
 
@@ -217,6 +248,13 @@ void CEnemy::Uninit(void)
 //=====================================================
 void CEnemy::Update(void)
 {
+	m_nCntAttack++;
+
+	if (m_nCntAttack == INT_MAX)
+	{
+		m_nCntAttack = 0;
+	}
+
 	// 継承クラスの更新
 	CMotion::Update();
 

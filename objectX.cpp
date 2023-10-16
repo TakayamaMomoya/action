@@ -22,6 +22,7 @@ CObjectX::CObjectX(int nPriority) : CObject(nPriority)
 	m_pos = { 0.0f,0.0f,0.0f };
 	m_rot = { 0.0f,0.0f,0.0f };
 	m_col = { 0.0f,0.0f,0.0f,0.0f };
+	m_vecAxis = { 0.0f,1.0f,0.0f };
 	m_nIdxModel = -1;
 	m_fRadius = 0.0f;
 	m_fScale = 0.0f;
@@ -193,12 +194,20 @@ void CObjectX::CalcMatrix(void)
 	//ワールドマトリックス初期化
 	D3DXMatrixIdentity(&m_mtxWorld);
 
-	//向きを反映
+	// クォータニオンの作成
+	//D3DXQuaternionRotationAxis(
+	//&m_quat,&m_vecAxis,0.5f);
+	//// 回転マトリックスを作成
+	//D3DXMatrixRotationQuaternion(
+	//&m_mtxRot,&m_quat);
+	//D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &m_mtxRot);
+
+	// 向きを反映
 	D3DXMatrixRotationYawPitchRoll(&mtxRot,
 		m_rot.y, m_rot.x, m_rot.z);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
 
-	//位置を反映
+	// 位置を反映
 	D3DXMatrixTranslation(&mtxTrans,
 		m_pos.x, m_pos.y, m_pos.z);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);

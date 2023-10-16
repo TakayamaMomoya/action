@@ -29,11 +29,13 @@
 #include "motion.h"
 #include "afterimage.h"
 #include "effect3D.h"
+#include "fade.h"
 
 //*****************************************************
 // マクロ定義
 //*****************************************************
 #define BODY_PATH	"data\\MOTION\\rayleigh.txt"	// 見た目のパス
+#define PARAM_PATH	"data\\TEXT\\player.txt"	// パラメーターのパス
 #define SPEED_MOVE	(0.3f)	// 移動速度
 #define GRAVITY	(0.09f)	// 重力
 #define JUMP_POW	(2.5f)	// ジャンプ力
@@ -65,6 +67,7 @@ CPlayer::CPlayer(int nPriority)
 	m_pBody = nullptr;
 	m_pCollisionCube = nullptr;
 	m_pClsnAttack = nullptr;
+	m_pClsnHit = nullptr;
 	m_pAttackInfo = nullptr;
 	m_jump = JUMPSTATE_NONE;
 }
@@ -120,6 +123,17 @@ HRESULT CPlayer::Init(void)
 		}
 	}
 
+	if (m_pClsnHit == nullptr)
+	{// 被弾当たり判定生成
+		m_pClsnHit = CCollisionSphere::Create(CCollision::TAG_PLAYER, CCollision::TYPE_SPHERE, this);
+
+		if (m_pClsnHit != nullptr)
+		{// 情報の設定
+			m_pClsnHit->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+			m_pClsnHit->SetRadius(10.0f);
+		}
+	}
+
 	return S_OK;
 }
 
@@ -144,6 +158,12 @@ void CPlayer::Uninit(void)
 	{// 攻撃当たり判定破棄
 		m_pClsnAttack->Uninit();
 		m_pClsnAttack = nullptr;
+	}
+
+	if (m_pClsnHit != nullptr)
+	{// 被弾当たり判定破棄
+		m_pClsnHit->Uninit();
+		m_pClsnHit = nullptr;
 	}
 
 	if (m_pPlayer != nullptr)
@@ -226,7 +246,8 @@ void CPlayer::InputMove(void)
 	D3DXVECTOR3 move = { 0.0f,0.0f,0.0f }, rot = { 0.0f,0.0f,0.0f };
 	D3DXVECTOR3 vecStick;
 
-	if (m_pBody->GetMotion() != MOTION_ATTACK)
+	if (m_pBody->GetMotion() != MOTION_ATTACK && 
+		m_pBody->GetMotion() != MOTION_ATTACKTURN)
 	{
 		if (pKeyboard->GetPress(DIK_A))
 		{// 左移動
@@ -399,6 +420,8 @@ void CPlayer::ManageCollision(void)
 	bool bLandFloor = false;
 	bool bLandBlock = false;
 
+	CFade *pFade = CManager::GetFade();
+
 	if (m_pCollisionCube != nullptr)
 	{// 当たり判定の管理
 
@@ -416,9 +439,20 @@ void CPlayer::ManageCollision(void)
 		{
 			m_jump = JUMPSTATE_NONE;
 		}
+		else if(bLandBlock == false && 
+			m_jump == JUMPSTATE_NONE)
+		{
+			m_jump = JUMPSTATE_NORMAL;
+		}
 	}
 
-	// 仮の床判定=============
+	if (m_pClsnHit != nullptr)
+	{
+		m_pClsnHit->SetPositionOld(m_pClsnHit->GetPosition());
+		m_pClsnHit->SetPosition(GetPosition());
+	}
+
+	// 落下死判定=============
 	if (m_pos.y <= -190.0f)
 	{
 		m_pos = 
@@ -441,6 +475,14 @@ void CPlayer::ManageCollision(void)
 
 	// 攻撃判定の管理
 	ManageAttack();
+
+	if (m_pos.x >= 2840.0f)
+	{
+		if (pFade != nullptr)
+		{
+			pFade->SetFade(CScene::MODE_RANKING);
+		}
+	}
 }
 
 //=====================================================
@@ -646,7 +688,7 @@ void CPlayer::Load(void)
 	int nCntAttack = 0;
 
 	// ファイルから読み込む
-	FILE *pFile = fopen("data\\player.txt", "r");
+	FILE *pFile = fopen(PARAM_PATH, "r");
 
 	if (pFile != nullptr)
 	{// ファイルが開けた場合

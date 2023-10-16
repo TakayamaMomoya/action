@@ -30,6 +30,7 @@
 #include "edit.h"
 #include "enemy.h"
 #include "skybox.h"
+#include "enemyManager.h"
 
 //*****************************************************
 // マクロ定義
@@ -107,10 +108,11 @@ HRESULT CGame::Init(void)
 	// ブロック配置読込
 	CBlock::Load();
 
+	// 敵マネージャー生成
+	CEnemyManager::Create();
+
 #ifdef _DEBUG
-
 	CEdit::Create();
-
 #endif
 
 	m_bStop = false;
@@ -136,6 +138,9 @@ void CGame::Uninit(void)
 
 		m_pTimer = nullptr;
 	}
+
+	// ブロック情報削除
+	CBlock::DeleteAll();
 
 	// オブジェクト全棄
 	CObject::ReleaseAll();

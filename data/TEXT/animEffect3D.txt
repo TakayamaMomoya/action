@@ -1,0 +1,21 @@
+#====================================================================
+#
+# ３Dアニメーションエフェクト[animEffect3D.txt]
+# Author：Momoya Takayama
+#
+#====================================================================
+SCRIPT
+
+EFFECTSET		#1 爆発のパーティクル
+	PATH = data\\TEXTURE\\EFFECT\\explosion00.png
+	NUM_ANIM = 8
+	SPEED_ANIM = 3
+END_EFFECTSET
+
+EFFECTSET		#2 火花のパーティクル
+	PATH = data\\TEXTURE\\EFFECT\\flash00.png
+	NUM_ANIM = 4
+	SPEED_ANIM = 2
+END_EFFECTSET
+
+END_SCRIPT

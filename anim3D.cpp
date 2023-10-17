@@ -22,6 +22,8 @@ CAnim3D::CAnim3D(int nPriority) : CObject3D(nPriority)
 	m_nPatternAnim = 0;
 	m_nSpeedAnim = 0;
 	m_nNumAnim = 0;
+	m_bFinish = false;
+	m_bLoop = false;
 }
 
 //=====================================================
@@ -72,6 +74,14 @@ void CAnim3D::Update(void)
 
 		// アニメーション設定
 		SetAnim(m_nPatternAnim, m_nNumAnim);
+
+		if (m_nPatternAnim == m_nNumAnim - 1)
+		{// アニメーション終了
+			if (m_bLoop == false)
+			{
+				Uninit();
+			}
+		}
 	}
 
 	// 継承クラスの更新
@@ -90,7 +100,7 @@ void CAnim3D::Draw(void)
 //=====================================================
 // 生成処理
 //=====================================================
-CAnim3D *CAnim3D::Create(D3DXVECTOR3 pos, int nNumAnim, int nTimeAnim)
+CAnim3D *CAnim3D::Create(D3DXVECTOR3 pos, int nNumAnim, int nTimeAnim, bool bLoop)
 {
 	CAnim3D *pAnim3D = nullptr;
 
@@ -102,6 +112,7 @@ CAnim3D *CAnim3D::Create(D3DXVECTOR3 pos, int nNumAnim, int nTimeAnim)
 		pAnim3D->SetSize(20.0f, 20.0f);
 		pAnim3D->m_nNumAnim = nNumAnim;
 		pAnim3D->m_nSpeedAnim = nTimeAnim;
+		pAnim3D->m_bLoop = bLoop;
 
 		// 初期化処理
 		pAnim3D->Init();

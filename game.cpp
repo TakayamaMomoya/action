@@ -31,6 +31,7 @@
 #include "enemy.h"
 #include "skybox.h"
 #include "enemyManager.h"
+#include "animEffect3D.h"
 
 //*****************************************************
 // マクロ定義
@@ -107,6 +108,9 @@ HRESULT CGame::Init(void)
 
 	// 敵マネージャー生成
 	CEnemyManager::Create();
+
+	// ３Dエフェクト管理生成
+	CAnimEffect3D::Create();
 
 #ifdef _DEBUG
 	CEdit::Create();

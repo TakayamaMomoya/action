@@ -32,7 +32,7 @@
 #include "fade.h"
 #include "enemyManager.h"
 #include "bullet.h"
-#include "anim3D.h"
+#include "animEffect3D.h"
 
 //*****************************************************
 // ƒ}ƒNƒ’è‹`
@@ -291,7 +291,12 @@ void CPlayer::InputMove(void)
 
 	if (pKeyboard->GetTrigger(DIK_G))
 	{
-		CAnim3D::Create(GetPosition(),8,5);
+		CAnimEffect3D *pAnim3D = CAnimEffect3D::GetInstance();
+
+		if (pAnim3D != nullptr)
+		{
+			pAnim3D->CreateEffect(GetPosition(), CAnimEffect3D::TYPE_FLASH);
+		}
 	}
 }
 
@@ -466,6 +471,13 @@ void CPlayer::Parry(void)
 
 		// ’e‚¢‚½’e‚ÌŽËo
 		CBullet::Create(pos, move, 200, CBullet::TYPE_PLAYER,false, BULLET_SIZE);
+
+		CAnimEffect3D *pAnim3D = CAnimEffect3D::GetInstance();
+
+		if (pAnim3D != nullptr)
+		{
+			pAnim3D->CreateEffect(pos, CAnimEffect3D::TYPE_FLASH);
+		}
 	}
 }
 
@@ -678,6 +690,13 @@ void CPlayer::ManageAttack(void)
 
 				if (bHit == true && pObj != nullptr)
 				{// –½’†Žž‚Ìƒqƒbƒgˆ—
+					CAnimEffect3D *pAnim3D = CAnimEffect3D::GetInstance();
+
+					if (pAnim3D != nullptr)
+					{
+						pAnim3D->CreateEffect(pObj->GetPosition(), CAnimEffect3D::TYPE_FLASH);
+					}
+
 					pObj->Hit(1.0f);
 				}
 			}

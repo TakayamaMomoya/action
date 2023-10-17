@@ -12,6 +12,7 @@
 // インクルード
 //*****************************************************
 #include "main.h"
+#include "object.h"
 
 //*****************************************************
 // マクロ定義
@@ -27,17 +28,19 @@ class CTexture
 public:
 	CTexture();	// コンストラクタ
 	~CTexture();	// デストラクタ
-
+	
 	HRESULT Load(void);
 	void Unload(void);
 	int Regist(const char *pFileName);
 	LPDIRECT3DTEXTURE9 GetAddress(int nIdx);
 	static int GetNumAll(void) { return m_nNumAll; }
+	static CTexture *GetInstance(void) { return m_pTexture; }
 
 private:
 	LPDIRECT3DTEXTURE9 m_apTexture[MAX_TEX];	// テクスチャの配列
 	static int m_nNumAll;	// 総数
 	char *m_apFilename[MAX_TEX];	// ファイル名の配列
+	static CTexture *m_pTexture;	// 自身のポインタ
 };
 
 #endif

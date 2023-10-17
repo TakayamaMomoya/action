@@ -16,12 +16,15 @@
 // 静的メンバ変数宣言
 //*****************************************************
 int CTexture::m_nNumAll = 0;	// 総数
+CTexture *CTexture::m_pTexture = nullptr;	// 自身のポインタ
 
 //=====================================================
 // コンストラクタ
 //=====================================================
 CTexture::CTexture()
 {
+	m_pTexture = this;
+
 	ZeroMemory(&m_apFilename[0], sizeof(m_apFilename));
 	ZeroMemory(&m_apTexture[0], sizeof(m_apTexture));
 }
@@ -31,7 +34,7 @@ CTexture::CTexture()
 //=====================================================
 CTexture::~CTexture()
 {
-
+	m_pTexture = nullptr;
 }
 
 //=====================================================

@@ -74,7 +74,7 @@ CEnemy::CEnemy()
 	}
 
 	// 前のアドレスに最後尾のアドレスを代入する
-	pManager->SetTail(m_pPrev);
+	m_pPrev = pTail;
 
 	// 最後尾のアドレスを自分にする
 	pManager->SetTail(this);

@@ -96,9 +96,6 @@ HRESULT CGame::Init(void)
 		pCamera->SetDist(180.0f);
 	}
 
-	// プレイヤーの追従
-	pCamera->FollowPlayer();
-
 	// プレイヤー生成
 	CPlayer::Create();
 

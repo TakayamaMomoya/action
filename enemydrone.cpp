@@ -26,7 +26,7 @@
 #define TIME_SHOT	(240)	// ŽËŒ‚‚Ü‚Å‚ÌƒJƒEƒ“ƒ^[
 #define ROLL_FACT	(0.1f)	// ‰ñ“]ŒW”
 #define BULLET_SPEED	(2.0f)	// ’e‚Ì‘¬“x
-#define BULLET_SIZE	(2.5f)	// ’e‚Ì‘å‚«‚³
+#define BULLET_SIZE	(1.0f)	// ’e‚Ì‘å‚«‚³
 #define GRAVITY	(0.3f)	// d—Í
 
 //=====================================================
@@ -94,7 +94,31 @@ void CEnemyDrone::Update(void)
 //=====================================================
 void CEnemyDrone::ManageAttack(void)
 {
+	if (GetAttackCounter() >= TIME_SHOT)
+	{// UŒ‚
+		D3DXVECTOR3 pos = GetPosition();
+		D3DXVECTOR3 posTarget = { 0.0f,0.0f,0.0f };
+		float fRot = GetRot().y;
+		D3DXVECTOR3 move;
 
+		// –Ú•WˆÊ’uŽæ“¾
+		CPlayer *pPlayer = CPlayer::GetInstance();
+
+		if (pPlayer != nullptr)
+		{
+			posTarget = pPlayer->GetPosition();
+
+			move = posTarget - pos;
+
+			D3DXVec3Normalize(&move, &move);
+
+			move *= BULLET_SPEED;
+		}
+
+		CBullet::Create(pos, move, 500, CBullet::TYPE_ENEMY, false, BULLET_SIZE, 5.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+
+		SetAttackCounter(0);
+	}
 }
 
 //=====================================================

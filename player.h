@@ -61,6 +61,7 @@ private:
 		MOTION_ATTACK,	// 攻撃モーション
 		MOTION_ATTACKTURN,	// 反転攻撃モーション
 		MOTION_AIRATTACK,	// 空中攻撃モーション
+		MOTION_PARRY,	// パリィモーション
 		MOTION_MAX
 	};
 	struct AttackInfo
@@ -83,6 +84,7 @@ private:
 	void Input(void);
 	void InputMove(void);
 	void InputAttack(void);
+	void Parry(void);
 	void InputCamera(void);
 	void ManageMotion(void);
 	void ManageCollision(void);
@@ -94,8 +96,10 @@ private:
 	int m_nCntAfterImage;	// 残像を出すカウンター
 	bool m_bSprint;	// ダッシュ状態かどうか
 	bool m_bAttack;	// 攻撃フラグ
+	float m_fRadiusParry;	// パリィ判定の半径
 	D3DXVECTOR3 m_pos;	// 位置
 	D3DXVECTOR3 m_posOld;	// 前回の位置
+	D3DXVECTOR3 m_offsetParry;	// パリィ判定のオフセット
 	D3DXVECTOR3 m_move;	// 移動量
 	D3DXVECTOR3 m_rot;	// 向き
 	D3DXVECTOR3 m_rotDest;	// 目標の向き

@@ -9,15 +9,24 @@ SCRIPT
 #====================================================================
 # 攻撃判定
 #====================================================================
-NUM_ATTACK = 2
+NUM_ATTACK = 3
 
 ATTACKSET
 	MOTION = 4
 	PARENT = 8
+	POS = 0.0 7.0 -15.0
+	KEY = 1
+	FRAME = 4
+	RADIUS = 5.0
+END_ATTACKSET
+
+ATTACKSET
+	MOTION = 5
+	PARENT = 8
 	POS = 0.0 7.0 -10.0
 	KEY = 1
-	FRAME = 8
-	RADIUS = 1.0
+	FRAME = 4
+	RADIUS = 5.0
 END_ATTACKSET
 
 ATTACKSET
@@ -28,5 +37,13 @@ ATTACKSET
 	FRAME = 5
 	RADIUS = 20.0
 END_ATTACKSET
+
+#====================================================================
+# パリィのオフセット位置
+#====================================================================
+PARRYSET
+	POS = 0.0 7.0 -15.0
+	RADIUS = 7.0
+END_PARRYSET
 
 END_SCRIPT

@@ -29,6 +29,7 @@ public:
 		TAG_NONE = 0,	// 何でもない
 		TAG_PLAYER,	// プレイヤー
 		TAG_ENEMY,	// 敵
+		TAG_PLAYERBULLET,	// プレイヤーの弾
 		TAG_ENEMYBULLET,	// 敵の弾
 		TAG_BLOCK,	// ブロック
 		TAG_MAX

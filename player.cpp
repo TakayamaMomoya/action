@@ -30,6 +30,9 @@
 #include "afterimage.h"
 #include "effect3D.h"
 #include "fade.h"
+#include "enemyManager.h"
+#include "bullet.h"
+#include "anim3D.h"
 
 //*****************************************************
 // マクロ定義
@@ -44,6 +47,8 @@
 #define LINE_STOP	(0.3f)	// 動いてる判定のしきい値
 #define TIME_AFTERIMAGE	(4)	// 残像を出す頻度
 #define ATTACK_JUMP	(2.8f)	// 空中攻撃のジャンプ力
+#define BULLET_SPEED	(5.0f)	// 弾速度
+#define BULLET_SIZE	(1.0f)	// 弾サイズ
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -57,8 +62,10 @@ CPlayer::CPlayer(int nPriority)
 {
 	m_nLife = 0;
 	m_nCntAfterImage = 0;
+	m_fRadiusParry = 0.0f;
 	m_pos = { 0.0f,0.0f,0.0f };
 	m_posOld = { 0.0f,0.0f,0.0f };
+	m_offsetParry = { 0.0f,0.0f,0.0f };
 	m_rot = { 0.0f,0.0f,0.0f };
 	m_rotDest = { 0.0f,0.0f,0.0f };
 	m_move = { 0.0f,0.0f,0.0f };
@@ -245,36 +252,46 @@ void CPlayer::InputMove(void)
 	// 変数宣言
 	D3DXVECTOR3 move = { 0.0f,0.0f,0.0f }, rot = { 0.0f,0.0f,0.0f };
 	D3DXVECTOR3 vecStick;
+	int nMotion = m_pBody->GetMotion();
 
-	if (m_pBody->GetMotion() != MOTION_ATTACK && 
-		m_pBody->GetMotion() != MOTION_ATTACKTURN)
-	{
-		if (pKeyboard->GetPress(DIK_A))
-		{// 左移動
-			move.x -= SPEED_MOVE;
-			m_rotDest.y = D3DX_PI * 0.5f;
-		}
-		if (pKeyboard->GetPress(DIK_D))
-		{// 右移動
-			move.x += SPEED_MOVE;
-			m_rotDest.y = -D3DX_PI * 0.5f;
-		}
-
-		// ジャンプ操作
-		if (m_jump == JUMPSTATE_NONE)
-		{
-			if (pKeyboard->GetTrigger(DIK_SPACE))
-			{
-				move.y += JUMP_POW;
-
-				m_jump = JUMPSTATE_NORMAL;
-
-				SetMotion(MOTION_JUMP);
+	if (nMotion != MOTION_ATTACK &&
+		nMotion != MOTION_ATTACKTURN)
+	{// 攻撃中でなければ
+		if (nMotion != MOTION_PARRY ||
+			m_jump > JUMPSTATE_NONE)
+		{// 地上でパリィしてなければ移動
+			if (pKeyboard->GetPress(DIK_A))
+			{// 左移動
+				move.x -= SPEED_MOVE;
+				m_rotDest.y = D3DX_PI * 0.5f;
 			}
-		}
+			if (pKeyboard->GetPress(DIK_D))
+			{// 右移動
+				move.x += SPEED_MOVE;
+				m_rotDest.y = -D3DX_PI * 0.5f;
+			}
 
-		// 移動量加算
-		SetMove(GetMove() + move);
+			// ジャンプ操作
+			if (m_jump == JUMPSTATE_NONE)
+			{
+				if (pKeyboard->GetTrigger(DIK_SPACE))
+				{
+					move.y += JUMP_POW;
+
+					m_jump = JUMPSTATE_NORMAL;
+
+					SetMotion(MOTION_JUMP);
+				}
+			}
+
+			// 移動量加算
+			SetMove(GetMove() + move);
+		}
+	}
+
+	if (pKeyboard->GetTrigger(DIK_G))
+	{
+		CAnim3D::Create(GetPosition(),8,5);
 	}
 }
 
@@ -321,6 +338,11 @@ void CPlayer::InputAttack(void)
 		}
 	}
 
+	if (pMouse->GetTrigger(CInputMouse::BUTTON_RMB))
+	{// パリィ
+		Parry();
+	}
+
 	if (m_pBody != nullptr)
 	{// 連撃の処理
 		if (m_pBody->IsFinish())
@@ -345,6 +367,109 @@ void CPlayer::InputAttack(void)
 }
 
 //=====================================================
+// パリィ
+//=====================================================
+void CPlayer::Parry(void)
+{
+	SetMotion(MOTION_PARRY);
+
+	if (m_pClsnAttack == nullptr)
+	{// 判定のエラー
+		return;
+	}
+
+	CUniversal *pUniversal = CManager::GetUniversal();
+
+	D3DXMATRIX mtx;
+	D3DXVECTOR3 pos;
+	bool bHit = false;
+
+	pUniversal->SetOffSet(&mtx, *m_pBody->GetMatrix(), m_offsetParry);
+
+	pos =
+	{
+		mtx._41,
+		mtx._42,
+		mtx._43
+	};
+
+	// 位置設定
+	m_pClsnAttack->SetPosition(pos);
+
+	// 半径の設定
+	m_pClsnAttack->SetRadius(m_fRadiusParry);
+
+	CEffect3D::Create(pos, m_fRadiusParry, 10, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+
+	// 命中したかの判定
+	bHit = m_pClsnAttack->SphereCollision(CCollision::TAG_ENEMYBULLET);
+
+	// 命中したオブジェクトの取得
+	CObject *pObj = m_pClsnAttack->GetOther();
+
+	if (bHit == true && pObj != nullptr)
+	{//	パリィ成功
+		D3DXVECTOR3 pos;
+		D3DXVECTOR3 move;
+		D3DXVECTOR3 posTarget;
+
+		pos = pObj->GetPosition();
+
+		// 敵の取得
+		CEnemyManager *pEnemyManager = CEnemyManager::GetInstance();
+
+		CEnemy *pEnemy = nullptr;
+		CEnemy *pLockEnemy = nullptr;
+		float fLengthDest = FLT_MAX;
+
+		if (pEnemyManager != nullptr)
+		{
+			pEnemy = pEnemyManager->GetHead();
+		}
+
+		int nNum = CEnemy::GetNumAll();
+
+		while (pEnemy != nullptr)
+		{
+			// 次のアドレスを保存
+			CEnemy *pEnemyNext = pEnemy->GetNext();
+
+			// 差分ベクトルから移動量を設定
+			posTarget = pEnemy->GetPosition();
+
+			// プレイヤーとの距離を測る
+			D3DXVECTOR3 vecDiff;
+			vecDiff = posTarget - pos;
+
+			float fLength = D3DXVec3Length(&vecDiff);
+			
+			if (fLength < fLengthDest)
+			{// 近い敵の更新
+				fLengthDest = fLength;
+				pLockEnemy = pEnemy;
+			}
+
+			// 次のアドレスを代入
+			pEnemy = pEnemyNext;
+		}
+
+		// 差分ベクトルから移動量を設定
+		posTarget = pLockEnemy->GetPosition();
+
+		move = posTarget - pos;
+
+		D3DXVec3Normalize(&move, &move);
+
+		move *= BULLET_SPEED;
+
+		pObj->Uninit();
+
+		// 弾いた弾の射出
+		CBullet::Create(pos, move, 200, CBullet::TYPE_PLAYER,false, BULLET_SIZE);
+	}
+}
+
+//=====================================================
 // モーションの管理
 //=====================================================
 void CPlayer::ManageMotion(void)
@@ -363,7 +488,7 @@ void CPlayer::ManageMotion(void)
 	if (m_jump == JUMPSTATE_NONE)
 	{
 		if (m_bAttack == false &&
-			(m_pBody->GetMotion() != MOTION_ATTACK && m_pBody->GetMotion() != MOTION_ATTACKTURN))
+			(m_pBody->GetMotion() != MOTION_ATTACK && m_pBody->GetMotion() != MOTION_ATTACKTURN && m_pBody->GetMotion() != MOTION_PARRY))
 		{// 移動モーション
 			if (move.x * move.x > LINE_STOP * LINE_STOP)
 			{// ある程度動いていれば歩きモーション
@@ -386,10 +511,9 @@ void CPlayer::ManageMotion(void)
 	}
 	else
 	{
-		if (
-			move.y < 0.0f && 
-			(nMotion == MOTION_AIRATTACK && bFinish == false) == false
-			)
+		if (move.y < 0.0f && 
+			(nMotion == MOTION_AIRATTACK && bFinish == false) == false &&
+			nMotion != MOTION_PARRY)
 		{// 落下モーション
 			SetMotion(MOTION_FALL);
 		}
@@ -798,6 +922,39 @@ void CPlayer::Load(void)
 
 					if (m_nNumAttack <= nCntAttack)
 					{
+						break;
+					}
+				}
+			}
+
+			if (strcmp(cTemp, "PARRYSET") == 0)
+			{// 攻撃判定読込開始
+				while (true)
+				{
+					// 文字読み込み
+					fscanf(pFile, "%s", &cTemp[0]);
+
+					if (strcmp(cTemp, "POS") == 0)
+					{//位置読み込み
+						fscanf(pFile, "%s", &cTemp[0]);
+
+						for (int i = 0; i < 3; i++)
+						{
+							fscanf(pFile, "%f", &m_offsetParry[i]);
+						}
+					}
+
+					if (strcmp(cTemp, "RADIUS") == 0)
+					{// 半径
+						fscanf(pFile, "%s", &cTemp[0]);
+
+						fscanf(pFile, "%f", &m_fRadiusParry);
+					}
+					
+					if (strcmp(cTemp, "END_PARRYSET") == 0)
+					{// パラメーター読込終了
+						nCntAttack++;
+
 						break;
 					}
 				}

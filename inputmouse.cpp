@@ -116,9 +116,9 @@ void CInputMouse::Update(void)
 			// ƒŠƒŠ[ƒXî•ñ
 			m_aKeyStateRelease[nCntKey] = (m_mouseState.rgbButtons[nCntKey] ^ aMouseState.rgbButtons[nCntKey]) 
 				& m_mouseState.rgbButtons[nCntKey];
-
-			m_mouseState = aMouseState;
 		}
+
+		m_mouseState = aMouseState;
 	}
 	else
 	{

@@ -154,6 +154,9 @@ void CBullet::Update(void)
 
 		switch (m_type)
 		{
+		case TYPE_PLAYER:
+			tag = CCollision::TAG_ENEMY;
+			break;
 		case TYPE_ENEMY:
 			tag = CCollision::TAG_PLAYER;
 			break;
@@ -282,9 +285,12 @@ CBullet *CBullet::Create(D3DXVECTOR3 pos,D3DXVECTOR3 move, int nLife,TYPE type, 
 		{// “–‚½‚è”»’è¶¬
 			switch (type)
 			{// Ží—Þ‚²‚Æ‚Éƒ^ƒO‚ÌÝ’è
+			case TYPE_PLAYER:
+				pBullet->m_pCollisionSphere = CCollisionSphere::Create(CCollision::TAG_PLAYERBULLET, CCollision::TYPE_SPHERE, pBullet);
+					break;
 			case TYPE_ENEMY:
 				pBullet->m_pCollisionSphere = CCollisionSphere::Create(CCollision::TAG_ENEMYBULLET, CCollision::TYPE_SPHERE, pBullet);
-					break;
+				break;
 			default:
 				break;
 			}

@@ -169,6 +169,7 @@
     <ClCompile Include="enemydrone.cpp" />
     <ClCompile Include="enemyManager.cpp" />
     <ClCompile Include="enemyshot.cpp" />
+    <ClCompile Include="anim3D.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="field.cpp" />
     <ClCompile Include="game.cpp" />
@@ -220,6 +221,7 @@
     <ClInclude Include="enemydrone.h" />
     <ClInclude Include="enemyManager.h" />
     <ClInclude Include="enemyshot.h" />
+    <ClInclude Include="anim3D.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="field.h" />
     <ClInclude Include="game.h" />

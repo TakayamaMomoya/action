@@ -23,6 +23,8 @@ CParts::CParts()
 	m_rot = { 0.0f,0.0f,0.0f };
 	m_IdxModel = -1;
 	m_fRadius = 0.0f;
+	m_bChangeCol = false;
+	m_col = { 0.0f,0.0f,0.0f,0.0f };
 }
 
 //====================================================
@@ -71,6 +73,11 @@ void CParts::Update(void)
 //====================================================
 void CParts::Draw(void)
 {
+	if (m_pModel == nullptr)
+	{
+		return;
+	}
+
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
@@ -86,6 +93,15 @@ void CParts::Draw(void)
 
 	for (int nCntMat = 0; nCntMat < (int)m_pModel->dwNumMat; nCntMat++)
 	{
+		// マテリアルの保存
+		matDef = pMat[nCntMat].MatD3D;
+
+		if (m_bChangeCol)
+		{
+			// 色の設定
+			pMat[nCntMat].MatD3D.Diffuse = m_col;
+		}
+
 		//マテリアル設定
 		pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
 
@@ -97,6 +113,9 @@ void CParts::Draw(void)
 
 		//モデル（パーツ）描画
 		m_pModel->pMesh->DrawSubset(nCntMat);
+
+		// 色を戻す
+		pMat[nCntMat].MatD3D = matDef;
 	}
 
 	// マテリアルを戻す

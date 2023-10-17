@@ -735,6 +735,40 @@ void CMotion::SetAfterImage(D3DXCOLOR col, int m_nLife)
 }
 
 //=====================================================
+// 全パーツの色設定
+//=====================================================
+void CMotion::SetAllCol(D3DXCOLOR col)
+{
+	for (int i = 0; i < m_nNumParts; i++)
+	{
+		if (m_apParts[i] != nullptr)
+		{
+			if (m_apParts[i]->m_pParts != nullptr)
+			{
+				m_apParts[i]->m_pParts->SetEmissiveCol(col);
+			}
+		}
+	}
+}
+
+//=====================================================
+// 全パーツの色リセット
+//=====================================================
+void CMotion::ResetAllCol(void)
+{
+	for (int i = 0; i < m_nNumParts; i++)
+	{
+		if (m_apParts[i] != nullptr)
+		{
+			if (m_apParts[i]->m_pParts != nullptr)
+			{
+				m_apParts[i]->m_pParts->ResetColor();
+			}
+		}
+	}
+}
+
+//=====================================================
 // 生成処理
 //=====================================================
 CMotion *CMotion::Create(char *pPath)

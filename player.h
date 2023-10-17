@@ -52,6 +52,13 @@ public:
 	static CPlayer *GetInstance(void) { return m_pPlayer; }
 
 private:
+	enum STATE
+	{
+		STATE_NONE = 0,	// 何でもない状態
+		STATE_NORMAL,	// 通常状態
+		STATE_DAMAGE,	// ダメージ状態
+		STATE_MAX
+	};
 	enum MOTION
 	{
 		MOTION_NEUTRAL = 0,	// 待機状態
@@ -81,6 +88,7 @@ private:
 		JUMPSTATE_MAX
 	};
 
+	void ManageState(void);
 	void Input(void);
 	void InputMove(void);
 	void InputAttack(void);
@@ -94,6 +102,7 @@ private:
 
 	int m_nLife;	// 体力
 	int m_nCntAfterImage;	// 残像を出すカウンター
+	int m_nCntState;	// 状態遷移カウンター
 	bool m_bSprint;	// ダッシュ状態かどうか
 	bool m_bAttack;	// 攻撃フラグ
 	float m_fRadiusParry;	// パリィ判定の半径
@@ -109,6 +118,7 @@ private:
 	CCollisionSphere *m_pClsnHit;	// 被弾当たり判定
 	int m_nNumAttack;	// 攻撃判定の数
 	AttackInfo *m_pAttackInfo;	// 攻撃の情報ポインタ
+	STATE m_state;	// 状態
 	JUMPSTATE m_jump;	// ジャンプ状態
 
 	static CPlayer *m_pPlayer;	// 自身のポインタ

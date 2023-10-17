@@ -111,6 +111,8 @@ public:
 	void SetAfterImage(D3DXCOLOR col = { 0.0f,0.0f,0.0f,0.0f }, int m_nLife = 10);
 	int GetKey(void) { return m_nKey; }
 	int GetFrame(void) { return m_nCounterMotion; }
+	void SetAllCol(D3DXCOLOR col);
+	void ResetAllCol(void);
 
 private:
 	Parts *m_apParts[MAX_PARTS];	// パーツの構造体

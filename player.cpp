@@ -49,6 +49,8 @@
 #define ATTACK_JUMP	(2.8f)	// 空中攻撃のジャンプ力
 #define BULLET_SPEED	(5.0f)	// 弾速度
 #define BULLET_SIZE	(1.0f)	// 弾サイズ
+#define TIME_DAMAGE	(60)	// ダメージ状態の時間
+#define TIME_FLASH	(4)	// 点滅速度
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -62,6 +64,7 @@ CPlayer::CPlayer(int nPriority)
 {
 	m_nLife = 0;
 	m_nCntAfterImage = 0;
+	m_nCntState = 0;
 	m_fRadiusParry = 0.0f;
 	m_pos = { 0.0f,0.0f,0.0f };
 	m_posOld = { 0.0f,0.0f,0.0f };
@@ -76,6 +79,7 @@ CPlayer::CPlayer(int nPriority)
 	m_pClsnAttack = nullptr;
 	m_pClsnHit = nullptr;
 	m_pAttackInfo = nullptr;
+	m_state = STATE_NONE;
 	m_jump = JUMPSTATE_NONE;
 }
 
@@ -99,6 +103,7 @@ HRESULT CPlayer::Init(void)
 
 	// 値の初期化
 	m_nLife = INITIAL_LIFE_PLAYER;
+	m_state = STATE_NORMAL;
 	m_jump = JUMPSTATE_NORMAL;
 
 	if (m_pBody == nullptr)
@@ -137,7 +142,7 @@ HRESULT CPlayer::Init(void)
 		if (m_pClsnHit != nullptr)
 		{// 情報の設定
 			m_pClsnHit->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-			m_pClsnHit->SetRadius(0.1f);
+			m_pClsnHit->SetRadius(1.0f);
 		}
 	}
 
@@ -190,6 +195,9 @@ void CPlayer::Update(void)
 	// 前回の位置を保存
 	m_posOld = m_pos;
 
+	// 状態管理
+	ManageState();
+
 	// 操作処理
 	Input();
 
@@ -214,6 +222,35 @@ void CPlayer::Update(void)
 	// 移動量減衰
 	m_move.x *= MOVE_FACT;
 	m_move.y -= GRAVITY;
+}
+
+//=====================================================
+// 状態管理
+//=====================================================
+void CPlayer::ManageState(void)
+{
+	switch (m_state)
+	{
+	case CPlayer::STATE_NORMAL:
+		break;
+	case CPlayer::STATE_DAMAGE:
+
+		m_nCntState++;
+
+		if (m_nCntState >= TIME_DAMAGE)
+		{
+			m_state = STATE_NORMAL;
+
+			if (m_pBody != nullptr)
+			{
+				m_pBody->ResetAllCol();
+			}
+		}
+
+		break;
+	default:
+		break;
+	}
 }
 
 //=====================================================
@@ -525,7 +562,7 @@ void CPlayer::ManageMotion(void)
 	{
 		if (move.y < 0.0f && 
 			(nMotion == MOTION_AIRATTACK && bFinish == false) == false &&
-			nMotion != MOTION_PARRY)
+			(nMotion == MOTION_PARRY && bFinish == false) == false)
 		{// 落下モーション
 			SetMotion(MOTION_FALL);
 		}
@@ -757,6 +794,13 @@ void CPlayer::InputCamera(void)
 void CPlayer::Hit(float fDamage)
 {
 	m_nLife -= (int)fDamage;
+
+	m_state = STATE_DAMAGE;
+
+	if (m_pBody != nullptr)
+	{
+		m_pBody->SetAllCol(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+	}
 
 	if (m_nLife <= 0)
 	{// 死亡判定

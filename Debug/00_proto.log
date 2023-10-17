@@ -1,6 +1,5 @@
 ﻿universal.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
 tutorial.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
-title.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
 timer.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
 texture.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
 sound.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
@@ -9,7 +8,6 @@ score.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Proj
 scene.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
 renderer.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
 ranking.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
-parts.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
 particle.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
 orbit.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
 objectX.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
@@ -18,7 +16,6 @@ object3D.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\P
 object2D.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
 object.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
 number.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
-motion.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
 model.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
 manager.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
 main.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
@@ -30,17 +27,10 @@ input.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Proj
 field.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
 fade.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
 anim3D.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
-enemyshot.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
-enemyManager.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
-enemydrone.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
-enemy.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
 effect3D.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
 effect2D.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
-edit.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
 debugproc.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
 collision.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
-camera.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
-bullet.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
 block.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
 billboard.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。
 bg.obj : warning LNK4204: 'C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\vc140.pdb' に参照するモジュールのデバッグ情報がありません。デバッグ情報を無視してオブジェクトをリンクします。

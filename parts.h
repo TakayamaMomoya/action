@@ -53,6 +53,9 @@ public:
 	void SetMatrix(void);
 	CModel::Model *GetModel(void) { return m_pModel; }
 	void SetModel(CModel::Model *pModel) { m_pModel = pModel; }
+	void SetEmissiveCol(D3DXCOLOR col) { m_col = col; m_bChangeCol = true; }
+	D3DXCOLOR GetEmissiveCol(void) { return m_col; }
+	void ResetColor(void) { m_bChangeCol = false; }
 
 private:
 	D3DXVECTOR3 m_pos;								//位置
@@ -60,10 +63,12 @@ private:
 	D3DXVECTOR3 m_posOld;	// 前回の位置
 	D3DXVECTOR3 m_move;	// 移動量
 	D3DXVECTOR3 m_rot;								//向き
+	D3DXCOLOR m_col;	// 色
 	D3DXMATRIX m_mtxWorld;							//ワールドマトリックス
 	CModel::Model *m_pModel;	// モデル情報
 	int m_IdxModel;	// モデルの番号
 	float m_fRadius;	// モデルの半径
+	bool m_bChangeCol;	// 色を変えるかどうか
 };
 
 #endif

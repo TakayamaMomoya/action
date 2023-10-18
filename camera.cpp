@@ -29,6 +29,8 @@
 #define INITIAL_ANGLE	(45.0f)	// 初期の視野角
 #define ANGLE_GAME	(D3DX_PI * 0.4f)	// ゲーム中のカメラの角度
 #define RATE_CAMERA_MOVE	(1.5f)	// カメラがどれだけプレイヤーの先を見るかの倍率
+#define POSR_BOSS	(D3DXVECTOR3(2742.27f,240.53f,-81.36f))	// ボス戦の注視点位置
+#define POSV_BOSS	(D3DXVECTOR3(2741.14f,248.15f,-261.20f))	// ボス戦の視点位置
 
 //====================================================
 // 初期化処理
@@ -271,6 +273,22 @@ void CCamera::FollowPlayer(void)
 		m_camera.posRDest.y + cosf(ANGLE_GAME) * m_camera.fLength,
 		m_camera.posRDest.z + sinf(ANGLE_GAME) * cosf(D3DX_PI) * m_camera.fLength
 	};
+
+	// 位置の補正
+	m_camera.posR += (m_camera.posRDest - m_camera.posR) * MOVE_FACT;
+	m_camera.posV += (m_camera.posVDest - m_camera.posV) * MOVE_FACT;
+}
+
+//====================================================
+// ボス戦時の動き
+//====================================================
+void CCamera::BossBattle(void)
+{
+	// 振動処理
+	Quake();
+
+	m_camera.posRDest = POSR_BOSS;
+	m_camera.posVDest = POSV_BOSS;
 
 	// 位置の補正
 	m_camera.posR += (m_camera.posRDest - m_camera.posR) * MOVE_FACT;

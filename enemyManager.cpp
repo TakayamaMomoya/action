@@ -90,7 +90,7 @@ CEnemy *CEnemyManager::CreateEnemy(D3DXVECTOR3 pos, CEnemy::TYPE type)
 			break;
 		case CEnemy::TYPE_BOSS:
 
-			pEnemy = new CEnemyBoss;
+			pEnemy = CEnemyBoss::Create();
 
 			break;
 		default:

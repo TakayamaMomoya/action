@@ -29,6 +29,11 @@
 #define BULLET_SIZE	(2.5f)	// 弾の大きさ
 #define GRAVITY	(0.3f)	// 重力
 
+//*****************************************************
+// 静的メンバ変数宣言
+//*****************************************************
+CEnemyBoss *CEnemyBoss::m_pEnemyBoss = nullptr;	// 自身のポインタ
+
 //=====================================================
 // コンストラクタ
 //=====================================================
@@ -46,6 +51,19 @@ CEnemyBoss::~CEnemyBoss()
 }
 
 //=====================================================
+// 生成処理
+//=====================================================
+CEnemyBoss *CEnemyBoss::Create(void)
+{
+	if (m_pEnemyBoss == nullptr)
+	{
+		m_pEnemyBoss = new CEnemyBoss;
+	}
+
+	return m_pEnemyBoss;
+}
+
+//=====================================================
 // 初期化処理
 //=====================================================
 HRESULT CEnemyBoss::Init(void)
@@ -59,6 +77,16 @@ HRESULT CEnemyBoss::Init(void)
 	// スコア設定
 	SetScore(INITIAL_SCORE);
 
+	// モーション設定
+	SetMotion(MOTION_APPER);
+
+	// 出現地点合わせ
+	SetMatrix();
+	CMotion::Update();
+	CMotion::Update();
+
+	FollowCollision();
+
 	return S_OK;
 }
 
@@ -68,6 +96,8 @@ HRESULT CEnemyBoss::Init(void)
 void CEnemyBoss::Uninit(void)
 {
 	CGame::SetState(CGame::STATE_END);
+
+	m_pEnemyBoss = nullptr;
 
 	// 継承クラスの終了
 	CEnemy::Uninit();
@@ -84,6 +114,9 @@ void CEnemyBoss::Update(void)
 	// 継承クラスの更新
 	CEnemy::Update();
 	
+	// 当たり判定管理
+	ManageCollision();
+
 	// 攻撃の管理
 	ManageAttack();
 
@@ -97,6 +130,37 @@ void CEnemyBoss::Update(void)
 	if (GetState() == STATE_DEATH)
 	{
 		Death();
+	}
+}
+
+//=====================================================
+// 当たり判定管理
+//=====================================================
+void CEnemyBoss::ManageCollision(void)
+{
+	// 当たり判定追従
+	FollowCollision();
+}
+
+//=====================================================
+// 当たりの追従
+//=====================================================
+void CEnemyBoss::FollowCollision(void)
+{
+	CCollisionSphere *pCollision = GetClsnSphere();
+
+	if (GetParts(0) != nullptr)
+	{
+		D3DXMATRIX mtx = *GetParts(0)->m_pParts->GetMatrix();
+		D3DXVECTOR3 pos =
+		{
+			mtx._41,
+			mtx._42,
+			mtx._43,
+		};
+
+		pCollision->SetPositionOld(pCollision->GetPosition());
+		pCollision->SetPosition(pos);
 	}
 }
 
@@ -115,4 +179,11 @@ void CEnemyBoss::Draw(void)
 {
 	// 継承クラスの描画
 	CEnemy::Draw();
+
+#ifdef _DEBUG
+	CManager::GetDebugProc()->Print("\nボスモーション：[%d]", GetMotion());
+	CManager::GetDebugProc()->Print("\nキー：[%d]", GetKey());
+	CManager::GetDebugProc()->Print("\nフレーム：[%d]", GetFrame());
+	CManager::GetDebugProc()->Print("\nIsFinish：[%d]", IsFinish());
+#endif
 }

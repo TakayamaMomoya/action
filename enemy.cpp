@@ -357,8 +357,8 @@ void CEnemy::Draw(void)
 	CMotion::Draw();
 
 #ifdef _DEBUG
-	CManager::GetDebugProc()->Print("\n“G‚ÌˆÊ’uF[%f,%f,%f]", GetPosition().x, GetPosition().y, GetPosition().z);
-	CManager::GetDebugProc()->Print("\n“G‚Ì”¼ŒaF[%f]", m_pCollisionSphere->GetRadius());
+	//CManager::GetDebugProc()->Print("\n“G‚ÌˆÊ’uF[%f,%f,%f]", GetPosition().x, GetPosition().y, GetPosition().z);
+	//CManager::GetDebugProc()->Print("\n“G‚Ì”¼ŒaF[%f]", m_pCollisionSphere->GetRadius());
 #endif
 }
 

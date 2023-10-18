@@ -233,8 +233,16 @@ void CGame::UpdateCamera(void)
 
 	if (m_bStop == false)
 	{
-		// プレイヤーの追従
-		pCamera->FollowPlayer();
+		if (m_state == STATE_NORMAL)
+		{
+			// プレイヤーの追従
+			pCamera->FollowPlayer();
+		}
+		else if (m_state == STATE_BOSS)
+		{
+			// ボス戦の動き
+			pCamera->BossBattle();
+		}
 	}
 	else
 	{
@@ -253,6 +261,32 @@ void CGame::ManageState(void)
 	switch (m_state)
 	{
 	case CGame::STATE_NORMAL:
+	{
+		// プレイヤー取得
+		CPlayer *pPlayer = nullptr;
+		pPlayer = CPlayer::GetInstance();
+
+		if (pPlayer != nullptr)
+		{
+			D3DXVECTOR3 pos = pPlayer->GetPosition();
+
+			if (pos.x >= 2737)
+			{// ボス戦へ移行
+				CEnemyManager *pEnemyManager = nullptr;
+
+				pEnemyManager = CEnemyManager::GetInstance();
+
+				if (pEnemyManager != nullptr)
+				{
+					pEnemyManager->CreateEnemy(D3DXVECTOR3(2737.0f,190.0f,0.0f), CEnemy::TYPE_BOSS);
+				}
+
+				m_state = STATE_BOSS;
+			}
+		}
+	}
+		break;
+	case CGame::STATE_BOSS:
 		break;
 	case CGame::STATE_RESULT:
 		break;

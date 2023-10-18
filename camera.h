@@ -50,6 +50,7 @@ public:
 	void Control(void);
 	Camera *GetCamera(void);
 	void FollowPlayer(void);
+	void BossBattle(void);
 	void SetQuake(float fQuakeSizeH, float fQuakeSizeV, int nTime);
 	void Quake(void);
 	void TitleMove(void);

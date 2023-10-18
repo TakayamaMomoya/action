@@ -340,6 +340,7 @@ void CPlayer::InputMove(void)
 		}
 	}
 
+#ifdef _DEBUG
 	if (pKeyboard->GetTrigger(DIK_G))
 	{
 		CAnimEffect3D *pAnim3D = CAnimEffect3D::GetInstance();
@@ -349,6 +350,13 @@ void CPlayer::InputMove(void)
 			pAnim3D->CreateEffect(GetPosition(), CAnimEffect3D::TYPE_FLASH);
 		}
 	}
+
+	if (pKeyboard->GetTrigger(DIK_E))
+	{// ボス戦までワープ
+		m_pos = { 2579.0f,204.57f,0.0f };
+		m_posOld = { 2579.0f,204.57f,0.0f };
+	}
+#endif
 }
 
 //=====================================================
@@ -869,22 +877,15 @@ void CPlayer::Draw(void)
 	CManager::GetDebugProc()->Print("\n攻撃[%d]", m_bAttack);
 	CManager::GetDebugProc()->Print("\nリセット[F3]");
 #else
-	CManager::GetDebugProc()->Print("\n\n\n\n\n\n\n\n\n\n\n");
+	CManager::GetDebugProc()->Print("\n");
 	CManager::GetDebugProc()->Print("//----------------------------\n");
 	CManager::GetDebugProc()->Print("// プレイヤー基本操作\n");
 	CManager::GetDebugProc()->Print("//----------------------------\n");
-	CManager::GetDebugProc()->Print("[WASD]移動\n");
-	CManager::GetDebugProc()->Print("[LSHIFT + 移動]ダッシュ\n");
+	CManager::GetDebugProc()->Print("[A D]移動\n");
+	CManager::GetDebugProc()->Print("[LMB]攻撃\n");
+	CManager::GetDebugProc()->Print("[RMB]弾パリィ\n");
 	CManager::GetDebugProc()->Print("[SPACE]ジャンプ\n");
-	CManager::GetDebugProc()->Print("[LMB]射撃\n");
-	CManager::GetDebugProc()->Print("[RMB]ズーム\n");
 	CManager::GetDebugProc()->Print("\n");
-	CManager::GetDebugProc()->Print("//----------------------------\n");
-	CManager::GetDebugProc()->Print("// 射撃の種類\n");
-	CManager::GetDebugProc()->Print("//----------------------------\n");
-	CManager::GetDebugProc()->Print("[短押し]単発撃ち\n");
-	CManager::GetDebugProc()->Print("[長押し]チャージショット\n");
-	CManager::GetDebugProc()->Print("[ダブルクリック→長押し]連射\n");
 #endif
 }
 

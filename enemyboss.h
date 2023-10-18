@@ -19,21 +19,25 @@ public:
 	CEnemyBoss();	// コンストラクタ
 	~CEnemyBoss();	// デストラクタ
 
+	static CEnemyBoss *Create(void);
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+	static CEnemyBoss *GetInstance(void) { return m_pEnemyBoss; }
 
 private:
 	enum MOTION
 	{// モーション
-		MOTION_NEUTRAL = 0,	// 待機モーション
-		MOTION_SHOT,	// 射撃モーション
+		MOTION_APPER = 0,	// 出現モーション
 		MOTION_MAX
 	};
 
-	void RotDest(void);
 	void ManageAttack(void);
+	void ManageCollision(void);
+	void FollowCollision(void);
+
+	static CEnemyBoss *m_pEnemyBoss;
 };
 
 #endif

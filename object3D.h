@@ -41,6 +41,7 @@ public:
 	void SetColor(D3DXCOLOR col);
 	void SetTex(D3DXVECTOR2 texLeftUp, D3DXVECTOR2 texRightDown);
 	LPDIRECT3DVERTEXBUFFER9 GetVtxBuff(void) { return m_pVtxBuff; }
+	void EnableAdd(bool bAdd) { m_bAdd = bAdd; }
 
 private:
 	void DrawNormal(void);
@@ -57,6 +58,7 @@ private:
 	int m_nIdxTexture;	// テクスチャの番号
 	bool m_bBillboard;	// ビルボードにするかどうか
 	bool m_bZTest;	// Zテストを無効化するかどうか
+	bool m_bAdd;	// 加算合成するかどうか
 };
 
 #endif

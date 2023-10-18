@@ -49,7 +49,7 @@
 #define ATTACK_JUMP	(2.8f)	// 空中攻撃のジャンプ力
 #define BULLET_SPEED	(5.0f)	// 弾速度
 #define BULLET_SIZE	(1.0f)	// 弾サイズ
-#define TIME_DAMAGE	(60)	// ダメージ状態の時間
+#define TIME_DAMAGE	(30)	// ダメージ状態の時間
 #define TIME_FLASH	(4)	// 点滅速度
 
 //*****************************************************
@@ -245,6 +245,8 @@ void CPlayer::ManageState(void)
 			{
 				m_pBody->ResetAllCol();
 			}
+
+			m_nCntState = 0;
 		}
 
 		break;
@@ -318,6 +320,18 @@ void CPlayer::InputMove(void)
 					m_jump = JUMPSTATE_NORMAL;
 
 					SetMotion(MOTION_JUMP);
+
+					CAnimEffect3D *pAnim3D = CAnimEffect3D::GetInstance();
+
+					if (pAnim3D != nullptr)
+					{
+						D3DXVECTOR3 posEffect = GetPosition();
+						posEffect.y += 15.0f;
+						posEffect.x += move.x;
+						posEffect.z -= 5.0f;
+
+						pAnim3D->CreateEffect(posEffect, CAnimEffect3D::TYPE_JUMP);
+					}
 				}
 			}
 
@@ -380,15 +394,10 @@ void CPlayer::InputAttack(void)
 		}
 	}
 
-	if (pMouse->GetTrigger(CInputMouse::BUTTON_RMB))
-	{// パリィ
-		Parry();
-	}
-
 	if (m_pBody != nullptr)
-	{// 連撃の処理
+	{
 		if (m_pBody->IsFinish())
-		{
+		{// 連撃の処理
 			if (m_bAttack == true)
 			{
 				if (m_pBody->GetMotion() == MOTION_ATTACK)
@@ -404,6 +413,12 @@ void CPlayer::InputAttack(void)
 					m_bAttack = false;
 				}
 			}
+		}
+
+		if (pMouse->GetTrigger(CInputMouse::BUTTON_RMB) &&
+			m_pBody->GetMotion() != MOTION_PARRY)
+		{// パリィ
+			Parry();
 		}
 	}
 }
@@ -441,7 +456,9 @@ void CPlayer::Parry(void)
 	// 半径の設定
 	m_pClsnAttack->SetRadius(m_fRadiusParry);
 
+#ifdef _DEBUG
 	CEffect3D::Create(pos, m_fRadiusParry, 10, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+#endif
 
 	// 命中したかの判定
 	bHit = m_pClsnAttack->SphereCollision(CCollision::TAG_ENEMYBULLET);
@@ -513,8 +530,11 @@ void CPlayer::Parry(void)
 
 		if (pAnim3D != nullptr)
 		{
+			pAnim3D->CreateEffect(pos, CAnimEffect3D::TYPE_SLASH);
 			pAnim3D->CreateEffect(pos, CAnimEffect3D::TYPE_FLASH);
 		}
+
+		CParticle::Create(pos,CParticle::TYPE_FLASH);
 	}
 }
 
@@ -635,6 +655,11 @@ void CPlayer::ManageCollision(void)
 
 				m_pClsnHit->SetPositionOld(m_pClsnHit->GetPosition());
 				m_pClsnHit->SetPosition(pos);
+
+				if (m_pClsnHit->SphereCollision(CCollision::TAG_ENEMY))
+				{
+					Hit(5.0f);
+				}
 			}
 		}
 	}
@@ -645,7 +670,7 @@ void CPlayer::ManageCollision(void)
 		m_pos = 
 		{
 			0.0f,
-			10.0f,
+			1.0f,
 			0.0f
 		};
 
@@ -662,14 +687,6 @@ void CPlayer::ManageCollision(void)
 
 	// 攻撃判定の管理
 	ManageAttack();
-
-	if (m_pos.x >= 2840.0f)
-	{
-		if (pFade != nullptr)
-		{
-			pFade->SetFade(CScene::MODE_RANKING);
-		}
-	}
 }
 
 //=====================================================
@@ -717,8 +734,9 @@ void CPlayer::ManageAttack(void)
 				// 半径の設定
 				m_pClsnAttack->SetRadius(m_pAttackInfo[i].fRadius);
 
+#ifdef _DEBUG
 				CEffect3D::Create(pos, m_pAttackInfo[i].fRadius, 10, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-
+#endif
 				// 命中したかの判定
 				bHit = m_pClsnAttack->SphereCollision(CCollision::TAG_ENEMY);
 				
@@ -734,7 +752,7 @@ void CPlayer::ManageAttack(void)
 						pAnim3D->CreateEffect(pObj->GetPosition(), CAnimEffect3D::TYPE_FLASH);
 					}
 
-					pObj->Hit(1.0f);
+					pObj->Hit(5.0f);
 				}
 			}
 		}
@@ -793,20 +811,27 @@ void CPlayer::InputCamera(void)
 //=====================================================
 void CPlayer::Hit(float fDamage)
 {
-	m_nLife -= (int)fDamage;
-
-	m_state = STATE_DAMAGE;
-
-	if (m_pBody != nullptr)
+	if (m_state == STATE_NORMAL)
 	{
-		m_pBody->SetAllCol(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
-	}
+		m_nLife -= (int)fDamage;
 
-	if (m_nLife <= 0)
-	{// 死亡判定
-		m_nLife = 0;
+		if (m_nLife <= 0)
+		{// 死亡判定
+			m_nLife = 0;
 
-		Uninit();
+			Uninit();
+		}
+		else
+		{
+			m_state = STATE_DAMAGE;
+
+			CManager::GetCamera()->SetQuake(0.03f, 0.03f, 10);
+
+			if (m_pBody != nullptr)
+			{
+				m_pBody->SetAllCol(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+			}
+		}
 	}
 }
 

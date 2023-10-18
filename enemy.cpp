@@ -26,9 +26,10 @@
 //*****************************************************
 #define SPEED_MOVE	(1.0f)	// 移動速度
 #define RATE_RADIUS	(1.5f)	// 当たり判定の大きさの倍率
-#define INITIAL_LIFE	(1.0f)	// 初期体力
+#define INITIAL_LIFE	(5.0f)	// 初期体力
 #define DAMAGE_FRAME	(10)	// ダメージ状態の継続フレーム数
 #define INITIAL_SCORE	(1000)	// 初期スコア
+#define TIME_DEATH	(30)	// 死亡までのタイム
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -248,15 +249,18 @@ void CEnemy::Uninit(void)
 //=====================================================
 void CEnemy::Update(void)
 {
-	m_nCntAttack++;
-
-	if (m_nCntAttack == INT_MAX)
+	if (m_state != STATE_DEATH)
 	{
-		m_nCntAttack = 0;
-	}
+		m_nCntAttack++;
 
-	// 継承クラスの更新
-	CMotion::Update();
+		if (m_nCntAttack == INT_MAX)
+		{
+			m_nCntAttack = 0;
+		}
+
+		// 継承クラスの更新
+		CMotion::Update();
+	}
 
 	// 状態管理処理
 	ManageState();
@@ -305,6 +309,8 @@ void CEnemy::ManageCollision(void)
 //=====================================================
 void CEnemy::ManageState(void)
 {
+	D3DXCOLOR col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
+
 	switch (m_state)
 	{
 	case STATE_NORMAL:
@@ -323,7 +329,19 @@ void CEnemy::ManageState(void)
 		break;
 	case STATE_DEATH:
 
+		m_nTimerState++;
 
+		// 透明になりながら消える
+		col = D3DXCOLOR(1.0f,0.0f,0.0f,1.0f);
+
+		col.a = 1.0f - (float)((float)(m_nTimerState) / (TIME_DEATH));
+
+		SetAllCol(col);
+
+		if (m_nTimerState >= TIME_DEATH)
+		{// 死亡
+			Death();
+		}
 
 		break;
 	default:
@@ -349,7 +367,22 @@ void CEnemy::SetLife(float fLife)
 //=====================================================
 void CEnemy::Hit(float fDamage)
 {
-	Death();
+	if (m_state == STATE_NORMAL)
+	{
+		m_fLife -= fDamage;
+
+		if (m_fLife <= 0.0f)
+		{
+			m_fLife = 0.0f;
+
+			m_state = STATE_DEATH;
+		}
+		else
+		{
+			m_state = STATE_DAMAGE;
+		}
+
+	}
 }
 
 //=====================================================

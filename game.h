@@ -51,6 +51,7 @@ public:
 
 private:
 	void UpdateCamera(void);
+	void ManageState(void);
 	void Debug(void);
 
 	static CScore *m_pScore;	// スコアのポインタ

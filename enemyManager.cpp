@@ -13,6 +13,7 @@
 #include "manager.h"
 #include "enemyshot.h"
 #include "enemydrone.h"
+#include "enemyboss.h"
 #include <stdio.h>
 
 //*****************************************************
@@ -67,7 +68,8 @@ CEnemy *CEnemyManager::CreateEnemy(D3DXVECTOR3 pos, CEnemy::TYPE type)
 	{
 		nullptr,
 		"data\\MOTION\\robot00.txt",
-		"data\\MOTION\\drone00.txt"
+		"data\\MOTION\\drone00.txt",
+		"data\\MOTION\\robot00.txt",
 	};
 
 	CEnemy *pEnemy = nullptr;
@@ -84,6 +86,11 @@ CEnemy *CEnemyManager::CreateEnemy(D3DXVECTOR3 pos, CEnemy::TYPE type)
 		case CEnemy::TYPE_DRONE:
 
 			pEnemy = new CEnemyDrone;
+
+			break;
+		case CEnemy::TYPE_BOSS:
+
+			pEnemy = new CEnemyBoss;
 
 			break;
 		default:

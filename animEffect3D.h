@@ -33,6 +33,8 @@ public:
 	{
 		TYPE_EXPLOSION = 0,	// 爆発
 		TYPE_FLASH,	// 火花
+		TYPE_JUMP,	// ジャンプ
+		TYPE_SLASH,	// 斬撃
 		TYPE_MAX
 	};
 
@@ -53,6 +55,8 @@ private:
 		char acPath[MAX_STRING];	// パス
 		int nNumAnim;	// アニメーション数
 		int nSpeedAnim;	// アニメーション速度
+		D3DXCOLOR col;	// 色
+		bool bAdd;	// 加算合成するかどうか
 	};
 	
 	void Load(void);

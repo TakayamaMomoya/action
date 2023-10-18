@@ -37,6 +37,7 @@ public:
 		TYPE_NONE = 0,	// 何でもない
 		TYPE_SHOT,	// 撃ってくる敵
 		TYPE_DRONE,	// ドローン敵
+		TYPE_BOSS,	// ボス敵
 		TYPE_MAX
 	}TYPE;
 

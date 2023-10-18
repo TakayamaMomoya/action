@@ -258,6 +258,8 @@ void CCamera::FollowPlayer(void)
 		return;
 	}
 
+	Quake();
+
 	D3DXVECTOR3 pos = pPlayer->GetPosition();
 	D3DXVECTOR3 move = pPlayer->GetMove();
 

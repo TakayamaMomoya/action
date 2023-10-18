@@ -111,6 +111,34 @@ void CAnimEffect3D::Load(void)
 
 						fscanf(pFile, "%d", &m_apAnimEffect[nCntEffect]->nSpeedAnim);
 					}
+
+					if (strcmp(cTemp, "COL") == 0)
+					{// 色読み込み
+						fscanf(pFile, "%s", &cTemp[0]);
+
+						fscanf(pFile, "%f", &m_apAnimEffect[nCntEffect]->col.r);
+						fscanf(pFile, "%f", &m_apAnimEffect[nCntEffect]->col.g);
+						fscanf(pFile, "%f", &m_apAnimEffect[nCntEffect]->col.b);
+						fscanf(pFile, "%f", &m_apAnimEffect[nCntEffect]->col.a);
+					}
+
+					if (strcmp(cTemp, "IS_ADD") == 0)
+					{// 加算合成するかどうか
+						int i;
+
+						fscanf(pFile, "%s", &cTemp[0]);
+
+						fscanf(pFile, "%d", &i);
+
+						if (i == 1)
+						{
+							m_apAnimEffect[nCntEffect]->bAdd = true;
+						}
+						else
+						{
+							m_apAnimEffect[nCntEffect]->bAdd = false;
+						}
+					}
 				}
 
 				// パーティクル数加算
@@ -200,6 +228,10 @@ CAnim3D *CAnimEffect3D::CreateEffect(D3DXVECTOR3 pos, TYPE type)
 
 	if (pAnim3D != nullptr)
 	{
+		// 色の設定
+		pAnim3D->SetColor(m_apAnimEffect[type]->col);
+		pAnim3D->EnableAdd(m_apAnimEffect[type]->bAdd);
+
 		CTexture *pTexture = CTexture::GetInstance();
 
 		if (pTexture != nullptr)

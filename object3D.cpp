@@ -29,6 +29,7 @@ CObject3D::CObject3D(int nPriority) : CObject(nPriority)
 	m_nIdxTexture = -1;
 	m_bBillboard = false;
 	m_bZTest = false;
+	m_bAdd = false;
 }
 
 //=====================================================
@@ -120,6 +121,17 @@ void CObject3D::Update(void)
 //=====================================================
 void CObject3D::Draw(void)
 {
+	// デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+
+	if (m_bAdd)
+	{// 加算合成に設定する
+		//αブレンディングを加算合成に設定
+		pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+		pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+	}
+
 	if (m_bBillboard)
 	{
 		DrawBillboard();
@@ -127,6 +139,14 @@ void CObject3D::Draw(void)
 	else
 	{
 		DrawNormal();
+	}
+
+	if (m_bAdd)
+	{// 加算合成を戻す
+		//αブレンディングを元に戻す
+		pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+		pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 	}
 }
 

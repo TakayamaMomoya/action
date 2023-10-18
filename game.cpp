@@ -72,6 +72,8 @@ CGame::~CGame()
 //=====================================================
 HRESULT CGame::Init(void)
 {
+	m_state = STATE_NORMAL;
+
 	CObjectManager *pObjManager = CManager::GetObjectManager();
 
 	if (m_pScore == nullptr)
@@ -198,6 +200,9 @@ void CGame::Update(void)
 	// カメラ更新
 	UpdateCamera();
 
+	// 状態管理
+	ManageState();
+
 	if (pKeyboard != nullptr)
 	{
 		if (pKeyboard->GetTrigger(DIK_RETURN))
@@ -212,25 +217,6 @@ void CGame::Update(void)
 #ifdef _DEBUG
 	Debug();
 #endif
-}
-
-//=====================================================
-// デバッグ処理
-//=====================================================
-void CGame::Debug(void)
-{
-	// 入力取得
-	CInputKeyboard *pKeyboard = CManager::GetKeyboard();
-
-	if (pKeyboard == nullptr)
-	{
-		return;
-	}
-
-	if (pKeyboard->GetTrigger(DIK_F))
-	{
-		m_bStop = m_bStop ? false : true;
-	}
 }
 
 //=====================================================
@@ -254,6 +240,51 @@ void CGame::UpdateCamera(void)
 	{
 		// 操作
 		pCamera->Control();
+	}
+}
+
+//=====================================================
+// 状態管理
+//=====================================================
+void CGame::ManageState(void)
+{
+	CFade *pFade = CManager::GetFade();
+
+	switch (m_state)
+	{
+	case CGame::STATE_NORMAL:
+		break;
+	case CGame::STATE_RESULT:
+		break;
+	case CGame::STATE_END:
+		
+		if(pFade != nullptr)
+		{
+			pFade->SetFade(CScene::MODE_RANKING);
+		}
+
+		break;
+	default:
+		break;
+	}
+}
+
+//=====================================================
+// デバッグ処理
+//=====================================================
+void CGame::Debug(void)
+{
+	// 入力取得
+	CInputKeyboard *pKeyboard = CManager::GetKeyboard();
+
+	if (pKeyboard == nullptr)
+	{
+		return;
+	}
+
+	if (pKeyboard->GetTrigger(DIK_F))
+	{
+		m_bStop = m_bStop ? false : true;
 	}
 }
 

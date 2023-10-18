@@ -214,8 +214,6 @@ bool CBullet::BulletHit(CCollision::TAG tag)
 
 			// 当たったオブジェクトのヒット処理
 			pObj->Hit(m_fDamage);
-
-			CParticle::Create(m_pos, CParticle::TYPE_HIT);
 		}
 	}
 
@@ -227,9 +225,6 @@ bool CBullet::BulletHit(CCollision::TAG tag)
 //=====================================================
 void CBullet::Death(void)
 {
-	// パーティクル生成
-	CParticle::Create(m_pos, CParticle::TYPE_HIT);
-
 	// 終了処理
 	Uninit();
 }

@@ -51,7 +51,7 @@ CEnemyShot::~CEnemyShot()
 HRESULT CEnemyShot::Init(void)
 {
 	// 継承クラスの初期化
-	CEnemy::Init();
+	CEnemyNormal::Init();
 
 	// 初期の体力設定
 	SetLife(INITIAL_LIFE);
@@ -68,7 +68,7 @@ HRESULT CEnemyShot::Init(void)
 void CEnemyShot::Uninit(void)
 {
 	// 継承クラスの終了
-	CEnemy::Uninit();
+	CEnemyNormal::Uninit();
 }
 
 //=====================================================
@@ -80,7 +80,7 @@ void CEnemyShot::Update(void)
 	SetPositionOld(GetPosition());
 
 	// 継承クラスの更新
-	CEnemy::Update();
+	CEnemyNormal::Update();
 	
 	// 攻撃の管理
 	ManageAttack();
@@ -208,5 +208,5 @@ void CEnemyShot::RotDest(void)
 void CEnemyShot::Draw(void)
 {
 	// 継承クラスの描画
-	CEnemy::Draw();
+	CEnemyNormal::Draw();
 }

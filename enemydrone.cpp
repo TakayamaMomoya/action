@@ -51,7 +51,7 @@ CEnemyDrone::~CEnemyDrone()
 HRESULT CEnemyDrone::Init(void)
 {
 	// 継承クラスの初期化
-	CEnemy::Init();
+	CEnemyNormal::Init();
 
 	// 初期の体力設定
 	SetLife(INITIAL_LIFE);
@@ -68,7 +68,7 @@ HRESULT CEnemyDrone::Init(void)
 void CEnemyDrone::Uninit(void)
 {
 	// 継承クラスの終了
-	CEnemy::Uninit();
+	CEnemyNormal::Uninit();
 }
 
 //=====================================================
@@ -80,7 +80,7 @@ void CEnemyDrone::Update(void)
 	SetPositionOld(GetPosition());
 
 	// 継承クラスの更新
-	CEnemy::Update();
+	CEnemyNormal::Update();
 	
 	// 攻撃の管理
 	ManageAttack();
@@ -190,5 +190,5 @@ void CEnemyDrone::RotDest(void)
 void CEnemyDrone::Draw(void)
 {
 	// 継承クラスの描画
-	CEnemy::Draw();
+	CEnemyNormal::Draw();
 }

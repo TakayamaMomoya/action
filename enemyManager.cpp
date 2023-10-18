@@ -69,7 +69,7 @@ CEnemy *CEnemyManager::CreateEnemy(D3DXVECTOR3 pos, CEnemy::TYPE type)
 		nullptr,
 		"data\\MOTION\\robot00.txt",
 		"data\\MOTION\\drone00.txt",
-		"data\\MOTION\\robot00.txt",
+		"data\\MOTION\\robot01.txt",
 	};
 
 	CEnemy *pEnemy = nullptr;

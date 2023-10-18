@@ -57,7 +57,6 @@ CEnemy::CEnemy()
 
 	m_fLife = 0;
 	m_nScore = 0;
-	m_nCntAttack = 0;
 	m_nTimerState = 0;
 	m_pCollisionSphere = nullptr;
 	m_state = STATE_NORMAL;
@@ -251,56 +250,8 @@ void CEnemy::Update(void)
 {
 	if (m_state != STATE_DEATH)
 	{
-		m_nCntAttack++;
-
-		if (m_nCntAttack == INT_MAX)
-		{
-			m_nCntAttack = 0;
-		}
-
 		// 継承クラスの更新
 		CMotion::Update();
-	}
-
-	// 状態管理処理
-	ManageState();
-
-	// 位置の更新
-	SetPosition(GetPosition() + GetMove());
-
-	// 当たり判定管理
-	ManageCollision();
-}
-
-//=====================================================
-// 当たり判定の管理
-//=====================================================
-void CEnemy::ManageCollision(void)
-{
-	if (m_pCollisionSphere != nullptr)
-	{// 球の当たり判定の管理
-		m_pCollisionSphere->SetPositionOld(m_pCollisionSphere->GetPosition());
-
-		m_pCollisionSphere->SetPosition(GetPosition());
-	}
-
-	if (m_pCollisionCube != nullptr)
-	{// 立方体の当たり判定の管理
-	 // パーツの最大半径取得
-		float fRadius = GetRadiusMax();
-
-		// 当たり判定の位置設定
-		m_pCollisionCube->SetPosition(GetPosition());
-
-		D3DXVECTOR3 vtxMax = { fRadius,fRadius,fRadius };
-		D3DXVECTOR3 vtxMin = { -fRadius,10.0f,-fRadius };
-
-		D3DXVECTOR3 move = GetMove();
-
-		// 押し出しの当たり判定
-		m_pCollisionCube->CubeCollision(CCollision::TAG_BLOCK, &move);
-
-		SetMove(move);
 	}
 }
 
@@ -420,12 +371,4 @@ void CEnemy::SetSpherePosition(D3DXVECTOR3 pos)
 	{// 位置設定
 		m_pCollisionSphere->SetPosition(pos);
 	}
-}
-
-//=====================================================
-// 読込処理
-//=====================================================
-void CEnemy::Load(void)
-{
-
 }

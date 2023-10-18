@@ -177,6 +177,9 @@
     <ClCompile Include="enemyboss.cpp">
       <Filter>ヘッダー ファイル\enemy</Filter>
     </ClCompile>
+    <ClCompile Include="enemyNormal.cpp">
+      <Filter>ヘッダー ファイル\enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation2D.h">
@@ -333,6 +336,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="enemyboss.h">
+      <Filter>ヘッダー ファイル\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyNormal.h">
       <Filter>ヘッダー ファイル\enemy</Filter>
     </ClInclude>
   </ItemGroup>

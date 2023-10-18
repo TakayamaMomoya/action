@@ -8,12 +8,12 @@
 #ifndef _ENEMYSHOT_H_
 #define _ENEMYSHOT_H_
 
-#include "enemy.h"
+#include "enemyNormal.h"
 
 //*****************************************************
 // クラスの定義
 //*****************************************************
-class CEnemyShot : public CEnemy
+class CEnemyShot : public CEnemyNormal
 {// 撃ってくる敵
 public:
 	CEnemyShot();	// コンストラクタ

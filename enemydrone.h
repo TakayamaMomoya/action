@@ -8,12 +8,12 @@
 #ifndef _ENEMYDRONE_H_
 #define _ENEMYDRONE_H_
 
-#include "enemy.h"
+#include "enemyNormal.h"
 
 //*****************************************************
 // クラスの定義
 //*****************************************************
-class CEnemyDrone : public CEnemy
+class CEnemyDrone : public CEnemyNormal
 {
 public:
 	CEnemyDrone();	// コンストラクタ

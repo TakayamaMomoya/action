@@ -38,6 +38,7 @@ private:
 	{
 		ATTACK_MISSILE = 0,	// ミサイル攻撃
 		ATTACK_DASH,	// 突進攻撃
+		ATTACK_SHOT_UNDER,	// 下から射撃攻撃
 		ATTACK_MAX
 	};
 	enum MOTION
@@ -45,6 +46,8 @@ private:
 		MOTION_APPER = 0,	// 出現モーション
 		MOTION_MISSILE,	// ミサイルモーション
 		MOTION_DASH,	// 突進モーション
+		MOTION_SHOT_UNDER,	// 射撃モーション
+		MOTION_SHOT_UPPER,	// 反転射撃モーション
 		MOTION_MAX
 	};
 	enum IDXPARTS
@@ -64,6 +67,7 @@ private:
 		IDX_LEG_R,	// 右腿
 		IDX_FOOT_R,	// 右脛
 		IDX_TOE_R,	// 右足先
+		IDX_WEAPON,	// 武器
 		IDX_MAX
 	};
 	struct Sinfo
@@ -84,6 +88,7 @@ private:
 	// 攻撃状態ごとの更新==
 	void UpdateMissile(void);
 	void UpdateDash(void);
+	void UpdateShotUnder(void);
 	//=====================
 	void ManageAttack(void);
 	void ManageCollision(void);

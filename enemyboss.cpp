@@ -33,12 +33,13 @@
 #define TIME_MISSILE	(20)	// ミサイル発射頻度
 #define MISSILE_UP	(3.0f)	// ミサイルの初速
 #define NUM_MISSILE	(3)	// ミサイルの発射数
-#define MOVE_FACT	(0.05f)	// 移動係数
+#define MOVE_FACT	(0.04f)	// 移動係数
 #define LINE_END	(5.0f)	// 移動終了のしきい値
 #define MID_POINT	(2740.0f)	// 真ん中の値
 #define WIDTH_STAGE	(160.0f)	// ステージの幅
 #define DAMAGE_FRAME	(20)	// ダメージ状態の時間
 #define FLOAT_HEIGTH	(180.0f)	// 高さ
+#define SHOT_TIME	(3)	// 射撃の頻度
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -233,6 +234,9 @@ void CEnemyBoss::UpdateAttackState(void)
 	case ATTACK_DASH:
 		UpdateDash();
 		break;
+	case ATTACK_SHOT_UNDER:
+		UpdateShotUnder();
+		break;
 	default:
 		break;
 	}
@@ -310,6 +314,65 @@ void CEnemyBoss::UpdateDash(void)
 	else
 	{
 		RotDest();
+	}
+}
+
+//=====================================================
+// 下から射撃攻撃の更新
+//=====================================================
+void CEnemyBoss::UpdateShotUnder(void)
+{
+	// 汎用処理取得
+	CUniversal *pUniversal = CManager::GetUniversal();
+
+	RotDest();
+
+	bool bFinish = IsFinish();
+	int nKey = GetKey();
+
+	if (nKey == 3)
+	{
+		m_info.nCntAttack++;
+
+		if (m_info.nCntAttack >= SHOT_TIME)
+		{
+			D3DXMATRIX mtxWeapon = *GetParts(IDX_WEAPON)->m_pParts->GetMatrix();
+			D3DXMATRIX mtxMazzle;
+			D3DXMATRIX mtxMazzleVec;
+
+			// オフセットの位置設定
+			pUniversal->SetOffSet(&mtxMazzle, mtxWeapon, D3DXVECTOR3(5.0f, -30.0f, 0.0f));
+			pUniversal->SetOffSet(&mtxMazzleVec, mtxMazzle,D3DXVECTOR3(0.0f,-1.0f,0.0f));
+
+			// 差分のベクトルを取得
+			D3DXVECTOR3 posMazzle =
+			{
+				mtxMazzle._41,
+				mtxMazzle._42,
+				mtxMazzle._43,
+			};
+			D3DXVECTOR3 posBullet =
+			{
+				mtxMazzleVec._41,
+				mtxMazzleVec._42,
+				mtxMazzleVec._43,
+			};
+			D3DXVECTOR3 vecBullet = posBullet - posMazzle;
+
+			D3DXVec3Normalize(&vecBullet, &vecBullet);
+
+			vecBullet *= BULLET_SPEED;
+
+			CBullet::Create(posMazzle, vecBullet, 400, CBullet::TYPE_ENEMY);
+
+			m_info.nCntAttack = 0;
+		}
+	}
+
+	if (bFinish)
+	{// 状態切り替え
+		// 目標位置追従
+		SwitchState();
 	}
 }
 
@@ -400,6 +463,20 @@ void CEnemyBoss::SwitchState(void)
 		else
 		{
 			m_info.posDest = { MID_POINT - WIDTH_STAGE, FLOAT_HEIGTH, 0.0f };
+		}
+	}
+		break;
+	case ATTACK_SHOT_UNDER:
+	{
+		int nRand = rand() % 2;
+
+		if (nRand == 1)
+		{
+			SetMotion(MOTION_SHOT_UPPER);
+		}
+		else
+		{
+			SetMotion(MOTION_SHOT_UNDER);
 		}
 	}
 		break;

@@ -521,7 +521,7 @@ void CPlayer::Parry(void)
 		}
 
 		// ·•ªƒxƒNƒgƒ‹‚©‚çˆÚ“®—Ê‚ðÝ’è
-		posTarget = pLockEnemy->GetPosition();
+		posTarget = pLockEnemy->GetMtxPos(0);
 
 		move = posTarget - pos;
 

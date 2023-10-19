@@ -35,6 +35,10 @@
 #define NUM_MISSILE	(3)	// ミサイルの発射数
 #define MOVE_FACT	(0.05f)	// 移動係数
 #define LINE_END	(5.0f)	// 移動終了のしきい値
+#define MID_POINT	(2740.0f)	// 真ん中の値
+#define WIDTH_STAGE	(160.0f)	// ステージの幅
+#define DAMAGE_FRAME	(20)	// ダメージ状態の時間
+#define FLOAT_HEIGTH	(180.0f)	// 高さ
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -123,6 +127,9 @@ void CEnemyBoss::Update(void)
 	// 継承クラスの更新
 	CEnemy::Update();
 
+	// 状態管理
+	ManageState();
+
 	// 条件ごとの更新
 	UpdateState();
 	
@@ -136,6 +143,47 @@ void CEnemyBoss::Update(void)
 	{
 		Death();
 	}
+}
+
+//=====================================================
+// 状態管理
+//=====================================================
+void CEnemyBoss::ManageState(void)
+{
+	CEnemy::STATE state = CEnemy::GetState();
+
+	int nTimer = GetCntState();
+
+	switch (state)
+	{
+	case CEnemy::STATE_NORMAL:
+		break;
+	case CEnemy::STATE_DAMAGE:
+
+		nTimer++;
+
+		SetAllCol(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+
+		if (nTimer > DAMAGE_FRAME)
+		{// 通常状態に戻る
+			nTimer = 0;
+			state = CEnemy::STATE_NORMAL;
+
+			ResetAllCol();
+		}
+		break;
+	case CEnemy::STATE_DEATH:
+
+		Uninit();
+
+		break;
+	default:
+		break;
+	}
+
+	CEnemy::SetState(state);
+
+	SetCntState(nTimer);
 }
 
 //=====================================================
@@ -195,10 +243,20 @@ void CEnemyBoss::UpdateAttackState(void)
 //=====================================================
 void CEnemyBoss::UpdateMissile(void)
 {
+	D3DXVECTOR3 pos = GetPosition();
+
 	// プレイヤーの方を向く処理
 	RotDest();
 
-	m_info.posDest = { 2580.0f, 190.0f, 0.0f };
+	if (pos.x < MID_POINT)
+	{// 左にいた場合
+		m_info.posDest = { MID_POINT - WIDTH_STAGE, FLOAT_HEIGTH, 0.0f };
+	}
+	else
+	{
+		m_info.posDest = { MID_POINT + WIDTH_STAGE, FLOAT_HEIGTH, 0.0f };
+	}
+
 
 	// 目標位置追従
 	bool bEnd = FollowDest();
@@ -210,9 +268,9 @@ void CEnemyBoss::UpdateMissile(void)
 
 		if (TIME_MISSILE <= m_info.nCntAttack)
 		{// ミサイル発射
-			D3DXVECTOR3 pos = GetMtxPos(IDX_SHOULDER_L);
+			D3DXVECTOR3 posMissile = GetMtxPos(IDX_SHOULDER_L);
 
-			CMissile *pMissile = CMissile::Create(pos);
+			CMissile *pMissile = CMissile::Create(posMissile);
 
 			if (pMissile != nullptr)
 			{
@@ -241,8 +299,6 @@ void CEnemyBoss::UpdateDash(void)
 
 	if (bFinish)
 	{// 状態切り替え
-		m_info.posDest = { 2900.0f,190.0f,0.0f };
-
 		// 目標位置追従
 		bool bEnd = FollowDest();
 
@@ -250,6 +306,10 @@ void CEnemyBoss::UpdateDash(void)
 		{
 			SwitchState();
 		}
+	}
+	else
+	{
+		RotDest();
 	}
 }
 
@@ -273,7 +333,9 @@ void CEnemyBoss::FollowCollision(void)
 	{
 		D3DXVECTOR3 pos = GetMtxPos(IDX_WAIST);
 
-		CEffect3D::Create(pos, pCollision->GetRadius(), 10, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+#ifdef _DEBUG
+		//CEffect3D::Create(pos, pCollision->GetRadius(), 10, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+#endif
 
 		pCollision->SetPositionOld(pCollision->GetPosition());
 		pCollision->SetPosition(pos);
@@ -326,9 +388,20 @@ void CEnemyBoss::SwitchState(void)
 
 		break;
 	case ATTACK_DASH:
-
+	{
 		SetMotion(MOTION_DASH);
 
+		D3DXVECTOR3 pos = GetPosition();
+
+		if (pos.x < MID_POINT)
+		{// 左にいた場合
+			m_info.posDest = { MID_POINT + WIDTH_STAGE, FLOAT_HEIGTH, 0.0f };
+		}
+		else
+		{
+			m_info.posDest = { MID_POINT - WIDTH_STAGE, FLOAT_HEIGTH, 0.0f };
+		}
+	}
 		break;
 	default:
 		break;
@@ -352,6 +425,9 @@ void CEnemyBoss::Draw(void)
 	CEnemy::Draw();
 
 #ifdef _DEBUG
+	CManager::GetDebugProc()->Print("\nボス位置：[%f,%f,%f]", GetPosition().x, GetPosition().y, GetPosition().z);
+	CManager::GetDebugProc()->Print("\nボス体力：[%f]", GetLife());
+	CManager::GetDebugProc()->Print("\nボス状態：[%d]",CEnemy::GetState());
 	CManager::GetDebugProc()->Print("\nボスモーション：[%d]", GetMotion());
 	CManager::GetDebugProc()->Print("\nキー：[%d]", GetKey());
 	CManager::GetDebugProc()->Print("\nフレーム：[%d]", GetFrame());

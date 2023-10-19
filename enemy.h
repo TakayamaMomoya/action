@@ -70,6 +70,8 @@ public:
 	CEnemy *GetNext(void) { return m_pNext; }
 	int GetScore(void) { return m_nScore; }
 	void SetScore(int nScore) { m_nScore = nScore; }
+	int GetCntState(void) { return m_nTimerState; }
+	void SetCntState(int nCnt) { m_nTimerState = nCnt; }
 
 protected:
 	void RotDest(void);

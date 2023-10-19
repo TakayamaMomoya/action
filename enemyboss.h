@@ -75,6 +75,7 @@ private:
 		int nNumAttack;	// UŒ‚‚µ‚½‰ñ”
 	};
 
+	void ManageState(void);
 	void UpdateState(void);
 	// ó‘Ô‚²‚Æ‚ÌXV======
 	void UpdateApper(void);

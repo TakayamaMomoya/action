@@ -9,7 +9,7 @@ SCRIPT
 #====================================================================
 # モデル数
 #====================================================================
-NUM_MODEL = 15
+NUM_MODEL = 16
 
 #====================================================================
 # モデルファイル名
@@ -29,12 +29,13 @@ MODEL_FILENAME = data/MODEL/robot01/11_toeL.x
 MODEL_FILENAME = data/MODEL/robot01/12_legR.x
 MODEL_FILENAME = data/MODEL/robot01/13_footR.x
 MODEL_FILENAME = data/MODEL/robot01/14_toeR.x
+MODEL_FILENAME = data/MODEL/weapon/minigun.x
 
 #====================================================================
 # キャラクター情報
 #====================================================================
 CHARACTERSET
-    NUM_PARTS = 15
+    NUM_PARTS = 16
 
     PARTSSET
         INDEX = 0
@@ -124,6 +125,12 @@ CHARACTERSET
         INDEX = 14
         PARENT = 13
         POS = 0.3 -39.1 0.0
+        ROT = 0.0 0.0 0.0
+    END_PARTSSET
+    PARTSSET
+        INDEX = 15
+        PARENT = 8
+        POS = 0.3 -22.1 5.0
         ROT = 0.0 0.0 0.0
     END_PARTSSET
 END_CHARACTERSET
@@ -1328,7 +1335,7 @@ MOTIONSET
 	KEYSET			# --- << 3 / 4 >> ---
 		FRAME = 40
 		KEY	# ----- [ 0 ] -----
-			POS = 0.00 -2.40 0.00
+			POS = 0.00 -20.40 0.00
 			ROT = -0.09 0.82 -0.53
 		END_KEY
 

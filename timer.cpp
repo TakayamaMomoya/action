@@ -21,6 +21,11 @@
 #define NUM_PLACE	(2)	// 桁数
 #define INITIAL_TIME	(120)	// 初期の時間
 
+//*****************************************************
+// 静的メンバ変数宣言
+//*****************************************************
+CTimer *CTimer::m_pTimer = nullptr;	// 自身のポインタ
+
 //=====================================================
 // コンストラクタ
 //=====================================================
@@ -67,6 +72,8 @@ void CTimer::Uninit(void)
 
 	CGame::ReleaseTimer();
 
+	m_pTimer = nullptr;
+
 	Release();
 }
 
@@ -75,9 +82,9 @@ void CTimer::Uninit(void)
 //=====================================================
 void CTimer::Update(void)
 {
-	//if (CGame::GetState() != CGame::STATE_NORMAL)
+	if (CGame::GetState() != CGame::STATE_NORMAL)
 	{
-		//return;
+		return;
 	}
 
 	m_nCntSecond++;
@@ -127,30 +134,28 @@ void CTimer::AddTimer(int nValue)
 //=====================================================
 CTimer *CTimer::Create(void)
 {
-	CTimer *pTimer = nullptr;
-	
-	if (pTimer == nullptr)
+	if (m_pTimer == nullptr)
 	{
-		pTimer = new CTimer;
+		m_pTimer = new CTimer;
 
-		pTimer->Init();
+		m_pTimer->Init();
 
-		if (pTimer->m_pObjMinute == nullptr)
+		if (m_pTimer->m_pObjMinute == nullptr)
 		{// 分表示の終了
-			pTimer->m_pObjMinute = CNumber::Create(NUM_PLACE, pTimer->m_nSecond);
-			pTimer->m_pObjMinute->SetPosition(D3DXVECTOR3(520.0f, 80.0f, 0.0f));
-			pTimer->m_pObjMinute->SetSizeAll(20.0f,50.0f);
+			m_pTimer->m_pObjMinute = CNumber::Create(NUM_PLACE, m_pTimer->m_nSecond);
+			m_pTimer->m_pObjMinute->SetPosition(D3DXVECTOR3(520.0f, 80.0f, 0.0f));
+			m_pTimer->m_pObjMinute->SetSizeAll(20.0f,50.0f);
 		}
 
-		if (pTimer->m_pObjSecond == nullptr)
+		if (m_pTimer->m_pObjSecond == nullptr)
 		{// 秒表示の終了
-			pTimer->m_pObjSecond = CNumber::Create(NUM_PLACE, pTimer->m_nSecond);
-			pTimer->m_pObjSecond->SetPosition(D3DXVECTOR3(620.0f, 80.0f, 0.0f));
-			pTimer->m_pObjSecond->SetSizeAll(20.0f, 50.0f);
+			m_pTimer->m_pObjSecond = CNumber::Create(NUM_PLACE, m_pTimer->m_nSecond);
+			m_pTimer->m_pObjSecond->SetPosition(D3DXVECTOR3(620.0f, 80.0f, 0.0f));
+			m_pTimer->m_pObjSecond->SetSizeAll(20.0f, 50.0f);
 		}
 	}
 
-	return pTimer;
+	return m_pTimer;
 }
 
 //=====================================================

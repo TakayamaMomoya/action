@@ -71,6 +71,9 @@ public:
 	int GetScore(void) { return m_nScore; }
 	void SetScore(int nScore) { m_nScore = nScore; }
 
+protected:
+	void RotDest(void);
+
 private:
 	void ManageState(void);
 

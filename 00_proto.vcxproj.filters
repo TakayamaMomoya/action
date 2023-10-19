@@ -180,6 +180,9 @@
     <ClCompile Include="enemyNormal.cpp">
       <Filter>ヘッダー ファイル\enemy</Filter>
     </ClCompile>
+    <ClCompile Include="missile.cpp">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation2D.h">
@@ -340,6 +343,9 @@
     </ClInclude>
     <ClInclude Include="enemyNormal.h">
       <Filter>ヘッダー ファイル\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="missile.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

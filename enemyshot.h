@@ -32,7 +32,6 @@ private:
 		MOTION_MAX
 	};
 
-	void RotDest(void);
 	void ManageAttack(void);
 };
 

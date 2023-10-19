@@ -47,6 +47,7 @@ private:
 	int m_nSecond;	// 現在の時間(秒)
 	int m_nCntSecond;	// 一秒計測用カウンター
 	int m_nIdxTexture;	// テクスチャ番号
+	static CTimer *m_pTimer;	// 自身のポインタ
 };
 
 #endif

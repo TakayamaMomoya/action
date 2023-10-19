@@ -43,6 +43,7 @@
 #define BONUS_TIME	(40)	// ボーナスが付与される最低限のタイム
 #define RATE_BONUS	(0.015f)	// 1秒当たりのタイムボーナス
 #define RESULT_TIME	(5)	// リザルト画面表示までのラグ
+#define BOSS_LINE	(2737.0f)	// ボス戦に突入するライン
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -270,7 +271,7 @@ void CGame::ManageState(void)
 		{
 			D3DXVECTOR3 pos = pPlayer->GetPosition();
 
-			if (pos.x >= 2737)
+			if (pos.x >= BOSS_LINE)
 			{// ボス戦へ移行
 				CEnemyManager *pEnemyManager = nullptr;
 
@@ -278,7 +279,7 @@ void CGame::ManageState(void)
 
 				if (pEnemyManager != nullptr)
 				{
-					pEnemyManager->CreateEnemy(D3DXVECTOR3(2737.0f,190.0f,0.0f), CEnemy::TYPE_BOSS);
+					pEnemyManager->CreateEnemy(D3DXVECTOR3(BOSS_LINE,190.0f,0.0f), CEnemy::TYPE_BOSS);
 				}
 
 				m_state = STATE_BOSS;

@@ -95,6 +95,7 @@ public:
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }	// æ“¾ˆ—
 	D3DXVECTOR3 *GetPosAddress(void) { return &m_pos; }	// æ“¾ˆ—
 	D3DXVECTOR3 GetPositionOld(void) { return m_posOld; }
+	D3DXVECTOR3 GetMtxPos(int nIdx);
 	void SetMove(D3DXVECTOR3 move) { m_move = move; }
 	D3DXVECTOR3 GetMove(void) { return m_move; }	// æ“¾ˆ—
 	void SetRot(D3DXVECTOR3 rot) { m_rot = rot; }

@@ -30,6 +30,7 @@
 #define DAMAGE_FRAME	(10)	// É_ÉÅÅ[ÉWèÛë‘ÇÃåpë±ÉtÉåÅ[ÉÄêî
 #define INITIAL_SCORE	(1000)	// èâä˙ÉXÉRÉA
 #define TIME_DEATH	(30)	// éÄñSÇ‹Ç≈ÇÃÉ^ÉCÉÄ
+#define ROLL_FACT	(0.1f)	// âÒì]åWêî
 
 //*****************************************************
 // ê√ìIÉÅÉìÉoïœêîêÈåæ
@@ -297,6 +298,69 @@ void CEnemy::ManageState(void)
 		break;
 	default:
 		break;
+	}
+}
+
+//=====================================================
+// ñ⁄ïWï˚å¸Çå¸Ç≠èàóù
+//=====================================================
+void CEnemy::RotDest(void)
+{
+	// ñ⁄ïWéÊìæ
+	CPlayer *pPlayer;
+	if (CPlayer::GetInstance() != nullptr)
+	{
+		pPlayer = CPlayer::GetInstance();
+	}
+	else
+	{
+		return;
+	}
+
+	D3DXVECTOR3 posTarget = pPlayer->GetPosition();
+	D3DXVECTOR3 pos = GetPosition();
+	float fRot = 0.0f;
+
+	if (posTarget.x <= pos.x)
+	{// âEë§
+		fRot = D3DX_PI * 0.5f;
+	}
+	else
+	{// ç∂ë§
+		fRot = -D3DX_PI * 0.5f;
+	}
+
+	// ïœêîêÈåæ
+	D3DXVECTOR3 vecDest;
+	D3DXVECTOR3 rot = GetRot();
+
+	float fRotDiff = fRot - rot.y;
+
+	// äpìxÇÃèCê≥
+	if (fRotDiff > D3DX_PI)
+	{
+		fRotDiff -= 6.28f;
+	}
+	if (fRotDiff < -D3DX_PI)
+	{
+		fRotDiff += 6.28f;
+	}
+
+	// äpìxï‚ê≥
+	SetRot(D3DXVECTOR3(rot.x, rot.y + fRotDiff * ROLL_FACT, rot.z));
+
+	// äpìxÇÃèCê≥
+	rot = GetRot();
+
+	if (GetRot().y > D3DX_PI)
+	{
+		// äpìxï‚ê≥
+		SetRot(D3DXVECTOR3(GetRot().x, GetRot().y - 6.28f, GetRot().z));
+	}
+	if (GetRot().y < -D3DX_PI)
+	{
+		// äpìxï‚ê≥
+		SetRot(D3DXVECTOR3(GetRot().x, GetRot().y + 6.28f, GetRot().z));
 	}
 }
 

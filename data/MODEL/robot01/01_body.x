@@ -4629,7 +4629,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "ac2_00.png";
+    "data\\TEXTURE\\MATERIAL\\ac2_00.png";
    }
   }
  }

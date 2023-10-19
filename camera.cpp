@@ -30,7 +30,7 @@
 #define ANGLE_GAME	(D3DX_PI * 0.4f)	// ゲーム中のカメラの角度
 #define RATE_CAMERA_MOVE	(1.5f)	// カメラがどれだけプレイヤーの先を見るかの倍率
 #define POSR_BOSS	(D3DXVECTOR3(2742.27f,240.53f,-81.36f))	// ボス戦の注視点位置
-#define POSV_BOSS	(D3DXVECTOR3(2741.14f,248.15f,-261.20f))	// ボス戦の視点位置
+#define POSV_BOSS	(D3DXVECTOR3(2741.14f,280.15f,-261.20f))	// ボス戦の視点位置
 
 //====================================================
 // 初期化処理

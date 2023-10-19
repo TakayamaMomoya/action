@@ -718,6 +718,37 @@ float CMotion::GetRadiusMax(void)
 }
 
 //=====================================================
+// パーツの絶対位置取得
+//=====================================================
+D3DXVECTOR3 CMotion::GetMtxPos(int nIdx)
+{
+	D3DXVECTOR3 pos = { 0.0f,0.0f,0.0f };
+
+	if (nIdx < 0 && 
+		nIdx >= m_nNumParts)
+	{// 範囲外制限
+		return pos;
+	}
+
+	if (m_apParts[nIdx] != nullptr)
+	{
+		if (m_apParts[nIdx]->m_pParts != nullptr)
+		{
+			D3DXMATRIX mtx = *m_apParts[nIdx]->m_pParts->GetMatrix();
+
+			pos = 
+			{
+				mtx._41,
+				mtx._42,
+				mtx._43,
+			};
+		}
+	}
+
+	return pos;
+}
+
+//=====================================================
 // 残像の設定
 //=====================================================
 void CMotion::SetAfterImage(D3DXCOLOR col, int m_nLife)

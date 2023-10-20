@@ -290,7 +290,6 @@ void CGame::Update(void)
 {
 	// “ü—ÍŽæ“¾
 	CInputKeyboard *pKeyboard = CManager::GetKeyboard();
-	CInputJoypad *pJoypad = CManager::GetJoypad();
 
 	CFade *pFade = CManager::GetFade();
 

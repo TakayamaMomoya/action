@@ -11,6 +11,7 @@
 #include "main.h"
 #include "inputManager.h"
 #include "manager.h"
+#include "inputjoypad.h"
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -54,6 +55,9 @@ CInputManager *CInputManager::Create(void)
 //=====================================================
 HRESULT CInputManager::Init(void)
 {
+	// ジョイパッド生成
+	CInputJoypad::Create();
+
 	return S_OK;
 }
 
@@ -62,9 +66,17 @@ HRESULT CInputManager::Init(void)
 //=====================================================
 void CInputManager::Uninit(void)
 {
-	m_pInputManager = nullptr;
+	// ジョイパッド終了
+	CInputJoypad *pJoypad = CInputJoypad::GetInstance();
 
-	Release();
+	if (pJoypad != nullptr)
+	{
+		pJoypad->Uninit();
+	}
+
+	// 自身のポインタ破棄
+	m_pInputManager = nullptr;
+	delete this;
 }
 
 //=====================================================
@@ -72,15 +84,11 @@ void CInputManager::Uninit(void)
 //=====================================================
 void CInputManager::Update(void)
 {
+	// ジョイパッド更新
+	CInputJoypad *pJoypad = CInputJoypad::GetInstance();
 
-}
-
-//=====================================================
-// 描画処理
-//=====================================================
-void CInputManager::Draw(void)
-{
-#ifdef _DEBUG
-	//CManager::GetDebugProc()->Print("\n敵の位置：[%f,%f,%f]", GetPosition().x, GetPosition().y, GetPosition().z);
-#endif
+	if (pJoypad != nullptr)
+	{
+		pJoypad->Update();
+	}
 }

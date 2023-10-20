@@ -109,7 +109,6 @@ void CRanking::Update(void)
 	// 入力情報取得
 	CInputKeyboard *pKeyboard = CManager::GetKeyboard();
 	CInputMouse *pMouse = CManager::GetMouse();
-	CInputJoypad *pJoypad = CManager::GetJoypad();
 
 	CFade *pFade = CManager::GetFade();
 
@@ -159,8 +158,7 @@ void CRanking::Update(void)
 
 	// 画面遷移==========================================
 	if (pKeyboard->GetTrigger(DIK_RETURN) ||
-		pMouse->GetTrigger(CInputMouse::BUTTON_LMB) ||
-		pJoypad->GetTrigger(CInputJoypad::PADBUTTONS_A, 0))
+		pMouse->GetTrigger(CInputMouse::BUTTON_LMB))
 	{//ENTERキーが押されたら
 		//タイトルに移行
 		if (pFade != nullptr)

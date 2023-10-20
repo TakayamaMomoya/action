@@ -19,7 +19,6 @@
 class CRenderer;
 class CInputKeyboard;
 class CInputMouse;
-class CInputJoypad;
 class CDebugProc;
 class CSound;
 class CCamera;
@@ -45,7 +44,6 @@ public:
 	static CRenderer *GetRenderer(void) { return m_pRenderer; }
 	static CInputKeyboard *GetKeyboard(void) { return m_pKeyboard; }
 	static CInputMouse *GetMouse(void) { return m_pMouse; }
-	static CInputJoypad *GetJoypad(void) { return m_pJoypad; }
 	static CDebugProc *GetDebugProc(void) { return m_pDebugProc; }
 	static CSound *GetSound(void) { return m_pSound; }
 	static CCamera *GetCamera(void) { return m_pCamera; }
@@ -63,7 +61,6 @@ private:
 	static CRenderer *m_pRenderer;	// レンダラーのクラス
 	static CInputKeyboard *m_pKeyboard;	// キーボードのクラス
 	static CInputMouse *m_pMouse;	// マウスのクラス
-	static CInputJoypad *m_pJoypad;	// マウスのクラス
 	static CDebugProc *m_pDebugProc;	// デバッグプロシージャのクラス
 	static CSound *m_pSound;	// サウンドのクラス
 	static CCamera *m_pCamera;	// カメラのポインタ

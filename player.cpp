@@ -262,7 +262,6 @@ void CPlayer::InputMove(void)
 	// î•ñ“üè
 	CInputKeyboard *pKeyboard = CManager::GetKeyboard();
 	CInputMouse *pMouse = CManager::GetMouse();
-	CInputJoypad *pJoypad = CManager::GetJoypad();
 
 	if (pKeyboard == nullptr || pMouse == nullptr)
 	{
@@ -348,7 +347,6 @@ void CPlayer::InputAttack(void)
 	// î•ñ“üè
 	CInputKeyboard *pKeyboard = CManager::GetKeyboard();
 	CInputMouse *pMouse = CManager::GetMouse();
-	CInputJoypad *pJoypad = CManager::GetJoypad();
 
 	if (pKeyboard == nullptr || pMouse == nullptr)
 	{

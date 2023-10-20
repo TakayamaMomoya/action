@@ -57,6 +57,7 @@ public:
 	CInputJoypad();	// コンストラクタ
 	~CInputJoypad();	// デストラクタ
 
+	static CInputJoypad *Create(void);
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
@@ -70,6 +71,7 @@ public:
 	float GetJoyStickRY(int nPlayer);
 	D3DXVECTOR3 GetVecStickL(void);
 	void Vibration(int nPlayer, PADVIB state, short sVib, int nTime);
+	static CInputJoypad *GetInstance(void) { return m_pJoyPad; }
 
 private:
 	void CheckStickTrigger(XINPUT_STATE state);
@@ -82,6 +84,8 @@ private:
 	PADVIB m_aVibState[MAX_PLAYER];					//振動の状態
 	int m_nVibTimer;		// バイブレーションのタイマー
 	int m_aCntRepeat[MAX_PLAYER][PADBUTTONS_MAX];	// リピートカウンター
+
+	static CInputJoypad *m_pJoyPad;	// 自身のポインタ
 };
 
 #endif

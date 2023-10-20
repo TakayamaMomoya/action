@@ -16,7 +16,7 @@
 //*****************************************************
 // クラスの定義
 //*****************************************************
-class CInputManager : public CObject
+class CInputManager
 {
 public:
 	CInputManager();	// コンストラクタ
@@ -26,7 +26,6 @@ public:
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
-	void Draw(void);
 	static CInputManager *GetInstance(void) { return m_pInputManager; }
 
 private:

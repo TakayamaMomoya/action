@@ -12,6 +12,11 @@
 #include "debugproc.h"
 #include "manager.h"
 
+//*****************************************************
+// 静的メンバ変数宣言
+//*****************************************************
+CInputJoypad *CInputJoypad::m_pJoyPad = nullptr;
+
 //====================================================
 // コンストラクタ
 //====================================================
@@ -33,6 +38,24 @@ CInputJoypad::CInputJoypad()
 CInputJoypad::~CInputJoypad()
 {
 
+}
+
+//====================================================
+// 生成処理
+//====================================================
+CInputJoypad *CInputJoypad::Create(void)
+{
+	if (m_pJoyPad == nullptr)
+	{
+		m_pJoyPad = new CInputJoypad;
+
+		if (m_pJoyPad != nullptr)
+		{
+			m_pJoyPad->Init();
+		}
+	}
+
+	return m_pJoyPad;
 }
 
 //====================================================
@@ -60,6 +83,8 @@ HRESULT CInputJoypad::Init(void)
 //====================================================
 void CInputJoypad::Uninit(void)
 {
+	m_pJoyPad = nullptr;
+
 	//xinputを無効化する
 	XInputEnable(false);
 }

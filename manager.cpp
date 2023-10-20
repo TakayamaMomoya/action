@@ -13,7 +13,6 @@
 #include "object2D.h"
 #include "inputkeyboard.h"
 #include "inputmouse.h"
-#include "inputjoypad.h"
 #include "bg.h"
 #include "debugproc.h"
 #include "effect2D.h"
@@ -34,6 +33,7 @@
 #include "fade.h"
 #include "objectmanager.h"
 #include "block.h"
+#include "inputManager.h"
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -41,7 +41,6 @@
 CRenderer *CManager::m_pRenderer = nullptr;	// レンダラーのポインタ
 CInputKeyboard *CManager::m_pKeyboard = nullptr;	// キーボードのポインタ
 CInputMouse *CManager::m_pMouse = nullptr;	// マウスのポインタ
-CInputJoypad *CManager::m_pJoypad = nullptr;	// ジョイパッドのポインタ
 CDebugProc *CManager::m_pDebugProc = nullptr;	// デバッグプロシージャのポインタ
 CSound *CManager::m_pSound = nullptr;	// サウンドのポインタ
 CCamera *CManager::m_pCamera = nullptr;	// カメラのポインタ
@@ -89,6 +88,9 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 		}
 	}
 
+	// 入力マネージャー生成
+	CInputManager::Create();
+
 	if (m_pKeyboard == nullptr)
 	{// キーボード生成
 		m_pKeyboard = new CInputKeyboard;
@@ -111,20 +113,6 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 		{
 			// マウス初期化
 			if (FAILED(m_pMouse->Init(hInstance, hWnd)))
-			{// 初期化に失敗した場合
-				return E_FAIL;
-			}
-		}
-	}
-
-	if (m_pJoypad == nullptr)
-	{// ジョイパッド生成
-		m_pJoypad = new CInputJoypad;
-
-		if (m_pJoypad != nullptr)
-		{
-			// ジョイパッド初期化
-			if (FAILED(m_pJoypad->Init()))
 			{// 初期化に失敗した場合
 				return E_FAIL;
 			}
@@ -273,6 +261,14 @@ void CManager::Uninit(void)
 		m_pUniversal = nullptr;
 	}
 
+	// 入力マネージャー終了
+	CInputManager *pInputManager = CInputManager::GetInstance();
+
+	if (pInputManager != nullptr)
+	{
+		pInputManager->Uninit();
+	}
+
 	if (m_pKeyboard != nullptr)
 	{// キーボードの終了・破棄
 		m_pKeyboard->Uninit();
@@ -287,14 +283,6 @@ void CManager::Uninit(void)
 
 		delete m_pMouse;
 		m_pMouse = nullptr;
-	}
-
-	if (m_pJoypad != nullptr)
-	{// ジョイパッドの終了・破棄
-		m_pJoypad->Uninit();
-
-		delete m_pJoypad;
-		m_pJoypad = nullptr;
 	}
 
 	if (m_pSound != nullptr)
@@ -356,6 +344,14 @@ void CManager::Update(void)
 		m_pScene->Update();
 	}
 
+	// 入力マネージャー更新
+	CInputManager *pInputManager = CInputManager::GetInstance();
+
+	if (pInputManager != nullptr)
+	{
+		pInputManager->Update();
+	}
+
 	if (m_pKeyboard != nullptr)
 	{
 		// キーボードの更新
@@ -366,12 +362,6 @@ void CManager::Update(void)
 	{
 		// マウスの更新
 		m_pMouse->Update();
-	}
-
-	if (m_pJoypad != nullptr)
-	{
-		// ジョイパッドの更新
-		m_pJoypad->Update();
 	}
 
 	if (m_pSound != nullptr)

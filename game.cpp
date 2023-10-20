@@ -33,6 +33,7 @@
 #include "enemyManager.h"
 #include "animEffect3D.h"
 #include "debugproc.h"
+#include <stdio.h>
 
 //*****************************************************
 // マクロ定義
@@ -45,6 +46,7 @@
 #define RATE_BONUS	(0.015f)	// 1秒当たりのタイムボーナス
 #define RESULT_TIME	(5)	// リザルト画面表示までのラグ
 #define BOSS_LINE	(2737.0f)	// ボス戦に突入するライン
+#define CHECKPOINT_PATH "data\\MAP\\checkpoint.txt"	// チェックポイントデータのパス
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -52,14 +54,6 @@
 CScore *CGame::m_pScore = nullptr;	// スコアのポインタ
 CTimer *CGame::m_pTimer = nullptr;	// タイマーのポインタ
 CGame::STATE CGame::m_state = STATE_NONE;
-D3DXVECTOR3 CGame::m_posRespawn[NUM_RESPAWN] = 
-{
-	{ 0.0f,0.0f,0.0f },
-	{ 606.92f,48.58f,0.0f },
-	{ 1229.92f,39.06f,0.0f },
-	{ 1589.72f,250.56f,0.0f },
-	{ 2554.22f,180.56f,0.0f },
-};
 int CGame::m_nProgress = 0;
 
 //=====================================================
@@ -67,7 +61,8 @@ int CGame::m_nProgress = 0;
 //=====================================================
 CGame::CGame()
 {
-
+	m_pPosCheckPoint = nullptr;
+	m_nNumCheckPoint = 0;
 }
 
 //=====================================================
@@ -110,12 +105,15 @@ HRESULT CGame::Init(void)
 		pCamera->SetDist(180.0f);
 	}
 
+	// リスポーン地点設定
+	LoadCheckPoint();
+
 	// プレイヤー生成
 	CPlayer *pPlayer = CPlayer::Create();
 
-	if (pPlayer != nullptr)
+	if (pPlayer != nullptr && m_pPosCheckPoint != nullptr)
 	{// スポーン地点の設定
-		pPlayer->SetPosition(m_posRespawn[m_nProgress]);
+		pPlayer->SetPosition(m_pPosCheckPoint[m_nProgress]);
 	}
 
 	// スカイボックス
@@ -140,6 +138,98 @@ HRESULT CGame::Init(void)
 }
 
 //=====================================================
+// チェックポイントの読込
+//=====================================================
+void CGame::LoadCheckPoint(void)
+{
+	// 変数宣言
+	char cTemp[256];
+	int nCntPos = 0;
+
+	// ファイルから読み込む
+	FILE *pFile = fopen(CHECKPOINT_PATH, "r");
+
+	if (pFile != nullptr)
+	{// ファイルが開けた場合
+		while (true)
+		{
+			// 文字読み込み
+			fscanf(pFile, "%s", &cTemp[0]);
+
+			if (strcmp(cTemp, "NUM_CHECKPOINT") == 0)
+			{// チェックポイント数読込
+				fscanf(pFile, "%s", &cTemp[0]);
+
+				fscanf(pFile, "%d", &m_nNumCheckPoint);
+
+				if (m_pPosCheckPoint == nullptr)
+				{// 判定情報の生成
+					m_pPosCheckPoint = new D3DXVECTOR3[m_nNumCheckPoint];
+
+					for (int i = 0; i < m_nNumCheckPoint; i++)
+					{// 情報のクリア
+						ZeroMemory(&m_pPosCheckPoint[i], sizeof(D3DXVECTOR3));
+					}
+				}
+				else
+				{
+					break;
+				}
+
+				if (m_pPosCheckPoint == nullptr)
+				{// 生成できなかった場合
+					break;
+				}
+
+				while (true)
+				{
+					// 文字読み込み
+					fscanf(pFile, "%s", &cTemp[0]);
+
+					if (strcmp(cTemp, "CHECKPOINTSET") == 0)
+					{// パラメーター読込開始
+						while (true)
+						{
+							// 文字読み込み
+							fscanf(pFile, "%s", &cTemp[0]);
+
+							if (strcmp(cTemp, "POS") == 0)
+							{//位置読み込み
+								fscanf(pFile, "%s", &cTemp[0]);
+
+								for (int i = 0; i < 3; i++)
+								{
+									fscanf(pFile, "%f", &m_pPosCheckPoint[nCntPos][i]);
+								}
+							}
+
+							if (strcmp(cTemp, "END_CHECKPOINTSET") == 0)
+							{// パラメーター読込終了
+								nCntPos++;
+
+								break;
+							}
+						}
+					}
+
+					if (m_nNumCheckPoint <= nCntPos)
+					{
+						break;
+					}
+				}
+			}
+			if (strcmp(cTemp, "END_SCRIPT") == 0)
+			{// 終了条件
+				break;
+			}
+		}
+
+		// ファイルを閉じる
+		fclose(pFile);
+	}
+}
+
+//=====================================================
 // 終了処理
 //=====================================================
 void CGame::Uninit(void)
@@ -156,6 +246,12 @@ void CGame::Uninit(void)
 		m_pTimer->Uninit();
 
 		m_pTimer = nullptr;
+	}
+
+	if (m_pPosCheckPoint != nullptr)
+	{
+		delete[] m_pPosCheckPoint;
+		m_pPosCheckPoint = nullptr;
 	}
 
 	// ブロック情報削除
@@ -300,9 +396,9 @@ void CGame::ManageState(void)
 				m_state = STATE_BOSS;
 			}
 
-			if (m_nProgress < NUM_RESPAWN - 1)
+			if (m_nProgress < m_nNumCheckPoint - 1)
 			{
-				if (pos.x >= m_posRespawn[m_nProgress + 1].x)
+				if (pos.x >= m_pPosCheckPoint[m_nProgress + 1].x)
 				{// チェックポイントの設定
 					m_nProgress++;
 				}

@@ -675,21 +675,12 @@ void CPlayer::ManageCollision(void)
 	// —‰º€”»’è=============
 	if (m_pos.y <= -190.0f)
 	{
-		m_pos = 
-		{
-			0.0f,
-			1.0f,
-			0.0f
-		};
+		CFade *pFade = CManager::GetFade();
 
-		m_posOld = m_pos;
-
-		m_move =
+		if (pFade != nullptr)
 		{
-			0.0f,
-			0.0f,
-			0.0f
-		};
+			pFade->SetFade(CScene::MODE_GAME);
+		}
 	}
 	// =======================
 
@@ -827,7 +818,7 @@ void CPlayer::Hit(float fDamage)
 		{// €–S”»’è
 			m_nLife = 0;
 
-			Uninit();
+			Death();
 		}
 		else
 		{
@@ -858,6 +849,16 @@ void CPlayer::SetMotion(MOTION motion)
 		// ƒ‚[ƒVƒ‡ƒ“İ’è
 		m_pBody->SetMotion(motion);
 	}
+}
+
+//=====================================================
+// €–Sˆ—
+//=====================================================
+void CPlayer::Death(void)
+{
+	CGame::SetState(CGame::STATE_END);
+
+	Uninit();
 }
 
 //=====================================================

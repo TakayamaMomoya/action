@@ -20,6 +20,7 @@
 #include "camera.h"
 #include "renderer.h"
 #include "sound.h"
+#include "game.h"
 
 //*****************************************************
 // マクロ定義
@@ -115,6 +116,8 @@ void CTitle::Update(void)
 			{// フェード
 				if (pFade != nullptr)
 				{
+					CGame::SetProgress(0);
+
 					pFade->SetFade(CScene::MODE_GAME);
 				}
 			}

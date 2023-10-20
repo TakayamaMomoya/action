@@ -21,6 +21,11 @@ class CTimer;
 class CGame;
 
 //*****************************************************
+// マクロ定義
+//*****************************************************
+#define NUM_RESPAWN	(5)	// リスポーン地点
+
+//*****************************************************
 // クラスの定義
 //*****************************************************
 class CGame : public CScene
@@ -49,6 +54,7 @@ public:
 	static void ReleaseTimer(void);
 	static void SetState(STATE state) { m_state = state; }
 	static STATE GetState(void) { return m_state; }
+	static void SetProgress(int nProgress) { m_nProgress = nProgress; }
 
 private:
 	void UpdateCamera(void);
@@ -58,6 +64,8 @@ private:
 	static CScore *m_pScore;	// スコアのポインタ
 	static CTimer *m_pTimer;	// タイマーのポインタ
 	static STATE m_state;	// 状態
+	static D3DXVECTOR3 m_posRespawn[NUM_RESPAWN];	// スポーン地点
+	static int m_nProgress;	// 進行度合い
 	bool m_bStop;	// 停止状態
 };
 

@@ -99,6 +99,7 @@ private:
 	void RotDest(void);
 	void SetMotion(MOTION motion);
 	void ManageAttack(void);
+	void Death(void);
 
 	int m_nLife;	// 体力
 	int m_nCntAfterImage;	// 残像を出すカウンター

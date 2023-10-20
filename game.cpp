@@ -32,6 +32,7 @@
 #include "skybox.h"
 #include "enemyManager.h"
 #include "animEffect3D.h"
+#include "debugproc.h"
 
 //*****************************************************
 // マクロ定義
@@ -51,6 +52,15 @@
 CScore *CGame::m_pScore = nullptr;	// スコアのポインタ
 CTimer *CGame::m_pTimer = nullptr;	// タイマーのポインタ
 CGame::STATE CGame::m_state = STATE_NONE;
+D3DXVECTOR3 CGame::m_posRespawn[NUM_RESPAWN] = 
+{
+	{ 0.0f,0.0f,0.0f },
+	{ 606.92f,48.58f,0.0f },
+	{ 1229.92f,39.06f,0.0f },
+	{ 1589.72f,250.56f,0.0f },
+	{ 2554.22f,180.56f,0.0f },
+};
+int CGame::m_nProgress = 0;
 
 //=====================================================
 // コンストラクタ
@@ -101,7 +111,12 @@ HRESULT CGame::Init(void)
 	}
 
 	// プレイヤー生成
-	CPlayer::Create();
+	CPlayer *pPlayer = CPlayer::Create();
+
+	if (pPlayer != nullptr)
+	{// スポーン地点の設定
+		pPlayer->SetPosition(m_posRespawn[m_nProgress]);
+	}
 
 	// スカイボックス
 	CSkybox::Create();
@@ -116,7 +131,7 @@ HRESULT CGame::Init(void)
 	CAnimEffect3D::Create();
 
 #ifdef _DEBUG
-	CEdit::Create();
+	//CEdit::Create();
 #endif
 
 	m_bStop = false;
@@ -284,6 +299,14 @@ void CGame::ManageState(void)
 
 				m_state = STATE_BOSS;
 			}
+
+			if (m_nProgress < NUM_RESPAWN - 1)
+			{
+				if (pos.x >= m_posRespawn[m_nProgress + 1].x)
+				{// チェックポイントの設定
+					m_nProgress++;
+				}
+			}
 		}
 	}
 		break;
@@ -328,5 +351,5 @@ void CGame::Debug(void)
 //=====================================================
 void CGame::Draw(void)
 {
-
+	CManager::GetDebugProc()->Print("\n進行状況：[%d]", m_nProgress);
 }

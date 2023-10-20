@@ -13,6 +13,7 @@
 //*****************************************************
 #include "object.h"
 #include "motion.h"
+#include <stdio.h>
 
 //*****************************************************
 // ëOï˚êÈåæ
@@ -39,7 +40,6 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-	void Load(void);
 	void Hit(float fDamage);
 	void SetPosition(D3DXVECTOR3 pos) { m_info.pos = pos; }
 	D3DXVECTOR3 GetPosition(void) { return m_info.pos; }
@@ -111,6 +111,8 @@ private:
 		JUMPSTATE jump;	// ÉWÉÉÉìÉvèÛë‘
 	};
 
+	void Load(void);
+	void LoadParam(FILE *pFile,char *pTemp);
 	void ManageState(void);
 	void Input(void);
 	void InputMove(void);

@@ -84,7 +84,6 @@ HRESULT CPlayer::Init(void)
 	SetPosition(D3DXVECTOR3(0.0f, 10.0f, 0.0f));
 
 	// 値の初期化
-	m_info.nLife = INITIAL_LIFE_PLAYER;
 	m_info.state = STATE_NORMAL;
 	m_info.jump = JUMPSTATE_NORMAL;
 
@@ -918,6 +917,9 @@ void CPlayer::Load(void)
 			// 文字読み込み
 			fscanf(pFile, "%s", &cTemp[0]);
 
+			// パラメーター読込
+			LoadParam(pFile,&cTemp[0]);
+
 			if (strcmp(cTemp, "NUM_ATTACK") == 0)
 			{// 攻撃判定読込開始
 				// 攻撃判定数読込
@@ -1051,5 +1053,18 @@ void CPlayer::Load(void)
 
 		// ファイルを閉じる
 		fclose(pFile);
+	}
+}
+
+//=====================================================
+// パラメーター読込
+//=====================================================
+void CPlayer::LoadParam(FILE *pFile, char *pTemp)
+{
+	if (strcmp(pTemp, "LIFE") == 0)
+	{// 体力
+		fscanf(pFile, "%s", pTemp);
+
+		fscanf(pFile, "%d", &m_info.nLife);
 	}
 }

@@ -183,6 +183,9 @@
     <ClCompile Include="missile.cpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="inputManager.cpp">
+      <Filter>ヘッダー ファイル\input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation2D.h">
@@ -346,6 +349,9 @@
     </ClInclude>
     <ClInclude Include="missile.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="inputManager.h">
+      <Filter>ヘッダー ファイル\input</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

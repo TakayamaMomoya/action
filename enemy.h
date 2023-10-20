@@ -62,8 +62,8 @@ public:
 	void SetLife(float fLife);
 	float GetLife(void) { return m_fLife; }
 	void Hit(float fDamage);
-	void SetSpherePosition(D3DXVECTOR3 pos);
 	void Death(void);
+	void SetSpherePosition(D3DXVECTOR3 pos);
 	STATE GetState(void) { return m_state; }
 	void SetState(STATE state) { m_state = state; }
 	CCollisionSphere *GetClsnSphere(void) { return m_pCollisionSphere; }

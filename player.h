@@ -41,14 +41,14 @@ public:
 	void Draw(void);
 	void Load(void);
 	void Hit(float fDamage);
-	void SetPosition(D3DXVECTOR3 pos) { m_pos = pos; }
-	D3DXVECTOR3 GetPosition(void) { return m_pos; }
-	void SetMove(D3DXVECTOR3 move) { m_move = move; }
-	D3DXVECTOR3 GetMove(void) { return m_move; }
-	void SetPositionOld(D3DXVECTOR3 pos) { m_posOld = pos; }
-	D3DXVECTOR3 GetPositionOld(void) { return m_posOld; }
-	void SetRot(D3DXVECTOR3 rot) { m_rot = rot; }
-	D3DXVECTOR3 GetRot(void) { return m_rot; }
+	void SetPosition(D3DXVECTOR3 pos) { m_info.pos = pos; }
+	D3DXVECTOR3 GetPosition(void) { return m_info.pos; }
+	void SetMove(D3DXVECTOR3 move) { m_info.move = move; }
+	D3DXVECTOR3 GetMove(void) { return m_info.move; }
+	void SetPositionOld(D3DXVECTOR3 pos) { m_info.posOld = pos; }
+	D3DXVECTOR3 GetPositionOld(void) { return m_info.posOld; }
+	void SetRot(D3DXVECTOR3 rot) { m_info.rot = rot; }
+	D3DXVECTOR3 GetRot(void) { return m_info.rot; }
 	static CPlayer *GetInstance(void) { return m_pPlayer; }
 
 private:
@@ -87,6 +87,29 @@ private:
 		JUMPSTATE_ATTACK,
 		JUMPSTATE_MAX
 	};
+	struct SInfo
+	{
+		int nLife;	// 体力
+		int nCntAfterImage;	// 残像を出すカウンター
+		int nCntState;	// 状態遷移カウンター
+		bool bSprint;	// ダッシュ状態かどうか
+		bool bAttack;	// 攻撃フラグ
+		float fRadiusParry;	// パリィ判定の半径
+		D3DXVECTOR3 pos;	// 位置
+		D3DXVECTOR3 posOld;	// 前回の位置
+		D3DXVECTOR3 offsetParry;	// パリィ判定のオフセット
+		D3DXVECTOR3 move;	// 移動量
+		D3DXVECTOR3 rot;	// 向き
+		D3DXVECTOR3 rotDest;	// 目標の向き
+		CMotion *pBody;	// 体のポインタ
+		CCollisionCube *pCollisionCube;	// 立方体の当たり判定
+		CCollisionSphere *pClsnAttack;	// 攻撃の当たり判定
+		CCollisionSphere *pClsnHit;	// 被弾当たり判定
+		int nNumAttack;	// 攻撃判定の数
+		AttackInfo *pAttackInfo;	// 攻撃の情報ポインタ
+		STATE state;	// 状態
+		JUMPSTATE jump;	// ジャンプ状態
+	};
 
 	void ManageState(void);
 	void Input(void);
@@ -101,26 +124,7 @@ private:
 	void ManageAttack(void);
 	void Death(void);
 
-	int m_nLife;	// 体力
-	int m_nCntAfterImage;	// 残像を出すカウンター
-	int m_nCntState;	// 状態遷移カウンター
-	bool m_bSprint;	// ダッシュ状態かどうか
-	bool m_bAttack;	// 攻撃フラグ
-	float m_fRadiusParry;	// パリィ判定の半径
-	D3DXVECTOR3 m_pos;	// 位置
-	D3DXVECTOR3 m_posOld;	// 前回の位置
-	D3DXVECTOR3 m_offsetParry;	// パリィ判定のオフセット
-	D3DXVECTOR3 m_move;	// 移動量
-	D3DXVECTOR3 m_rot;	// 向き
-	D3DXVECTOR3 m_rotDest;	// 目標の向き
-	CMotion *m_pBody;	// 体のポインタ
-	CCollisionCube *m_pCollisionCube;	// 立方体の当たり判定
-	CCollisionSphere *m_pClsnAttack;	// 攻撃の当たり判定
-	CCollisionSphere *m_pClsnHit;	// 被弾当たり判定
-	int m_nNumAttack;	// 攻撃判定の数
-	AttackInfo *m_pAttackInfo;	// 攻撃の情報ポインタ
-	STATE m_state;	// 状態
-	JUMPSTATE m_jump;	// ジャンプ状態
+	SInfo m_info;	// 自身の情報
 
 	static CPlayer *m_pPlayer;	// 自身のポインタ
 };

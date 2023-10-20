@@ -62,25 +62,7 @@ CPlayer *CPlayer::m_pPlayer = nullptr;	// 自身のポインタ
 //=====================================================
 CPlayer::CPlayer(int nPriority)
 {
-	m_nLife = 0;
-	m_nCntAfterImage = 0;
-	m_nCntState = 0;
-	m_fRadiusParry = 0.0f;
-	m_pos = { 0.0f,0.0f,0.0f };
-	m_posOld = { 0.0f,0.0f,0.0f };
-	m_offsetParry = { 0.0f,0.0f,0.0f };
-	m_rot = { 0.0f,0.0f,0.0f };
-	m_rotDest = { 0.0f,0.0f,0.0f };
-	m_move = { 0.0f,0.0f,0.0f };
-	m_bSprint = false;
-	m_bAttack = false;
-	m_pBody = nullptr;
-	m_pCollisionCube = nullptr;
-	m_pClsnAttack = nullptr;
-	m_pClsnHit = nullptr;
-	m_pAttackInfo = nullptr;
-	m_state = STATE_NONE;
-	m_jump = JUMPSTATE_NONE;
+	ZeroMemory(&m_info, sizeof(CPlayer::SInfo));
 }
 
 //=====================================================
@@ -102,47 +84,47 @@ HRESULT CPlayer::Init(void)
 	SetPosition(D3DXVECTOR3(0.0f, 10.0f, 0.0f));
 
 	// 値の初期化
-	m_nLife = INITIAL_LIFE_PLAYER;
-	m_state = STATE_NORMAL;
-	m_jump = JUMPSTATE_NORMAL;
+	m_info.nLife = INITIAL_LIFE_PLAYER;
+	m_info.state = STATE_NORMAL;
+	m_info.jump = JUMPSTATE_NORMAL;
 
-	if (m_pBody == nullptr)
+	if (m_info.pBody == nullptr)
 	{// 体の生成
-		m_pBody = CMotion::Create(BODY_PATH);
+		m_info.pBody = CMotion::Create(BODY_PATH);
 	}
 
-	if (m_pCollisionCube == nullptr)
+	if (m_info.pCollisionCube == nullptr)
 	{// 立方体の当たり判定
-		m_pCollisionCube = CCollisionCube::Create(CCollision::TAG_PLAYER, this);
+		m_info.pCollisionCube = CCollisionCube::Create(CCollision::TAG_PLAYER, this);
 
 		D3DXVECTOR3 vtxMax = { 5.0f,20.0f,5.0f };
 		D3DXVECTOR3 vtxMin = { -5.0f,0.0f,-5.0f };
 
-		if (m_pCollisionCube != nullptr)
+		if (m_info.pCollisionCube != nullptr)
 		{
-			m_pCollisionCube->SetVtx(vtxMax, vtxMin);
+			m_info.pCollisionCube->SetVtx(vtxMax, vtxMin);
 		}
 	}
 
-	if (m_pClsnAttack == nullptr)
+	if (m_info.pClsnAttack == nullptr)
 	{// 球の当たり判定生成
-		m_pClsnAttack = CCollisionSphere::Create(CCollision::TAG_NONE, CCollision::TYPE_SPHERE, this);
+		m_info.pClsnAttack = CCollisionSphere::Create(CCollision::TAG_NONE, CCollision::TYPE_SPHERE, this);
 
-		if (m_pClsnAttack != nullptr)
+		if (m_info.pClsnAttack != nullptr)
 		{// 情報の設定
-			m_pClsnAttack->SetPosition(D3DXVECTOR3(0.0f,0.0f,0.0f));
-			m_pClsnAttack->SetRadius(0.0f);
+			m_info.pClsnAttack->SetPosition(D3DXVECTOR3(0.0f,0.0f,0.0f));
+			m_info.pClsnAttack->SetRadius(0.0f);
 		}
 	}
 
-	if (m_pClsnHit == nullptr)
+	if (m_info.pClsnHit == nullptr)
 	{// 被弾当たり判定生成
-		m_pClsnHit = CCollisionSphere::Create(CCollision::TAG_PLAYER, CCollision::TYPE_SPHERE, this);
+		m_info.pClsnHit = CCollisionSphere::Create(CCollision::TAG_PLAYER, CCollision::TYPE_SPHERE, this);
 
-		if (m_pClsnHit != nullptr)
+		if (m_info.pClsnHit != nullptr)
 		{// 情報の設定
-			m_pClsnHit->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-			m_pClsnHit->SetRadius(1.0f);
+			m_info.pClsnHit->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+			m_info.pClsnHit->SetRadius(1.0f);
 		}
 	}
 
@@ -154,28 +136,28 @@ HRESULT CPlayer::Init(void)
 //=====================================================
 void CPlayer::Uninit(void)
 {
-	if (m_pBody != nullptr)
+	if (m_info.pBody != nullptr)
 	{// 体の破棄
-		m_pBody->Uninit();
-		m_pBody = nullptr;
+		m_info.pBody->Uninit();
+		m_info.pBody = nullptr;
 	}
 
-	if (m_pCollisionCube != nullptr)
+	if (m_info.pCollisionCube != nullptr)
 	{// 当たり判定破棄
-		m_pCollisionCube->Uninit();
-		m_pCollisionCube = nullptr;
+		m_info.pCollisionCube->Uninit();
+		m_info.pCollisionCube = nullptr;
 	}
 
-	if (m_pClsnAttack != nullptr)
+	if (m_info.pClsnAttack != nullptr)
 	{// 攻撃当たり判定破棄
-		m_pClsnAttack->Uninit();
-		m_pClsnAttack = nullptr;
+		m_info.pClsnAttack->Uninit();
+		m_info.pClsnAttack = nullptr;
 	}
 
-	if (m_pClsnHit != nullptr)
+	if (m_info.pClsnHit != nullptr)
 	{// 被弾当たり判定破棄
-		m_pClsnHit->Uninit();
-		m_pClsnHit = nullptr;
+		m_info.pClsnHit->Uninit();
+		m_info.pClsnHit = nullptr;
 	}
 
 	if (m_pPlayer != nullptr)
@@ -193,7 +175,7 @@ void CPlayer::Uninit(void)
 void CPlayer::Update(void)
 {
 	// 前回の位置を保存
-	m_posOld = m_pos;
+	m_info.posOld = m_info.pos;
 
 	// 状態管理
 	ManageState();
@@ -208,20 +190,20 @@ void CPlayer::Update(void)
 	RotDest();
 
 	// 位置に移動量を反映
-	m_pos += m_move;
+	m_info.pos += m_info.move;
 
 	// 当たり判定管理
 	ManageCollision();
 
-	if (m_pBody != nullptr)
+	if (m_info.pBody != nullptr)
 	{// 体の追従
-		m_pBody->SetPosition(m_pos);
-		m_pBody->SetRot(m_rot);
+		m_info.pBody->SetPosition(m_info.pos);
+		m_info.pBody->SetRot(m_info.rot);
 	}
 
 	// 移動量減衰
-	m_move.x *= MOVE_FACT;
-	m_move.y -= GRAVITY;
+	m_info.move.x *= MOVE_FACT;
+	m_info.move.y -= GRAVITY;
 }
 
 //=====================================================
@@ -229,24 +211,24 @@ void CPlayer::Update(void)
 //=====================================================
 void CPlayer::ManageState(void)
 {
-	switch (m_state)
+	switch (m_info.state)
 	{
 	case CPlayer::STATE_NORMAL:
 		break;
 	case CPlayer::STATE_DAMAGE:
 
-		m_nCntState++;
+		m_info.nCntState++;
 
-		if (m_nCntState >= TIME_DAMAGE)
+		if (m_info.nCntState >= TIME_DAMAGE)
 		{
-			m_state = STATE_NORMAL;
+			m_info.state = STATE_NORMAL;
 
-			if (m_pBody != nullptr)
+			if (m_info.pBody != nullptr)
 			{
-				m_pBody->ResetAllCol();
+				m_info.pBody->ResetAllCol();
 			}
 
-			m_nCntState = 0;
+			m_info.nCntState = 0;
 		}
 
 		break;
@@ -291,33 +273,33 @@ void CPlayer::InputMove(void)
 	// 変数宣言
 	D3DXVECTOR3 move = { 0.0f,0.0f,0.0f }, rot = { 0.0f,0.0f,0.0f };
 	D3DXVECTOR3 vecStick;
-	int nMotion = m_pBody->GetMotion();
+	int nMotion = m_info.pBody->GetMotion();
 
 	if (nMotion != MOTION_ATTACK &&
 		nMotion != MOTION_ATTACKTURN)
 	{// 攻撃中でなければ
 		if (nMotion != MOTION_PARRY ||
-			m_jump > JUMPSTATE_NONE)
+			m_info.jump > JUMPSTATE_NONE)
 		{// 地上でパリィしてなければ移動
 			if (pKeyboard->GetPress(DIK_A))
 			{// 左移動
 				move.x -= SPEED_MOVE;
-				m_rotDest.y = D3DX_PI * 0.5f;
+				m_info.rotDest.y = D3DX_PI * 0.5f;
 			}
 			if (pKeyboard->GetPress(DIK_D))
 			{// 右移動
 				move.x += SPEED_MOVE;
-				m_rotDest.y = -D3DX_PI * 0.5f;
+				m_info.rotDest.y = -D3DX_PI * 0.5f;
 			}
 
 			// ジャンプ操作
-			if (m_jump == JUMPSTATE_NONE)
+			if (m_info.jump == JUMPSTATE_NONE)
 			{
 				if (pKeyboard->GetTrigger(DIK_SPACE))
 				{
 					move.y += JUMP_POW;
 
-					m_jump = JUMPSTATE_NORMAL;
+					m_info.jump = JUMPSTATE_NORMAL;
 
 					SetMotion(MOTION_JUMP);
 
@@ -353,8 +335,8 @@ void CPlayer::InputMove(void)
 
 	if (pKeyboard->GetTrigger(DIK_E))
 	{// ボス戦までワープ
-		m_pos = { 2579.0f,204.57f,0.0f };
-		m_posOld = { 2579.0f,204.57f,0.0f };
+		m_info.pos = { 2579.0f,204.57f,0.0f };
+		m_info.posOld = { 2579.0f,204.57f,0.0f };
 	}
 #endif
 }
@@ -376,7 +358,7 @@ void CPlayer::InputAttack(void)
 
 	if (pMouse->GetTrigger(CInputMouse::BUTTON_LMB))
 	{// 攻撃
-		if (m_jump == JUMPSTATE_NORMAL)
+		if (m_info.jump == JUMPSTATE_NORMAL)
 		{// 空中攻撃
 			SetMotion(MOTION_AIRATTACK);
 
@@ -385,46 +367,46 @@ void CPlayer::InputAttack(void)
 			// 移動量加算
 			SetMove(move);
 
-			m_jump = JUMPSTATE_ATTACK;
+			m_info.jump = JUMPSTATE_ATTACK;
 		}
-		else if(m_jump == JUMPSTATE_NONE)
+		else if(m_info.jump == JUMPSTATE_NONE)
 		{// 地上攻撃
-			if (m_pBody->GetMotion() == MOTION_ATTACK || m_pBody->GetMotion() == MOTION_ATTACKTURN)
+			if (m_info.pBody->GetMotion() == MOTION_ATTACK || m_info.pBody->GetMotion() == MOTION_ATTACKTURN)
 			{
-				m_bAttack = true;
+				m_info.bAttack = true;
 			}
 			else
 			{
 				SetMotion(MOTION_ATTACK);
 
-				m_bAttack = false;
+				m_info.bAttack = false;
 			}
 		}
 	}
 
-	if (m_pBody != nullptr)
+	if (m_info.pBody != nullptr)
 	{
-		if (m_pBody->IsFinish())
+		if (m_info.pBody->IsFinish())
 		{// 連撃の処理
-			if (m_bAttack == true)
+			if (m_info.bAttack == true)
 			{
-				if (m_pBody->GetMotion() == MOTION_ATTACK)
+				if (m_info.pBody->GetMotion() == MOTION_ATTACK)
 				{
 					SetMotion(MOTION_ATTACKTURN);
 
-					m_bAttack = false;
+					m_info.bAttack = false;
 				}
 				else
 				{
 					SetMotion(MOTION_ATTACK);
 
-					m_bAttack = false;
+					m_info.bAttack = false;
 				}
 			}
 		}
 
 		if (pMouse->GetTrigger(CInputMouse::BUTTON_RMB) &&
-			m_pBody->GetMotion() != MOTION_PARRY)
+			m_info.pBody->GetMotion() != MOTION_PARRY)
 		{// パリィ
 			Parry();
 		}
@@ -438,7 +420,7 @@ void CPlayer::Parry(void)
 {
 	SetMotion(MOTION_PARRY);
 
-	if (m_pClsnAttack == nullptr)
+	if (m_info.pClsnAttack == nullptr)
 	{// 判定のエラー
 		return;
 	}
@@ -449,7 +431,7 @@ void CPlayer::Parry(void)
 	D3DXVECTOR3 pos;
 	bool bHit = false;
 
-	pUniversal->SetOffSet(&mtx, *m_pBody->GetMatrix(), m_offsetParry);
+	pUniversal->SetOffSet(&mtx, *m_info.pBody->GetMatrix(), m_info.offsetParry);
 
 	pos =
 	{
@@ -459,20 +441,20 @@ void CPlayer::Parry(void)
 	};
 
 	// 位置設定
-	m_pClsnAttack->SetPosition(pos);
+	m_info.pClsnAttack->SetPosition(pos);
 
 	// 半径の設定
-	m_pClsnAttack->SetRadius(m_fRadiusParry);
+	m_info.pClsnAttack->SetRadius(m_info.fRadiusParry);
 
 #ifdef _DEBUG
-	CEffect3D::Create(pos, m_fRadiusParry, 10, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	CEffect3D::Create(pos, m_info.fRadiusParry, 10, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 #endif
 
 	// 命中したかの判定
-	bHit = m_pClsnAttack->SphereCollision(CCollision::TAG_ENEMYBULLET);
+	bHit = m_info.pClsnAttack->SphereCollision(CCollision::TAG_ENEMYBULLET);
 
 	// 命中したオブジェクトの取得
-	CObject *pObj = m_pClsnAttack->GetOther();
+	CObject *pObj = m_info.pClsnAttack->GetOther();
 
 	if (bHit == true && pObj != nullptr)
 	{//	パリィ成功
@@ -551,7 +533,7 @@ void CPlayer::Parry(void)
 //=====================================================
 void CPlayer::ManageMotion(void)
 {
-	if (m_pBody == nullptr)
+	if (m_info.pBody == nullptr)
 	{
 		return;
 	}
@@ -559,13 +541,13 @@ void CPlayer::ManageMotion(void)
 	// 移動量の取得
 	D3DXVECTOR3 move = GetMove();
 
-	bool bFinish = m_pBody->IsFinish();
-	int nMotion = m_pBody->GetMotion();
+	bool bFinish = m_info.pBody->IsFinish();
+	int nMotion = m_info.pBody->GetMotion();
 
-	if (m_jump == JUMPSTATE_NONE)
+	if (m_info.jump == JUMPSTATE_NONE)
 	{
-		if (m_bAttack == false &&
-			(m_pBody->GetMotion() != MOTION_ATTACK && m_pBody->GetMotion() != MOTION_ATTACKTURN && m_pBody->GetMotion() != MOTION_PARRY))
+		if (m_info.bAttack == false &&
+			(m_info.pBody->GetMotion() != MOTION_ATTACK && m_info.pBody->GetMotion() != MOTION_ATTACKTURN && m_info.pBody->GetMotion() != MOTION_PARRY))
 		{// 移動モーション
 			if (move.x * move.x > LINE_STOP * LINE_STOP)
 			{// ある程度動いていれば歩きモーション
@@ -575,7 +557,7 @@ void CPlayer::ManageMotion(void)
 			{// 待機モーションへ移行
 				SetMotion(MOTION_NEUTRAL);
 
-				m_nCntAfterImage = 0;
+				m_info.nCntAfterImage = 0;
 			}
 		}
 		else
@@ -601,14 +583,14 @@ void CPlayer::ManageMotion(void)
 
 	if (fSpeed * fSpeed > LINE_STOP * LINE_STOP)
 	{
-		m_nCntAfterImage++;
+		m_info.nCntAfterImage++;
 
-		if (m_nCntAfterImage >= TIME_AFTERIMAGE)
+		if (m_info.nCntAfterImage >= TIME_AFTERIMAGE)
 		{
 			// 残像の生成
-			m_pBody->SetAfterImage(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f), 20);
+			m_info.pBody->SetAfterImage(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f), 20);
 
-			m_nCntAfterImage = 0;
+			m_info.nCntAfterImage = 0;
 		}
 	}
 }
@@ -623,37 +605,37 @@ void CPlayer::ManageCollision(void)
 
 	CFade *pFade = CManager::GetFade();
 
-	if (m_pCollisionCube != nullptr)
+	if (m_info.pCollisionCube != nullptr)
 	{// 当たり判定の管理
 
-		m_pCollisionCube->SetPosition(GetPosition());
+		m_info.pCollisionCube->SetPosition(GetPosition());
 
 		D3DXVECTOR3 move = GetMove();
 
 		// 押し出しの当たり判定
-		bLandBlock = m_pCollisionCube->CubeCollision(CCollision::TAG_BLOCK, &move);
+		bLandBlock = m_info.pCollisionCube->CubeCollision(CCollision::TAG_BLOCK, &move);
 
 		SetMove(move);
 
-		if (m_jump != JUMPSTATE_NONE && 
+		if (m_info.jump != JUMPSTATE_NONE && 
 			bLandBlock)
 		{
-			m_jump = JUMPSTATE_NONE;
+			m_info.jump = JUMPSTATE_NONE;
 		}
 		else if(bLandBlock == false && 
-			m_jump == JUMPSTATE_NONE)
+			m_info.jump == JUMPSTATE_NONE)
 		{
-			m_jump = JUMPSTATE_NORMAL;
+			m_info.jump = JUMPSTATE_NORMAL;
 		}
 	}
 
-	if (m_pClsnHit != nullptr)
+	if (m_info.pClsnHit != nullptr)
 	{
-		if (m_pBody != nullptr)
+		if (m_info.pBody != nullptr)
 		{
-			if (m_pBody->GetParts(0) != nullptr)
+			if (m_info.pBody->GetParts(0) != nullptr)
 			{
-				D3DXMATRIX mtx = *m_pBody->GetParts(0)->m_pParts->GetMatrix();
+				D3DXMATRIX mtx = *m_info.pBody->GetParts(0)->m_pParts->GetMatrix();
 				D3DXVECTOR3 pos =
 				{
 					mtx._41,
@@ -661,10 +643,10 @@ void CPlayer::ManageCollision(void)
 					mtx._43,
 				};
 
-				m_pClsnHit->SetPositionOld(m_pClsnHit->GetPosition());
-				m_pClsnHit->SetPosition(pos);
+				m_info.pClsnHit->SetPositionOld(m_info.pClsnHit->GetPosition());
+				m_info.pClsnHit->SetPosition(pos);
 
-				if (m_pClsnHit->SphereCollision(CCollision::TAG_ENEMY))
+				if (m_info.pClsnHit->SphereCollision(CCollision::TAG_ENEMY))
 				{
 					Hit(5.0f);
 				}
@@ -673,7 +655,7 @@ void CPlayer::ManageCollision(void)
 	}
 
 	// 落下死判定=============
-	if (m_pos.y <= -190.0f)
+	if (m_info.pos.y <= -190.0f)
 	{
 		CFade *pFade = CManager::GetFade();
 
@@ -693,32 +675,32 @@ void CPlayer::ManageCollision(void)
 //=====================================================
 void CPlayer::ManageAttack(void)
 {
-	if (m_pClsnAttack == nullptr)
+	if (m_info.pClsnAttack == nullptr)
 	{// 判定のエラー
 		return;
 	}
 
-	if (m_pBody == nullptr)
+	if (m_info.pBody == nullptr)
 	{// モーションのエラー
 		return;
 	}
 
 	CUniversal *pUniversal = CManager::GetUniversal();
 
-	for (int i = 0; i < m_nNumAttack; i++)
+	for (int i = 0; i < m_info.nNumAttack; i++)
 	{
-		if (m_pBody->GetMotion() == m_pAttackInfo[i].nIdxMotion)
+		if (m_info.pBody->GetMotion() == m_info.pAttackInfo[i].nIdxMotion)
 		{// 攻撃モーション中の判定
-			int nFrame = m_pBody->GetFrame();
-			int nKey = m_pBody->GetKey();
+			int nFrame = m_info.pBody->GetFrame();
+			int nKey = m_info.pBody->GetKey();
 			D3DXVECTOR3 pos;
 
-			if (nFrame == m_pAttackInfo[i].nFrame && nKey == m_pAttackInfo[i].nKey)
+			if (nFrame == m_info.pAttackInfo[i].nFrame && nKey == m_info.pAttackInfo[i].nKey)
 			{// 当たり判定の設定
 				bool bHit = false;
 				D3DXMATRIX mtx;
 
-				pUniversal->SetOffSet(&mtx, *m_pBody->GetMatrix(), m_pAttackInfo[i].pos);
+				pUniversal->SetOffSet(&mtx, *m_info.pBody->GetMatrix(), m_info.pAttackInfo[i].pos);
 
 				pos =
 				{
@@ -728,19 +710,19 @@ void CPlayer::ManageAttack(void)
 				};
 
 				// 位置設定
-				m_pClsnAttack->SetPosition(pos);
+				m_info.pClsnAttack->SetPosition(pos);
 				
 				// 半径の設定
-				m_pClsnAttack->SetRadius(m_pAttackInfo[i].fRadius);
+				m_info.pClsnAttack->SetRadius(m_info.pAttackInfo[i].fRadius);
 
 #ifdef _DEBUG
-				CEffect3D::Create(pos, m_pAttackInfo[i].fRadius, 10, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+				CEffect3D::Create(pos, m_info.pAttackInfo[i].fRadius, 10, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 #endif
 				// 命中したかの判定
-				bHit = m_pClsnAttack->SphereCollision(CCollision::TAG_ENEMY);
+				bHit = m_info.pClsnAttack->SphereCollision(CCollision::TAG_ENEMY);
 				
 				// 命中したオブジェクトの取得
-				CObject *pObj = m_pClsnAttack->GetOther();
+				CObject *pObj = m_info.pClsnAttack->GetOther();
 
 				if (bHit == true && pObj != nullptr)
 				{// 命中時のヒット処理
@@ -767,7 +749,7 @@ void CPlayer::RotDest(void)
 	D3DXVECTOR3 vecDest;
 	D3DXVECTOR3 rot = GetRot();
 
-	float fRotDiff = m_rotDest.y - rot.y;
+	float fRotDiff = m_info.rotDest.y - rot.y;
 
 	// 角度の修正
 	if (fRotDiff > D3DX_PI)
@@ -810,25 +792,25 @@ void CPlayer::InputCamera(void)
 //=====================================================
 void CPlayer::Hit(float fDamage)
 {
-	if (m_state == STATE_NORMAL)
+	if (m_info.state == STATE_NORMAL)
 	{
-		m_nLife -= (int)fDamage;
+		m_info.nLife -= (int)fDamage;
 
-		if (m_nLife <= 0)
+		if (m_info.nLife <= 0)
 		{// 死亡判定
-			m_nLife = 0;
+			m_info.nLife = 0;
 
 			Death();
 		}
 		else
 		{
-			m_state = STATE_DAMAGE;
+			m_info.state = STATE_DAMAGE;
 
 			CManager::GetCamera()->SetQuake(0.03f, 0.03f, 10);
 
-			if (m_pBody != nullptr)
+			if (m_info.pBody != nullptr)
 			{
-				m_pBody->SetAllCol(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+				m_info.pBody->SetAllCol(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
 			}
 		}
 	}
@@ -839,15 +821,15 @@ void CPlayer::Hit(float fDamage)
 //=====================================================
 void CPlayer::SetMotion(MOTION motion)
 {
-	if (m_pBody == nullptr)
+	if (m_info.pBody == nullptr)
 	{
 		return;
 	}
 
-	if (m_pBody->GetMotion() != motion)
+	if (m_info.pBody->GetMotion() != motion)
 	{
 		// モーション設定
-		m_pBody->SetMotion(motion);
+		m_info.pBody->SetMotion(motion);
 	}
 }
 
@@ -866,16 +848,16 @@ void CPlayer::Death(void)
 //=====================================================
 void CPlayer::Draw(void)
 {
-	if (m_pBody != nullptr)
+	if (m_info.pBody != nullptr)
 	{
-		m_pBody->SetMatrix();
+		m_info.pBody->SetMatrix();
 	}
 
 #ifdef _DEBUG
 	CManager::GetDebugProc()->Print("\nプレイヤーの位置：[%f,%f,%f]", GetPosition().x, GetPosition().y, GetPosition().z);
-	CManager::GetDebugProc()->Print("\nプレイヤー体力[%d]", m_nLife);
-	CManager::GetDebugProc()->Print("\nモーション[%d]", m_pBody->GetMotion());
-	CManager::GetDebugProc()->Print("\n攻撃[%d]", m_bAttack);
+	CManager::GetDebugProc()->Print("\nプレイヤー体力[%d]", m_info.nLife);
+	CManager::GetDebugProc()->Print("\nモーション[%d]", m_info.pBody->GetMotion());
+	CManager::GetDebugProc()->Print("\n攻撃[%d]", m_info.bAttack);
 	CManager::GetDebugProc()->Print("\nリセット[F3]");
 #else
 	CManager::GetDebugProc()->Print("\n");
@@ -930,15 +912,15 @@ void CPlayer::Load(void)
 				// 攻撃判定数読込
 				fscanf(pFile, "%s", &cTemp[0]);
 
-				fscanf(pFile, "%d", &m_nNumAttack);
+				fscanf(pFile, "%d", &m_info.nNumAttack);
 				
-				if (m_pAttackInfo == nullptr)
+				if (m_info.pAttackInfo == nullptr)
 				{// 判定情報の生成
-					m_pAttackInfo = new AttackInfo[m_nNumAttack];
+					m_info.pAttackInfo = new AttackInfo[m_info.nNumAttack];
 
-					for (int i = 0; i < m_nNumAttack; i++)
+					for (int i = 0; i < m_info.nNumAttack; i++)
 					{// 情報のクリア
-						ZeroMemory(&m_pAttackInfo[i], sizeof(AttackInfo));
+						ZeroMemory(&m_info.pAttackInfo[i], sizeof(AttackInfo));
 					}
 				}
 				else
@@ -946,7 +928,7 @@ void CPlayer::Load(void)
 					break;
 				}
 
-				if (m_pAttackInfo == nullptr)
+				if (m_info.pAttackInfo == nullptr)
 				{// 生成できなかった場合
 					break;
 				}
@@ -967,7 +949,7 @@ void CPlayer::Load(void)
 							{// モーションの種類
 								fscanf(pFile, "%s", &cTemp[0]);
 
-								fscanf(pFile, "%d", &m_pAttackInfo[nCntAttack].nIdxMotion);
+								fscanf(pFile, "%d", &m_info.pAttackInfo[nCntAttack].nIdxMotion);
 							}
 
 							if (strcmp(cTemp, "POS") == 0)
@@ -976,7 +958,7 @@ void CPlayer::Load(void)
 
 								for (int nCntPos = 0; nCntPos < 3; nCntPos++)
 								{
-									fscanf(pFile, "%f", &m_pAttackInfo[nCntAttack].pos[nCntPos]);
+									fscanf(pFile, "%f", &m_info.pAttackInfo[nCntAttack].pos[nCntPos]);
 								}
 							}
 
@@ -984,21 +966,21 @@ void CPlayer::Load(void)
 							{// キーの番号
 								fscanf(pFile, "%s", &cTemp[0]);
 
-								fscanf(pFile, "%d", &m_pAttackInfo[nCntAttack].nKey);
+								fscanf(pFile, "%d", &m_info.pAttackInfo[nCntAttack].nKey);
 							}
 
 							if (strcmp(cTemp, "FRAME") == 0)
 							{// フレーム番号
 								fscanf(pFile, "%s", &cTemp[0]);
 
-								fscanf(pFile, "%d", &m_pAttackInfo[nCntAttack].nFrame);
+								fscanf(pFile, "%d", &m_info.pAttackInfo[nCntAttack].nFrame);
 							}
 
 							if (strcmp(cTemp, "RADIUS") == 0)
 							{// 半径
 								fscanf(pFile, "%s", &cTemp[0]);
 
-								fscanf(pFile, "%f", &m_pAttackInfo[nCntAttack].fRadius);
+								fscanf(pFile, "%f", &m_info.pAttackInfo[nCntAttack].fRadius);
 							}
 
 							if (strcmp(cTemp, "END_ATTACKSET") == 0)
@@ -1010,7 +992,7 @@ void CPlayer::Load(void)
 						}
 					}
 
-					if (m_nNumAttack <= nCntAttack)
+					if (m_info.nNumAttack <= nCntAttack)
 					{
 						break;
 					}
@@ -1030,7 +1012,7 @@ void CPlayer::Load(void)
 
 						for (int i = 0; i < 3; i++)
 						{
-							fscanf(pFile, "%f", &m_offsetParry[i]);
+							fscanf(pFile, "%f", &m_info.offsetParry[i]);
 						}
 					}
 
@@ -1038,7 +1020,7 @@ void CPlayer::Load(void)
 					{// 半径
 						fscanf(pFile, "%s", &cTemp[0]);
 
-						fscanf(pFile, "%f", &m_fRadiusParry);
+						fscanf(pFile, "%f", &m_info.fRadiusParry);
 					}
 					
 					if (strcmp(cTemp, "END_PARRYSET") == 0)

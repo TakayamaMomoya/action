@@ -35,6 +35,7 @@ public:
 		TYPE_FLASH,	// ‰Î‰Ô
 		TYPE_JUMP,	// ƒWƒƒƒ“ƒv
 		TYPE_SLASH,	// ŽaŒ‚
+		TYPE_AIRSLASH,	// ‹ó’†ŽaŒ‚
 		TYPE_MAX
 	};
 

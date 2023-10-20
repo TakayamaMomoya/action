@@ -368,6 +368,17 @@ void CPlayer::InputAttack(void)
 			SetMove(move);
 
 			m_info.jump = JUMPSTATE_ATTACK;
+
+			CAnimEffect3D *pAnim3D = CAnimEffect3D::GetInstance();
+
+			if (pAnim3D != nullptr)
+			{
+				D3DXVECTOR3 posEffect = GetPosition();
+
+				posEffect.y += 10.0f;
+
+				pAnim3D->CreateEffect(posEffect, CAnimEffect3D::TYPE_AIRSLASH);
+			}
 		}
 		else if(m_info.jump == JUMPSTATE_NONE)
 		{// ínè„çUåÇ

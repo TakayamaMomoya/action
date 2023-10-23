@@ -107,7 +107,7 @@ void CLight::Update(void)
 	D3DXVECTOR3 vecDir;
 
 	// “ü—Íî•ñ“üŽè
-	CInputKeyboard *pKeyboard = CManager::GetKeyboard();
+	//CInputKeyboard *pKeyboard = CManager::GetKeyboard();
 
 	//ƒ‰ƒCƒgˆÚ“®================================================
 	//if (pKeyboard->GetPress(DIK_J) == true)

@@ -15,6 +15,7 @@
 #include "inputkeyboard.h"
 #include "inputmouse.h"
 #include "inputjoypad.h"
+#include "inputManager.h"
 #include "debugproc.h"
 #include "particle.h"
 #include "sound.h"
@@ -241,9 +242,6 @@ void CPlayer::ManageState(void)
 //=====================================================
 void CPlayer::Input(void)
 {
-	// 入力情報入手
-	CInputKeyboard *pKeyboard = CManager::GetKeyboard();
-
 	// 移動操作
 	InputMove();
 
@@ -260,10 +258,10 @@ void CPlayer::Input(void)
 void CPlayer::InputMove(void)
 {
 	// 情報入手
-	CInputKeyboard *pKeyboard = CManager::GetKeyboard();
-	CInputMouse *pMouse = CManager::GetMouse();
+	CInputMouse *pMouse = CInputMouse::GetInstance();
+	CInputManager *pInputManager = CInputManager::GetInstance();
 
-	if (pKeyboard == nullptr || pMouse == nullptr)
+	if (pMouse == nullptr)
 	{
 		return;
 	}
@@ -279,12 +277,12 @@ void CPlayer::InputMove(void)
 		if (nMotion != MOTION_PARRY ||
 			m_info.jump > JUMPSTATE_NONE)
 		{// 地上でパリィしてなければ移動
-			if (pKeyboard->GetPress(DIK_A))
+			if (pInputManager->GetPress(CInputManager::BUTTON_MOVE_LEFT))
 			{// 左移動
 				move.x -= SPEED_MOVE;
 				m_info.rotDest.y = D3DX_PI * 0.5f;
 			}
-			if (pKeyboard->GetPress(DIK_D))
+			if (pInputManager->GetPress(CInputManager::BUTTON_MOVE_RIGHT))
 			{// 右移動
 				move.x += SPEED_MOVE;
 				m_info.rotDest.y = -D3DX_PI * 0.5f;
@@ -293,7 +291,7 @@ void CPlayer::InputMove(void)
 			// ジャンプ操作
 			if (m_info.jump == JUMPSTATE_NONE)
 			{
-				if (pKeyboard->GetTrigger(DIK_SPACE))
+				if (pInputManager->GetTrigger(CInputManager::BUTTON_JUMP))
 				{
 					move.y += JUMP_POW;
 
@@ -321,21 +319,21 @@ void CPlayer::InputMove(void)
 	}
 
 #ifdef _DEBUG
-	if (pKeyboard->GetTrigger(DIK_G))
-	{
-		CAnimEffect3D *pAnim3D = CAnimEffect3D::GetInstance();
+	//if (pKeyboard->GetTrigger(DIK_G))
+	//{
+	//	CAnimEffect3D *pAnim3D = CAnimEffect3D::GetInstance();
 
-		if (pAnim3D != nullptr)
-		{
-			pAnim3D->CreateEffect(GetPosition(), CAnimEffect3D::TYPE_FLASH);
-		}
-	}
+	//	if (pAnim3D != nullptr)
+	//	{
+	//		pAnim3D->CreateEffect(GetPosition(), CAnimEffect3D::TYPE_FLASH);
+	//	}
+	//}
 
-	if (pKeyboard->GetTrigger(DIK_E))
-	{// ボス戦までワープ
-		m_info.pos = { 2579.0f,204.57f,0.0f };
-		m_info.posOld = { 2579.0f,204.57f,0.0f };
-	}
+	//if (pKeyboard->GetTrigger(DIK_E))
+	//{// ボス戦までワープ
+	//	m_info.pos = { 2579.0f,204.57f,0.0f };
+	//	m_info.posOld = { 2579.0f,204.57f,0.0f };
+	//}
 #endif
 }
 
@@ -345,15 +343,14 @@ void CPlayer::InputMove(void)
 void CPlayer::InputAttack(void)
 {
 	// 情報入手
-	CInputKeyboard *pKeyboard = CManager::GetKeyboard();
-	CInputMouse *pMouse = CManager::GetMouse();
+	CInputManager *pInputManager = CInputManager::GetInstance();
 
-	if (pKeyboard == nullptr || pMouse == nullptr)
+	if (pInputManager == nullptr)
 	{
 		return;
 	}
 
-	if (pMouse->GetTrigger(CInputMouse::BUTTON_LMB))
+	if (pInputManager->GetTrigger(CInputManager::BUTTON_ATTACK))
 	{// 攻撃
 		if (m_info.jump == JUMPSTATE_NORMAL)
 		{// 空中攻撃
@@ -413,7 +410,7 @@ void CPlayer::InputAttack(void)
 			}
 		}
 
-		if (pMouse->GetTrigger(CInputMouse::BUTTON_RMB) &&
+		if (pInputManager->GetTrigger(CInputManager::BUTTON_PARRY) &&
 			m_info.pBody->GetMotion() != MOTION_PARRY)
 		{// パリィ
 			Parry();
@@ -846,7 +843,12 @@ void CPlayer::SetMotion(MOTION motion)
 //=====================================================
 void CPlayer::Death(void)
 {
-	CGame::SetState(CGame::STATE_END);
+	CFade *pFade = CManager::GetFade();
+
+	if (pFade != nullptr)
+	{
+		pFade->SetFade(CScene::MODE_GAME);
+	}
 
 	Uninit();
 }

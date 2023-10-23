@@ -12,6 +12,11 @@
 #include "debugproc.h"
 #include "manager.h"
 
+//*****************************************************
+// 静的メンバ変数宣言
+//*****************************************************
+CInputKeyboard *CInputKeyboard::m_pKeyboard = nullptr;	// 自身のポインタ
+
 //=====================================================
 // コンストラクタ
 //=====================================================
@@ -30,6 +35,24 @@ CInputKeyboard::CInputKeyboard()
 CInputKeyboard::~CInputKeyboard()
 {
 
+}
+
+//=====================================================
+// 生成処理
+//=====================================================
+CInputKeyboard *CInputKeyboard::Create(HINSTANCE hInstance, HWND hWnd)
+{
+	if (m_pKeyboard == nullptr)
+	{
+		m_pKeyboard = new CInputKeyboard;
+
+		if (m_pKeyboard != nullptr)
+		{
+			m_pKeyboard->Init(hInstance, hWnd);
+		}
+	}
+
+	return m_pKeyboard;
 }
 
 //=====================================================
@@ -61,7 +84,6 @@ HRESULT CInputKeyboard::Init(HINSTANCE hInstance, HWND hWnd)
 	//キーボードのアクセス権獲得
 	m_pDevice->Acquire();
 
-
 	return S_OK;
 }
 
@@ -70,6 +92,8 @@ HRESULT CInputKeyboard::Init(HINSTANCE hInstance, HWND hWnd)
 //=====================================================
 void CInputKeyboard::Uninit(void)
 {
+	m_pKeyboard = nullptr;
+
 	// 基本クラスの終了処理
 	CInput::Uninit();
 }

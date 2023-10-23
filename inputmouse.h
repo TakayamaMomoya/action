@@ -38,6 +38,7 @@ public:
 	CInputMouse();
 	~CInputMouse();
 
+	static CInputMouse *Create(HINSTANCE hInstance, HWND hWnd);
 	HRESULT Init(HINSTANCE hInstance, HWND hWnd);
 	void Uninit(void);
 	void Update(void);
@@ -48,6 +49,7 @@ public:
 	LONG GetMoveIX(void);
 	LONG GetMoveIY(void);
 	LONG GetMoveIZ(void);
+	static CInputMouse *GetInstance(void) { return m_pMouse; }
 
 private:
 	DIMOUSESTATE2 m_mouseState;					//マウスの情報構造体
@@ -56,6 +58,7 @@ private:
 	BYTE m_aKeyStateRelease[NUM_BUTTON_MAX];			// リリース情報
 	BYTE m_aKeyStateRepeat[NUM_BUTTON_MAX];			// リピート情報
 	int m_aCntRepeat[NUM_BUTTON_MAX];	// リピートカウンター
+	static CInputMouse *m_pMouse;	// 自身のポインタ
 };
 
 #endif

@@ -95,8 +95,7 @@ void CTitle::Uninit(void)
 void CTitle::Update(void)
 {
 	// 情報取得
-	CInputKeyboard *pKeyboard = CManager::GetKeyboard();
-	CInputMouse *pMouse = CManager::GetMouse();
+	CInputMouse *pMouse = CInputMouse::GetInstance();
 
 	CCamera *pCamera = CManager::GetCamera();
 
@@ -107,10 +106,9 @@ void CTitle::Update(void)
 
 	if (m_state == STATE_NONE)
 	{
-		if (pKeyboard != nullptr && pMouse != nullptr)
+		if (pMouse != nullptr)
 		{
-			if (pKeyboard->GetTrigger(DIK_RETURN) ||
-				pMouse->GetTrigger(CInputMouse::BUTTON_LMB))
+			if (pMouse->GetTrigger(CInputMouse::BUTTON_LMB))
 			{// フェード
 				if (pFade != nullptr)
 				{

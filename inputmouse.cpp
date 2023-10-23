@@ -12,6 +12,11 @@
 #include "manager.h"
 #include "debugproc.h"
 
+//*****************************************************
+// 静的メンバ変数宣言
+//*****************************************************
+CInputMouse *CInputMouse::m_pMouse = nullptr;	// 自身のポインタ
+
 //=====================================================
 // コンストラクタ
 //=====================================================
@@ -31,6 +36,24 @@ CInputMouse::CInputMouse()
 CInputMouse::~CInputMouse()
 {
 
+}
+
+//=====================================================
+// 生成処理
+//=====================================================
+CInputMouse *CInputMouse::Create(HINSTANCE hInstance, HWND hWnd)
+{
+	if (m_pMouse == nullptr)
+	{
+		m_pMouse = new CInputMouse;
+
+		if (m_pMouse != nullptr)
+		{
+			m_pMouse->Init(hInstance, hWnd);
+		}
+	}
+
+	return m_pMouse;
 }
 
 //=====================================================

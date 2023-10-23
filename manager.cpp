@@ -39,8 +39,6 @@
 // 静的メンバ変数宣言
 //*****************************************************
 CRenderer *CManager::m_pRenderer = nullptr;	// レンダラーのポインタ
-CInputKeyboard *CManager::m_pKeyboard = nullptr;	// キーボードのポインタ
-CInputMouse *CManager::m_pMouse = nullptr;	// マウスのポインタ
 CDebugProc *CManager::m_pDebugProc = nullptr;	// デバッグプロシージャのポインタ
 CSound *CManager::m_pSound = nullptr;	// サウンドのポインタ
 CCamera *CManager::m_pCamera = nullptr;	// カメラのポインタ
@@ -89,35 +87,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	}
 
 	// 入力マネージャー生成
-	CInputManager::Create();
-
-	if (m_pKeyboard == nullptr)
-	{// キーボード生成
-		m_pKeyboard = new CInputKeyboard;
-
-		if (m_pKeyboard != nullptr)
-		{
-			// キーボード初期化
-			if (FAILED(m_pKeyboard->Init(hInstance, hWnd)))
-			{// 初期化に失敗した場合
-				return E_FAIL;
-			}
-		}
-	}
-
-	if (m_pMouse == nullptr)
-	{// マウス生成
-		m_pMouse = new CInputMouse;
-
-		if (m_pMouse != nullptr)
-		{
-			// マウス初期化
-			if (FAILED(m_pMouse->Init(hInstance, hWnd)))
-			{// 初期化に失敗した場合
-				return E_FAIL;
-			}
-		}
-	}
+	CInputManager::Create(hInstance, hWnd);
 
 	if (m_pDebugProc == nullptr)
 	{// デバッグプロシージャ生成
@@ -269,22 +239,6 @@ void CManager::Uninit(void)
 		pInputManager->Uninit();
 	}
 
-	if (m_pKeyboard != nullptr)
-	{// キーボードの終了・破棄
-		m_pKeyboard->Uninit();
-
-		delete m_pKeyboard;
-		m_pKeyboard = nullptr;
-	}
-
-	if (m_pMouse != nullptr)
-	{// マウスの終了・破棄
-		m_pMouse->Uninit();
-
-		delete m_pMouse;
-		m_pMouse = nullptr;
-	}
-
 	if (m_pSound != nullptr)
 	{// サウンドの終了・破棄
 		m_pSound->Uninit();
@@ -352,18 +306,6 @@ void CManager::Update(void)
 		pInputManager->Update();
 	}
 
-	if (m_pKeyboard != nullptr)
-	{
-		// キーボードの更新
-		m_pKeyboard->Update();
-	}
-
-	if (m_pMouse != nullptr)
-	{
-		// マウスの更新
-		m_pMouse->Update();
-	}
-
 	if (m_pSound != nullptr)
 	{
 		// サウンドの更新
@@ -382,13 +324,13 @@ void CManager::Update(void)
 		m_pLight->Update();
 	}
 	
-	if (m_pKeyboard != nullptr)
-	{
-		if (m_pKeyboard->GetTrigger(DIK_F3))
-		{// 強制リセット
-			CManager::SetMode(CScene::MODE_TITLE);
-		}
-	}
+	//if (m_pKeyboard != nullptr)
+	//{
+	//	if (m_pKeyboard->GetTrigger(DIK_F3))
+	//	{// 強制リセット
+	//		CManager::SetMode(CScene::MODE_TITLE);
+	//	}
+	//}
 }
 
 //=====================================================

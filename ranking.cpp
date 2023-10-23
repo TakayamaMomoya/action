@@ -107,8 +107,8 @@ void CRanking::Uninit(void)
 void CRanking::Update(void)
 {
 	// 入力情報取得
-	CInputKeyboard *pKeyboard = CManager::GetKeyboard();
-	CInputMouse *pMouse = CManager::GetMouse();
+	//CInputKeyboard *pKeyboard = CManager::GetKeyboard();
+	CInputMouse *pMouse = CInputMouse::GetInstance();
 
 	CFade *pFade = CManager::GetFade();
 
@@ -157,8 +157,7 @@ void CRanking::Update(void)
 	}
 
 	// 画面遷移==========================================
-	if (pKeyboard->GetTrigger(DIK_RETURN) ||
-		pMouse->GetTrigger(CInputMouse::BUTTON_LMB))
+	if (pMouse->GetTrigger(CInputMouse::BUTTON_LMB))
 	{//ENTERキーが押されたら
 		//タイトルに移行
 		if (pFade != nullptr)

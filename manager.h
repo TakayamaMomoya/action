@@ -42,8 +42,6 @@ public:
 	void Update();
 	void Draw();
 	static CRenderer *GetRenderer(void) { return m_pRenderer; }
-	static CInputKeyboard *GetKeyboard(void) { return m_pKeyboard; }
-	static CInputMouse *GetMouse(void) { return m_pMouse; }
 	static CDebugProc *GetDebugProc(void) { return m_pDebugProc; }
 	static CSound *GetSound(void) { return m_pSound; }
 	static CCamera *GetCamera(void) { return m_pCamera; }
@@ -59,8 +57,6 @@ public:
 
 private:
 	static CRenderer *m_pRenderer;	// レンダラーのクラス
-	static CInputKeyboard *m_pKeyboard;	// キーボードのクラス
-	static CInputMouse *m_pMouse;	// マウスのクラス
 	static CDebugProc *m_pDebugProc;	// デバッグプロシージャのクラス
 	static CSound *m_pSound;	// サウンドのクラス
 	static CCamera *m_pCamera;	// カメラのポインタ

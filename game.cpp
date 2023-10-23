@@ -289,7 +289,7 @@ void CGame::ReleaseTimer(void)
 void CGame::Update(void)
 {
 	// “ü—ÍŽæ“¾
-	CInputKeyboard *pKeyboard = CManager::GetKeyboard();
+	//CInputKeyboard *pKeyboard = CManager::GetKeyboard();
 
 	CFade *pFade = CManager::GetFade();
 
@@ -314,16 +314,16 @@ void CGame::Update(void)
 	// ó‘ÔŠÇ—
 	ManageState();
 
-	if (pKeyboard != nullptr)
-	{
-		if (pKeyboard->GetTrigger(DIK_RETURN))
-		{
-			if (pFade != nullptr)
-			{
-				//pFade->SetFade(CScene::MODE_RANKING);
-			}
-		}
-	}
+	//if (pKeyboard != nullptr)
+	//{
+	//	if (pKeyboard->GetTrigger(DIK_RETURN))
+	//	{
+	//		if (pFade != nullptr)
+	//		{
+	//			//pFade->SetFade(CScene::MODE_RANKING);
+	//		}
+	//	}
+	//}
 
 #ifdef _DEBUG
 	Debug();
@@ -428,17 +428,17 @@ void CGame::ManageState(void)
 void CGame::Debug(void)
 {
 	// “ü—ÍŽæ“¾
-	CInputKeyboard *pKeyboard = CManager::GetKeyboard();
+	//CInputKeyboard *pKeyboard = CManager::GetKeyboard();
 
-	if (pKeyboard == nullptr)
-	{
-		return;
-	}
+	//if (pKeyboard == nullptr)
+	//{
+	//	return;
+	//}
 
-	if (pKeyboard->GetTrigger(DIK_F))
-	{
-		m_bStop = m_bStop ? false : true;
-	}
+	//if (pKeyboard->GetTrigger(DIK_F))
+	//{
+	//	m_bStop = m_bStop ? false : true;
+	//}
 }
 
 //=====================================================

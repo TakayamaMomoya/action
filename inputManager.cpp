@@ -12,6 +12,8 @@
 #include "inputManager.h"
 #include "manager.h"
 #include "inputjoypad.h"
+#include "inputkeyboard.h"
+#include "inputmouse.h"
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -23,7 +25,7 @@ CInputManager *CInputManager::m_pInputManager = nullptr;	// 自身のポインタ
 //=====================================================
 CInputManager::CInputManager()
 {
-
+	ZeroMemory(&m_info, sizeof(SInfo));
 }
 
 //=====================================================
@@ -37,14 +39,14 @@ CInputManager::~CInputManager()
 //=====================================================
 // 生成処理
 //=====================================================
-CInputManager *CInputManager::Create(void)
+CInputManager *CInputManager::Create(HINSTANCE hInstance, HWND hWnd)
 {
 	if (m_pInputManager == nullptr)
 	{// インスタンス生成
 		m_pInputManager = new CInputManager;
 
 		// 初期化処理
-		m_pInputManager->Init();
+		m_pInputManager->Init(hInstance, hWnd);
 	}
 
 	return m_pInputManager;
@@ -53,10 +55,16 @@ CInputManager *CInputManager::Create(void)
 //=====================================================
 // 初期化処理
 //=====================================================
-HRESULT CInputManager::Init(void)
+HRESULT CInputManager::Init(HINSTANCE hInstance, HWND hWnd)
 {
 	// ジョイパッド生成
 	CInputJoypad::Create();
+
+	// キーボード生成
+	CInputKeyboard::Create(hInstance, hWnd);
+
+	// マウス生成
+	CInputMouse::Create(hInstance, hWnd);
 
 	return S_OK;
 }
@@ -66,12 +74,23 @@ HRESULT CInputManager::Init(void)
 //=====================================================
 void CInputManager::Uninit(void)
 {
-	// ジョイパッド終了
 	CInputJoypad *pJoypad = CInputJoypad::GetInstance();
+	CInputKeyboard *pKeyboard = CInputKeyboard::GetInstance();
+	CInputMouse *pMouse = CInputMouse::GetInstance();
 
 	if (pJoypad != nullptr)
 	{
 		pJoypad->Uninit();
+	}
+
+	if (pKeyboard != nullptr)
+	{
+		pKeyboard->Uninit();
+	}
+
+	if (pMouse != nullptr)
+	{
+		pMouse->Uninit();
 	}
 
 	// 自身のポインタ破棄
@@ -84,11 +103,59 @@ void CInputManager::Uninit(void)
 //=====================================================
 void CInputManager::Update(void)
 {
-	// ジョイパッド更新
+	// 各入力デバイスの更新
 	CInputJoypad *pJoypad = CInputJoypad::GetInstance();
+	CInputKeyboard *pKeyboard = CInputKeyboard::GetInstance();
+	CInputMouse *pMouse = CInputMouse::GetInstance();
 
 	if (pJoypad != nullptr)
 	{
 		pJoypad->Update();
 	}
+
+	if (pKeyboard != nullptr)
+	{
+		pKeyboard->Update();
+	}
+
+	if (pMouse != nullptr)
+	{
+		pMouse->Update();
+	}
+
+	// エンター
+	m_info.abTrigger[BUTTON_JUMP] =
+	(
+		pJoypad->GetTrigger(CInputJoypad::PADBUTTONS_A, 0) ||
+		pJoypad->GetTrigger(CInputJoypad::PADBUTTONS_B, 0) ||
+		pJoypad->GetTrigger(CInputJoypad::PADBUTTONS_START, 0) ||
+		pKeyboard->GetTrigger(DIK_RETURN)
+	);
+
+	// ジャンプ
+	m_info.abTrigger[BUTTON_JUMP] =
+	(
+		pJoypad->GetTrigger(CInputJoypad::PADBUTTONS_A, 0) ||
+		pKeyboard->GetTrigger(DIK_SPACE)
+	);
+
+	// 右移動
+	m_info.abPress[BUTTON_MOVE_RIGHT] = pKeyboard->GetPress(DIK_D);
+
+	// 左移動
+	m_info.abPress[BUTTON_MOVE_LEFT] = pKeyboard->GetPress(DIK_A);
+
+	// 攻撃
+	m_info.abTrigger[BUTTON_ATTACK] = 
+	(
+		pMouse->GetTrigger(CInputMouse::BUTTON_LMB) ||
+		pKeyboard->GetTrigger(DIK_RETURN)
+	);
+
+	// パリィ
+	m_info.abTrigger[BUTTON_PARRY] = 
+	(
+		pMouse->GetTrigger(CInputMouse::BUTTON_RMB) ||
+		pKeyboard->GetTrigger(DIK_BACKSPACE)
+	);
 }

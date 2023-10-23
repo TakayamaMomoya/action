@@ -27,6 +27,7 @@ public:
 	CInputKeyboard();
 	~CInputKeyboard();
 
+	static CInputKeyboard *Create(HINSTANCE hInstance, HWND hWnd);
 	HRESULT Init(HINSTANCE hInstance, HWND hWnd);
 	void Uninit(void);
 	void Update(void);
@@ -34,6 +35,7 @@ public:
 	bool GetTrigger(int nKey);
 	bool GetRelease(int nKey);
 	int GetRepeat(int nKey);
+	static CInputKeyboard *GetInstance(void) { return m_pKeyboard; }
 
 private:
 	BYTE m_aKeyState[NUM_KEY_MAX];					// プレス情報
@@ -41,6 +43,7 @@ private:
 	BYTE m_aKeyStateRelease[NUM_KEY_MAX];			// リリース情報
 	BYTE m_aKeyStateRepeat[NUM_KEY_MAX];			// リピート情報
 	int m_aCntRepeat[NUM_KEY_MAX];	// リピートカウンター
+	static CInputKeyboard *m_pKeyboard;	// 自身のポインタ
 };
 
 #endif

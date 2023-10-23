@@ -1,5 +1,4 @@
-﻿  player.cpp
-  inputManager.cpp
-  コードを生成中...
+﻿  manager.cpp
+cl : コマンド ライン warning D9028: 簡易リビルド時のエラーです、通常のビルドに戻します
   00_proto.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\00_proto.exe
   00_proto.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\00_proto\Debug\00_proto.pdb (Full PDB)

@@ -124,11 +124,11 @@ void CInputManager::Update(void)
 	}
 
 	// ƒGƒ“ƒ^[
-	m_info.abTrigger[BUTTON_JUMP] =
+	m_info.abTrigger[BUTTON_ENTER] =
 	(
 		pJoypad->GetTrigger(CInputJoypad::PADBUTTONS_A, 0) ||
-		pJoypad->GetTrigger(CInputJoypad::PADBUTTONS_B, 0) ||
 		pJoypad->GetTrigger(CInputJoypad::PADBUTTONS_START, 0) ||
+		pMouse->GetTrigger(CInputMouse::BUTTON_LMB) ||
 		pKeyboard->GetTrigger(DIK_RETURN)
 	);
 

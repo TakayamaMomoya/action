@@ -10,9 +10,7 @@
 //*****************************************************
 #include "title.h"
 #include "object.h"
-#include "inputkeyboard.h"
-#include "inputmouse.h"
-#include "inputjoypad.h"
+#include "inputManager.h"
 #include "manager.h"
 #include "motion.h"
 #include "fade.h"
@@ -94,9 +92,7 @@ void CTitle::Uninit(void)
 //=====================================================
 void CTitle::Update(void)
 {
-	// 情報取得
-	CInputMouse *pMouse = CInputMouse::GetInstance();
-
+	CInputManager *pInputManager = CInputManager::GetInstance();
 	CCamera *pCamera = CManager::GetCamera();
 
 	// シーンの更新
@@ -106,9 +102,9 @@ void CTitle::Update(void)
 
 	if (m_state == STATE_NONE)
 	{
-		if (pMouse != nullptr)
+		if (pInputManager != nullptr)
 		{
-			if (pMouse->GetTrigger(CInputMouse::BUTTON_LMB))
+			if (pInputManager->GetTrigger(CInputManager::BUTTON_ENTER))
 			{// フェード
 				if (pFade != nullptr)
 				{

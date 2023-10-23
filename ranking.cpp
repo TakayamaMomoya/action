@@ -10,14 +10,12 @@
 //*****************************************************
 #include "main.h"
 #include "ranking.h"
-#include "inputkeyboard.h"
-#include "inputmouse.h"
-#include "inputjoypad.h"
 #include "fade.h"
 #include <stdio.h>
 #include "object.h"
 #include "manager.h"
 #include "texture.h"
+#include "inputManager.h"
 
 //*****************************************************
 // マクロ定義
@@ -106,10 +104,7 @@ void CRanking::Uninit(void)
 //=====================================================
 void CRanking::Update(void)
 {
-	// 入力情報取得
-	//CInputKeyboard *pKeyboard = CManager::GetKeyboard();
-	CInputMouse *pMouse = CInputMouse::GetInstance();
-
+	CInputManager *pInputManager = CInputManager::GetInstance();
 	CFade *pFade = CManager::GetFade();
 
 	// シーンの更新
@@ -157,7 +152,7 @@ void CRanking::Update(void)
 	}
 
 	// 画面遷移==========================================
-	if (pMouse->GetTrigger(CInputMouse::BUTTON_LMB))
+	if (pInputManager->GetTrigger(CInputManager::BUTTON_ENTER))
 	{//ENTERキーが押されたら
 		//タイトルに移行
 		if (pFade != nullptr)

@@ -82,6 +82,9 @@ HRESULT CPlayer::Init(void)
 	// î•ñ‚Ì“Ç
 	Load();
 
+	// ‰Šú‘Ì—Í‚Ìİ’è
+	m_info.nInitialLife = m_info.nLife;
+
 	SetPosition(D3DXVECTOR3(0.0f, 10.0f, 0.0f));
 
 	// ’l‚Ì‰Šú‰»

@@ -80,15 +80,15 @@ void CDebugProc::Uninit(void)
 //==========================================================
 void CDebugProc::Update(void)
 {
-	//CInputKeyboard *pInputKeyboard = CManager::GetKeyboard();	// キーボードのポインタ
+	CInputKeyboard *pInputKeyboard = CInputKeyboard::GetInstance();	// キーボードのポインタ
 
-	//if (pInputKeyboard != nullptr)
-	//{
-	//	if (pInputKeyboard->GetTrigger(DIK_F1) == true)
-	//	{//F1キーが押されたとき
-	//		m_bDisp = m_bDisp ? false : true;
-	//	}
-	//}
+	if (pInputKeyboard != nullptr)
+	{
+		if (pInputKeyboard->GetTrigger(DIK_F1) == true)
+		{//F1キーが押されたとき
+			m_bDisp = m_bDisp ? false : true;
+		}
+	}
 }
 
 //==========================================================

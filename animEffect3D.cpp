@@ -88,6 +88,8 @@ void CAnimEffect3D::Load(void)
 
 					if (strcmp(cTemp, "END_EFFECTSET") == 0)
 					{// 終了条件
+						nCntEffect++;
+
 						break;
 					}
 
@@ -140,9 +142,6 @@ void CAnimEffect3D::Load(void)
 						}
 					}
 				}
-
-				// パーティクル数加算
-				nCntEffect++;
 			}
 
 			if (strcmp(cTemp, "END_SCRIPT") == 0)

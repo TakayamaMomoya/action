@@ -34,6 +34,7 @@
 #include "animEffect3D.h"
 #include "debugproc.h"
 #include <stdio.h>
+#include "UIManager.h"
 
 //*****************************************************
 // マクロ定義
@@ -127,6 +128,9 @@ HRESULT CGame::Init(void)
 
 	// ３Dエフェクト管理生成
 	CAnimEffect3D::Create();
+
+	// UIマネージャー
+	CUIManager::Create();
 
 #ifdef _DEBUG
 	//CEdit::Create();

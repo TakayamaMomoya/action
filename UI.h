@@ -28,9 +28,10 @@ public:
 	void Uninit(void);	// 終了処理
 	void Update(void);	// 更新処理
 	void Draw(void);	// 描画処理
+	void EnableDisp(bool bDisp) { m_bDisp = bDisp; }	// 表示切り替え
 
 private:
-	bool m_bDisp;
+	bool m_bDisp;	// 表示できるかどうか
 };
 
 #endif

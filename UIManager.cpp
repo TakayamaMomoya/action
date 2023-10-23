@@ -10,6 +10,8 @@
 //*****************************************************
 #include "main.h"
 #include "UIManager.h"
+#include "UI.h"
+#include "life.h"
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -21,7 +23,8 @@ CUIManager *CUIManager::m_pUIManager = nullptr;	// 自身のポインタ
 //=====================================================
 CUIManager::CUIManager()
 {
-
+	m_pLife = nullptr;
+	m_bDisp = false;
 }
 
 //=====================================================
@@ -53,6 +56,9 @@ CUIManager *CUIManager::Create(void)
 //=====================================================
 HRESULT CUIManager::Init(void)
 {
+	// ライフの生成
+	m_pLife = CLife::Create();
+
 	return S_OK;
 }
 
@@ -62,6 +68,12 @@ HRESULT CUIManager::Init(void)
 void CUIManager::Uninit(void)
 {
 	m_pUIManager = nullptr;
+
+	if (m_pLife != nullptr)
+	{
+		m_pLife->Uninit();
+		m_pLife = nullptr;
+	}
 
 	Release();
 }

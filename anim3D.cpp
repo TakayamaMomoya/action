@@ -93,8 +93,17 @@ void CAnim3D::Update(void)
 //=====================================================
 void CAnim3D::Draw(void)
 {
+	// デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+
+	// ライティングを無効化
+	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+
 	// 継承クラスの描画
 	CObject3D::Draw();
+
+	// ライティングを戻す
+	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 }
 
 //=====================================================

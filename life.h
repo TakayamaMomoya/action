@@ -13,7 +13,7 @@
 //*****************************************************
 // 前方宣言
 //*****************************************************
-class CObject2D;
+class CUI;
 
 //*****************************************************
 // クラスの定義
@@ -31,7 +31,20 @@ public:
 	void Draw(void) {};
 
 private:
-	CObject2D *m_pObjectGauge;	// ゲージのポインタ
+	enum PULSESTATE
+	{
+		PULSESTATE_IN = 0,	// フェードイン状態
+		PULSESTATE_OUT,	// フェードアウト状態
+		PULSESTATE_MAX,
+	};
+
+	void UpdatePulse(void);
+	void FadePulse(void);
+
+	CUI *m_pFrame;	// フレームのポインタ
+	CUI *m_pPulse;	// 波形のポインタ
+	PULSESTATE m_pulseState;	// 波形の状態
+	int m_nCntPulse;	// 波形のカウンター
 };
 
 #endif

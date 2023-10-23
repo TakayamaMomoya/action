@@ -50,6 +50,8 @@ public:
 	void SetRot(D3DXVECTOR3 rot) { m_info.rot = rot; }
 	D3DXVECTOR3 GetRot(void) { return m_info.rot; }
 	static CPlayer *GetInstance(void) { return m_pPlayer; }
+	int GetLife(void) { return m_info.nLife; }
+	int GetinitialLife(void) { return m_info.nInitialLife; }
 
 private:
 	enum STATE
@@ -90,6 +92,7 @@ private:
 	struct SInfo
 	{
 		int nLife;	// 体力
+		int nInitialLife;	// 初期体力
 		int nCntAfterImage;	// 残像を出すカウンター
 		int nCntState;	// 状態遷移カウンター
 		bool bSprint;	// ダッシュ状態かどうか

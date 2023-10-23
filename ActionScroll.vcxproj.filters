@@ -78,12 +78,18 @@
     <ClCompile Include="enemyshot.cpp">
       <Filter>enemy</Filter>
     </ClCompile>
-    <ClCompile Include="UIManager.cpp" />
-    <ClCompile Include="life.cpp" />
     <ClCompile Include="enemyTurret.cpp">
       <Filter>enemy</Filter>
     </ClCompile>
-    <ClCompile Include="UI.cpp" />
+    <ClCompile Include="UI.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="life.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="afterimage.h" />
@@ -163,12 +169,18 @@
     <ClInclude Include="enemyshot.h">
       <Filter>enemy</Filter>
     </ClInclude>
-    <ClInclude Include="UIManager.h" />
-    <ClInclude Include="life.h" />
     <ClInclude Include="enemyTurret.h">
       <Filter>enemy</Filter>
     </ClInclude>
-    <ClInclude Include="UI.h" />
+    <ClInclude Include="UI.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="life.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="input">
@@ -176,6 +188,9 @@
     </Filter>
     <Filter Include="enemy">
       <UniqueIdentifier>{1e47275d-515e-478a-991d-97c47a0280d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{1d18e045-bb02-470d-abc0-5e84767fd5a5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

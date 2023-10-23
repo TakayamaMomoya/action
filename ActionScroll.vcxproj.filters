@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="afterimage.cpp" />
+    <ClCompile Include="anim3D.cpp" />
+    <ClCompile Include="animation2D.cpp" />
+    <ClCompile Include="animEffect3D.cpp" />
+    <ClCompile Include="bg.cpp" />
+    <ClCompile Include="billboard.cpp" />
+    <ClCompile Include="block.cpp" />
+    <ClCompile Include="bullet.cpp" />
+    <ClCompile Include="camera.cpp" />
+    <ClCompile Include="collision.cpp" />
+    <ClCompile Include="debugproc.cpp" />
+    <ClCompile Include="edit.cpp" />
+    <ClCompile Include="effect2D.cpp" />
+    <ClCompile Include="effect3D.cpp" />
+    <ClCompile Include="fade.cpp" />
+    <ClCompile Include="field.cpp" />
+    <ClCompile Include="game.cpp" />
+    <ClCompile Include="light.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="manager.cpp" />
+    <ClCompile Include="missile.cpp" />
+    <ClCompile Include="model.cpp" />
+    <ClCompile Include="motion.cpp" />
+    <ClCompile Include="number.cpp" />
+    <ClCompile Include="object.cpp" />
+    <ClCompile Include="object2D.cpp" />
+    <ClCompile Include="object3D.cpp" />
+    <ClCompile Include="objectmanager.cpp" />
+    <ClCompile Include="objectX.cpp" />
+    <ClCompile Include="orbit.cpp" />
+    <ClCompile Include="particle.cpp" />
+    <ClCompile Include="parts.cpp" />
+    <ClCompile Include="player.cpp" />
+    <ClCompile Include="ranking.cpp" />
+    <ClCompile Include="renderer.cpp" />
+    <ClCompile Include="scene.cpp" />
+    <ClCompile Include="score.cpp" />
+    <ClCompile Include="skybox.cpp" />
+    <ClCompile Include="sound.cpp" />
+    <ClCompile Include="texture.cpp" />
+    <ClCompile Include="timer.cpp" />
+    <ClCompile Include="title.cpp" />
+    <ClCompile Include="tutorial.cpp" />
+    <ClCompile Include="universal.cpp" />
+    <ClCompile Include="input.cpp">
+      <Filter>input</Filter>
+    </ClCompile>
+    <ClCompile Include="inputjoypad.cpp">
+      <Filter>input</Filter>
+    </ClCompile>
+    <ClCompile Include="inputkeyboard.cpp">
+      <Filter>input</Filter>
+    </ClCompile>
+    <ClCompile Include="inputManager.cpp">
+      <Filter>input</Filter>
+    </ClCompile>
+    <ClCompile Include="inputmouse.cpp">
+      <Filter>input</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy.cpp">
+      <Filter>enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyboss.cpp">
+      <Filter>enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="enemydrone.cpp">
+      <Filter>enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyManager.cpp">
+      <Filter>enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyNormal.cpp">
+      <Filter>enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyshot.cpp">
+      <Filter>enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="afterimage.h" />
+    <ClInclude Include="anim3D.h" />
+    <ClInclude Include="animation2D.h" />
+    <ClInclude Include="animEffect3D.h" />
+    <ClInclude Include="bg.h" />
+    <ClInclude Include="billboard.h" />
+    <ClInclude Include="block.h" />
+    <ClInclude Include="bullet.h" />
+    <ClInclude Include="camera.h" />
+    <ClInclude Include="collision.h" />
+    <ClInclude Include="debugproc.h" />
+    <ClInclude Include="edit.h" />
+    <ClInclude Include="effect2D.h" />
+    <ClInclude Include="effect3D.h" />
+    <ClInclude Include="fade.h" />
+    <ClInclude Include="field.h" />
+    <ClInclude Include="game.h" />
+    <ClInclude Include="light.h" />
+    <ClInclude Include="main.h" />
+    <ClInclude Include="manager.h" />
+    <ClInclude Include="missile.h" />
+    <ClInclude Include="model.h" />
+    <ClInclude Include="motion.h" />
+    <ClInclude Include="number.h" />
+    <ClInclude Include="object.h" />
+    <ClInclude Include="object2D.h" />
+    <ClInclude Include="object3D.h" />
+    <ClInclude Include="objectmanager.h" />
+    <ClInclude Include="objectX.h" />
+    <ClInclude Include="orbit.h" />
+    <ClInclude Include="particle.h" />
+    <ClInclude Include="parts.h" />
+    <ClInclude Include="player.h" />
+    <ClInclude Include="ranking.h" />
+    <ClInclude Include="renderer.h" />
+    <ClInclude Include="scene.h" />
+    <ClInclude Include="score.h" />
+    <ClInclude Include="skybox.h" />
+    <ClInclude Include="sound.h" />
+    <ClInclude Include="texture.h" />
+    <ClInclude Include="timer.h" />
+    <ClInclude Include="title.h" />
+    <ClInclude Include="tutorial.h" />
+    <ClInclude Include="universal.h" />
+    <ClInclude Include="input.h">
+      <Filter>input</Filter>
+    </ClInclude>
+    <ClInclude Include="inputjoypad.h">
+      <Filter>input</Filter>
+    </ClInclude>
+    <ClInclude Include="inputkeyboard.h">
+      <Filter>input</Filter>
+    </ClInclude>
+    <ClInclude Include="inputManager.h">
+      <Filter>input</Filter>
+    </ClInclude>
+    <ClInclude Include="inputmouse.h">
+      <Filter>input</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy.h">
+      <Filter>enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyboss.h">
+      <Filter>enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="enemydrone.h">
+      <Filter>enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyManager.h">
+      <Filter>enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyNormal.h">
+      <Filter>enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyshot.h">
+      <Filter>enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="input">
+      <UniqueIdentifier>{31c0987e-3bc5-4816-99a3-3e792064abde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="enemy">
+      <UniqueIdentifier>{1e47275d-515e-478a-991d-97c47a0280d0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

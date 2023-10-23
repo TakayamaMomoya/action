@@ -56,7 +56,9 @@
   tutorial.cpp
   universal.cpp
   コード生成しています。
-  All 737 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  733 of 737 functions (99.5%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
-  ActionScroll.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\ActionScroll\ActionScroll.exe
-  ActionScroll.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\ActionScroll\ActionScroll.pdb (Full PDB)
+  ActionScroll.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\ActionScroll\ActionScroll.exe
+  ActionScroll.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\ActionScroll\ActionScroll.pdb (Full PDB)

@@ -208,6 +208,7 @@
     <ClCompile Include="timer.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="tutorial.cpp" />
+    <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="universal.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -265,6 +266,7 @@
     <ClInclude Include="timer.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="tutorial.h" />
+    <ClInclude Include="UIManager.h" />
     <ClInclude Include="universal.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

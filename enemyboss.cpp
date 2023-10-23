@@ -37,7 +37,7 @@
 #define LINE_END	(5.0f)	// 移動終了のしきい値
 #define MID_POINT	(2740.0f)	// 真ん中の値
 #define WIDTH_STAGE	(160.0f)	// ステージの幅
-#define DAMAGE_FRAME	(20)	// ダメージ状態の時間
+#define DAMAGE_FRAME	(10)	// ダメージ状態の時間
 #define FLOAT_HEIGTH	(180.0f)	// 高さ
 #define SHOT_TIME	(3)	// 射撃の頻度
 
@@ -395,6 +395,8 @@ void CEnemyBoss::FollowCollision(void)
 	if (pCollision != nullptr)
 	{
 		D3DXVECTOR3 pos = GetMtxPos(IDX_WAIST);
+
+		pos.y -= 10.0f;
 
 #ifdef _DEBUG
 		//dCEffect3D::Create(pos, pCollision->GetRadius(), 10, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));

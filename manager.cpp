@@ -324,13 +324,13 @@ void CManager::Update(void)
 		m_pLight->Update();
 	}
 	
-	//if (m_pKeyboard != nullptr)
-	//{
-	//	if (m_pKeyboard->GetTrigger(DIK_F3))
-	//	{// 強制リセット
-	//		CManager::SetMode(CScene::MODE_TITLE);
-	//	}
-	//}
+	if (CInputKeyboard::GetInstance() != nullptr)
+	{
+		if (CInputKeyboard::GetInstance()->GetTrigger(DIK_F3))
+		{// 強制リセット
+			CManager::SetMode(CScene::MODE_TITLE);
+		}
+	}
 }
 
 //=====================================================

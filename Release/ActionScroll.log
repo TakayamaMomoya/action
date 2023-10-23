@@ -1,62 +1,6 @@
-﻿  afterimage.cpp
-  anim3D.cpp
-  animation2D.cpp
-  animEffect3D.cpp
-  bg.cpp
-  billboard.cpp
-  block.cpp
-  bullet.cpp
-  camera.cpp
-  collision.cpp
-  debugproc.cpp
-  edit.cpp
-  effect2D.cpp
-  effect3D.cpp
-  enemy.cpp
-  enemyboss.cpp
-  enemydrone.cpp
-  enemyManager.cpp
-  enemyNormal.cpp
-  enemyshot.cpp
-  コンパイル中...
-  fade.cpp
-  field.cpp
-  game.cpp
-  input.cpp
-  inputjoypad.cpp
-  inputkeyboard.cpp
-  inputManager.cpp
-  inputmouse.cpp
-  light.cpp
-  main.cpp
-  manager.cpp
-  missile.cpp
-  model.cpp
-  motion.cpp
-  number.cpp
-  object.cpp
-  object2D.cpp
-  object3D.cpp
-  objectmanager.cpp
-  objectX.cpp
-  コンパイル中...
-  orbit.cpp
-  particle.cpp
-  parts.cpp
-  player.cpp
-  ranking.cpp
-  renderer.cpp
-  scene.cpp
-  score.cpp
-  skybox.cpp
-  sound.cpp
-  texture.cpp
-  timer.cpp
-  title.cpp
-  tutorial.cpp
-  universal.cpp
+﻿  UI.cpp
   コード生成しています。
-  733 of 737 functions (99.5%) were compiled, the rest were copied from previous compilation.
+  1 of 765 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。

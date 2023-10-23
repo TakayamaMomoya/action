@@ -38,6 +38,7 @@ public:
 		TYPE_SHOT,	// 撃ってくる敵
 		TYPE_DRONE,	// ドローン敵
 		TYPE_BOSS,	// ボス敵
+		TYPE_TURRET,	// タレット
 		TYPE_MAX
 	}TYPE;
 

@@ -1,3 +1,20 @@
-﻿  UIManager.cpp
+﻿  UI.cpp
+  manager.cpp
+  enemyManager.cpp
+  enemyTurret.cpp
+  コードを生成中...
+  コンパイル中...
+  player.cpp
+  game.cpp
+  enemyNormal.cpp
+  enemy.cpp
+  edit.cpp
+  コードを生成中...
+  スキップ中... (関連する変更は検出されませんでした)
+  UIManager.cpp
+  enemyshot.cpp
+  enemydrone.cpp
+  enemyboss.cpp
+  bullet.cpp
   ActionScroll.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\ActionScroll\ActionScroll.exe
   ActionScroll.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\ActionScroll\ActionScroll.pdb (Full PDB)

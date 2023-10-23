@@ -140,14 +140,15 @@ void CInputManager::Update(void)
 	);
 
 	// ‰EˆÚ“®
-	m_info.abPress[BUTTON_MOVE_RIGHT] = pKeyboard->GetPress(DIK_D);
+	m_info.abPress[BUTTON_MOVE_RIGHT] = pKeyboard->GetPress(DIK_D) || pJoypad->GetJoyStickLX(0) > 0;
 
 	// ¶ˆÚ“®
-	m_info.abPress[BUTTON_MOVE_LEFT] = pKeyboard->GetPress(DIK_A);
+	m_info.abPress[BUTTON_MOVE_LEFT] = pKeyboard->GetPress(DIK_A) || pJoypad->GetJoyStickLX(0) < 0;
 
 	// UŒ‚
 	m_info.abTrigger[BUTTON_ATTACK] = 
 	(
+		pJoypad->GetTrigger(CInputJoypad::PADBUTTONS_RB, 0) ||
 		pMouse->GetTrigger(CInputMouse::BUTTON_LMB) ||
 		pKeyboard->GetTrigger(DIK_RETURN)
 	);
@@ -155,6 +156,7 @@ void CInputManager::Update(void)
 	// ƒpƒŠƒB
 	m_info.abTrigger[BUTTON_PARRY] = 
 	(
+		pJoypad->GetTrigger(CInputJoypad::PADBUTTONS_LB, 0) ||
 		pMouse->GetTrigger(CInputMouse::BUTTON_RMB) ||
 		pKeyboard->GetTrigger(DIK_BACKSPACE)
 	);

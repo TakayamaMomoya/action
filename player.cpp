@@ -260,6 +260,7 @@ void CPlayer::InputMove(void)
 	// î•ñ“üŽè
 	CInputMouse *pMouse = CInputMouse::GetInstance();
 	CInputManager *pInputManager = CInputManager::GetInstance();
+	CInputKeyboard *pKeyboard = CInputKeyboard::GetInstance();
 
 	if (pMouse == nullptr)
 	{
@@ -271,8 +272,6 @@ void CPlayer::InputMove(void)
 	D3DXVECTOR3 vecStick;
 	int nMotion = m_info.pBody->GetMotion();
 
-	if (nMotion != MOTION_ATTACK &&
-		nMotion != MOTION_ATTACKTURN)
 	{// UŒ‚’†‚Å‚È‚¯‚ê‚Î
 		if (nMotion != MOTION_PARRY ||
 			m_info.jump > JUMPSTATE_NONE)
@@ -289,9 +288,9 @@ void CPlayer::InputMove(void)
 			}
 
 			// ƒWƒƒƒ“ƒv‘€ì
-			if (m_info.jump == JUMPSTATE_NONE)
+			if (pInputManager->GetTrigger(CInputManager::BUTTON_JUMP))
 			{
-				if (pInputManager->GetTrigger(CInputManager::BUTTON_JUMP))
+				if (m_info.jump == JUMPSTATE_NONE)
 				{
 					move.y += JUMP_POW;
 
@@ -311,7 +310,31 @@ void CPlayer::InputMove(void)
 						pAnim3D->CreateEffect(posEffect, CAnimEffect3D::TYPE_JUMP);
 					}
 				}
+				else if (m_info.jump == JUMPSTATE_NORMAL)
+				{// ‹ó’†UŒ‚
+					SetMotion(MOTION_AIRATTACK);
+
+					D3DXVECTOR3 move = { GetMove().x,ATTACK_JUMP,GetMove().z };
+
+					// ˆÚ“®—Ê‰ÁŽZ
+					SetMove(move);
+
+					m_info.jump = JUMPSTATE_ATTACK;
+
+					CAnimEffect3D *pAnim3D = CAnimEffect3D::GetInstance();
+
+					if (pAnim3D != nullptr)
+					{
+						D3DXVECTOR3 posEffect = GetPosition();
+
+						posEffect.y += 10.0f;
+
+						pAnim3D->CreateEffect(posEffect, CAnimEffect3D::TYPE_AIRSLASH);
+					}
+				}
+
 			}
+
 
 			// ˆÚ“®—Ê‰ÁŽZ
 			SetMove(GetMove() + move);
@@ -319,21 +342,11 @@ void CPlayer::InputMove(void)
 	}
 
 #ifdef _DEBUG
-	//if (pKeyboard->GetTrigger(DIK_G))
-	//{
-	//	CAnimEffect3D *pAnim3D = CAnimEffect3D::GetInstance();
-
-	//	if (pAnim3D != nullptr)
-	//	{
-	//		pAnim3D->CreateEffect(GetPosition(), CAnimEffect3D::TYPE_FLASH);
-	//	}
-	//}
-
-	//if (pKeyboard->GetTrigger(DIK_E))
-	//{// ƒ{ƒXí‚Ü‚Åƒ[ƒv
-	//	m_info.pos = { 2579.0f,204.57f,0.0f };
-	//	m_info.posOld = { 2579.0f,204.57f,0.0f };
-	//}
+	if (pKeyboard->GetTrigger(DIK_E))
+	{// ƒ{ƒXí‚Ü‚Åƒ[ƒv
+		m_info.pos = { 2579.0f,204.57f,0.0f };
+		m_info.posOld = { 2579.0f,204.57f,0.0f };
+	}
 #endif
 }
 
@@ -352,40 +365,15 @@ void CPlayer::InputAttack(void)
 
 	if (pInputManager->GetTrigger(CInputManager::BUTTON_ATTACK))
 	{// UŒ‚
-		if (m_info.jump == JUMPSTATE_NORMAL)
-		{// ‹ó’†UŒ‚
-			SetMotion(MOTION_AIRATTACK);
-
-			D3DXVECTOR3 move = { GetMove().x,ATTACK_JUMP,GetMove().z };
-
-			// ˆÚ“®—Ê‰ÁŽZ
-			SetMove(move);
-
-			m_info.jump = JUMPSTATE_ATTACK;
-
-			CAnimEffect3D *pAnim3D = CAnimEffect3D::GetInstance();
-
-			if (pAnim3D != nullptr)
-			{
-				D3DXVECTOR3 posEffect = GetPosition();
-
-				posEffect.y += 10.0f;
-
-				pAnim3D->CreateEffect(posEffect, CAnimEffect3D::TYPE_AIRSLASH);
-			}
+		if (m_info.pBody->GetMotion() == MOTION_ATTACK || m_info.pBody->GetMotion() == MOTION_ATTACKTURN)
+		{
+			m_info.bAttack = true;
 		}
-		else if(m_info.jump == JUMPSTATE_NONE)
-		{// ’nãUŒ‚
-			if (m_info.pBody->GetMotion() == MOTION_ATTACK || m_info.pBody->GetMotion() == MOTION_ATTACKTURN)
-			{
-				m_info.bAttack = true;
-			}
-			else
-			{
-				SetMotion(MOTION_ATTACK);
+		else
+		{
+			SetMotion(MOTION_ATTACK);
 
-				m_info.bAttack = false;
-			}
+			m_info.bAttack = false;
 		}
 	}
 
@@ -577,7 +565,9 @@ void CPlayer::ManageMotion(void)
 	{
 		if (move.y < 0.0f && 
 			(nMotion == MOTION_AIRATTACK && bFinish == false) == false &&
-			(nMotion == MOTION_PARRY && bFinish == false) == false)
+			(nMotion == MOTION_PARRY && bFinish == false) == false && 
+			(nMotion == MOTION_ATTACK && bFinish == false) == false &&
+			(nMotion == MOTION_ATTACKTURN && bFinish == false) == false)
 		{// —Ž‰ºƒ‚[ƒVƒ‡ƒ“
 			SetMotion(MOTION_FALL);
 		}

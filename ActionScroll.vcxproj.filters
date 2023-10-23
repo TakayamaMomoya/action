@@ -79,6 +79,11 @@
       <Filter>enemy</Filter>
     </ClCompile>
     <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="life.cpp" />
+    <ClCompile Include="enemyTurret.cpp">
+      <Filter>enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="afterimage.h" />
@@ -159,6 +164,11 @@
       <Filter>enemy</Filter>
     </ClInclude>
     <ClInclude Include="UIManager.h" />
+    <ClInclude Include="life.h" />
+    <ClInclude Include="enemyTurret.h">
+      <Filter>enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="input">

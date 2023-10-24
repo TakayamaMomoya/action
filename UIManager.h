@@ -33,6 +33,7 @@ public:
 	void Update(void);
 	void Draw(void);
 	static CUIManager *GetInstance(void) { return m_pUIManager; }
+	bool IsDisp(void) { return m_bDisp; }
 
 private:
 	static CUIManager *m_pUIManager;	// 自身のポインタ

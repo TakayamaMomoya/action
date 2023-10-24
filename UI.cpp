@@ -9,13 +9,14 @@
 // インクルード
 //*****************************************************
 #include "UI.h"
+#include "UIManager.h"
 
 //=====================================================
 // 優先順位を決めるコンストラクタ
 //=====================================================
 CUI::CUI(int nPriority) : CObject2D(nPriority)
 {
-	m_bDisp = false;
+
 }
 
 //=====================================================
@@ -55,8 +56,6 @@ HRESULT CUI::Init(void)
 {
 	CObject2D::Init();
 
-	m_bDisp = true;
-
 	return S_OK;
 }
 
@@ -81,7 +80,16 @@ void CUI::Update(void)
 //=====================================================
 void CUI::Draw(void)
 {
-	if (m_bDisp)
+	bool bDisp = true;
+
+	CUIManager *pUIManager = CUIManager::GetInstance();
+
+	if (pUIManager != nullptr)
+	{// 描画するかの取得
+		bDisp = pUIManager->IsDisp();
+	}
+
+	if (bDisp)
 	{
 		CObject2D::Draw();
 	}

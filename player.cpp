@@ -384,19 +384,28 @@ void CPlayer::InputAttack(void)
 		}
 	}
 
-	if (pInputManager->GetTrigger(CInputManager::BUTTON_DASH))
-	{// ダッシュ
-		if (m_info.pBody->GetMotion() != MOTION_DASH)
-		{
-			D3DXVECTOR3 move = GetMove();
+	if (m_info.nCntDash >= m_info.nTimeDash)
+	{
+		if (pInputManager->GetTrigger(CInputManager::BUTTON_DASH))
+		{// ダッシュ
+			if (m_info.pBody->GetMotion() != MOTION_DASH)
+			{
+				D3DXVECTOR3 move = GetMove();
 
-			move.x -= sinf(m_info.rotDest.y) * DASH_SPEED;
-			move.y = 0;
+				move.x -= sinf(m_info.rotDest.y) * DASH_SPEED;
+				move.y = 0;
 
-			SetMove(move);
+				SetMove(move);
 
-			SetMotion(MOTION_DASH);
+				SetMotion(MOTION_DASH);
+
+				m_info.nCntDash = 0;
+			}
 		}
+	}
+	else
+	{
+		m_info.nCntDash++;
 	}
 
 	if (m_info.pBody != nullptr)
@@ -1108,5 +1117,12 @@ void CPlayer::LoadParam(FILE *pFile, char *pTemp)
 		fscanf(pFile, "%s", pTemp);
 
 		fscanf(pFile, "%d", &m_info.nLife);
+	}
+
+	if (strcmp(pTemp, "DASH_TIME") == 0)
+	{// ダッシュのクールタイム
+		fscanf(pFile, "%s", pTemp);
+
+		fscanf(pFile, "%d", &m_info.nTimeDash);
 	}
 }

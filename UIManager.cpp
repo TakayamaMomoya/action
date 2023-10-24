@@ -9,6 +9,7 @@
 // インクルード
 //*****************************************************
 #include "main.h"
+#include "inputkeyboard.h"
 #include "UIManager.h"
 #include "UI.h"
 #include "life.h"
@@ -56,6 +57,8 @@ CUIManager *CUIManager::Create(void)
 //=====================================================
 HRESULT CUIManager::Init(void)
 {
+	m_bDisp = true;
+
 	// ライフの生成
 	m_pLife = CLife::Create();
 
@@ -83,7 +86,18 @@ void CUIManager::Uninit(void)
 //=====================================================
 void CUIManager::Update(void)
 {
+#ifdef _DEBUG
+	CInputKeyboard *pKeyboard = CInputKeyboard::GetInstance();
 
+	if (pKeyboard != nullptr)
+	{
+		if (pKeyboard->GetTrigger(DIK_1))
+		{
+			m_bDisp = m_bDisp ? false : true;
+		}
+	}
+
+#endif
 }
 
 //=====================================================
@@ -92,6 +106,6 @@ void CUIManager::Update(void)
 void CUIManager::Draw(void)
 {
 #ifdef _DEBUG
-	//CManager::GetDebugProc()->Print("\n敵の位置：[%f,%f,%f]", GetPosition().x, GetPosition().y, GetPosition().z);
+
 #endif
 }

@@ -98,6 +98,8 @@ private:
 		int nCntState;	// 状態遷移カウンター
 		int nTimeParry;	// パリィ継続時間
 		int nCntParry;	// パリィのカウンター
+		int nTimeDash;	// ダッシュのクールタイム
+		int nCntDash;	// ダッシュのカウンター
 		bool bSprint;	// ダッシュ状態かどうか
 		bool bAttack;	// 攻撃フラグ
 		float fRadiusParry;	// パリィ判定の半径

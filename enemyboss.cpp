@@ -19,6 +19,7 @@
 #include "bullet.h"
 #include "missile.h"
 #include "effect3D.h"
+#include "frame.h"
 
 //*****************************************************
 // マクロ定義
@@ -82,6 +83,9 @@ CEnemyBoss *CEnemyBoss::Create(void)
 //=====================================================
 HRESULT CEnemyBoss::Init(void)
 {
+	// フレーム演出の生成
+	CFrame::Create(100, 240, 70);
+
 	// 継承クラスの初期化
 	CEnemy::Init();
 

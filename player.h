@@ -100,6 +100,7 @@ private:
 		int nCntParry;	// パリィのカウンター
 		int nTimeDash;	// ダッシュのクールタイム
 		int nCntDash;	// ダッシュのカウンター
+		float fSpeedDash;	// ダッシュの速度
 		bool bSprint;	// ダッシュ状態かどうか
 		bool bAttack;	// 攻撃フラグ
 		float fRadiusParry;	// パリィ判定の半径

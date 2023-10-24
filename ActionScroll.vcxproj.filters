@@ -90,6 +90,9 @@
     <ClCompile Include="life.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="frame.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="afterimage.h" />
@@ -179,6 +182,9 @@
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="life.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="frame.h">
       <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>

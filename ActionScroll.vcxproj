@@ -162,6 +162,7 @@
     <ClCompile Include="billboard.cpp" />
     <ClCompile Include="block.cpp" />
     <ClCompile Include="enemyTurret.cpp" />
+    <ClCompile Include="frame.cpp" />
     <ClCompile Include="life.cpp" />
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="camera.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="billboard.h" />
     <ClInclude Include="block.h" />
     <ClInclude Include="enemyTurret.h" />
+    <ClInclude Include="frame.h" />
     <ClInclude Include="life.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="camera.h" />

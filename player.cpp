@@ -52,7 +52,6 @@
 #define BULLET_SIZE	(1.0f)	// 弾サイズ
 #define TIME_DAMAGE	(30)	// ダメージ状態の時間
 #define TIME_FLASH	(4)	// 点滅速度
-#define DASH_SPEED	(10.0f)	// ダッシュの速度
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -392,7 +391,7 @@ void CPlayer::InputAttack(void)
 			{
 				D3DXVECTOR3 move = GetMove();
 
-				move.x -= sinf(m_info.rotDest.y) * DASH_SPEED;
+				move.x -= sinf(m_info.rotDest.y) * m_info.fSpeedDash;
 				move.y = 0;
 
 				SetMove(move);
@@ -1119,10 +1118,17 @@ void CPlayer::LoadParam(FILE *pFile, char *pTemp)
 		fscanf(pFile, "%d", &m_info.nLife);
 	}
 
-	if (strcmp(pTemp, "DASH_TIME") == 0)
+	if (strcmp(pTemp, "TIME_DASH") == 0)
 	{// ダッシュのクールタイム
 		fscanf(pFile, "%s", pTemp);
 
 		fscanf(pFile, "%d", &m_info.nTimeDash);
+	}
+
+	if (strcmp(pTemp, "SPEED_DASH") == 0)
+	{// ダッシュの速度
+		fscanf(pFile, "%s", pTemp);
+
+		fscanf(pFile, "%f", &m_info.fSpeedDash);
 	}
 }

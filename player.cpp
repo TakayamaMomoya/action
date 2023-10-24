@@ -52,6 +52,7 @@
 #define BULLET_SIZE	(1.0f)	// 弾サイズ
 #define TIME_DAMAGE	(30)	// ダメージ状態の時間
 #define TIME_FLASH	(4)	// 点滅速度
+#define DASH_SPEED	(10.0f)	// ダッシュの速度
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -206,7 +207,10 @@ void CPlayer::Update(void)
 
 	// 移動量減衰
 	m_info.move.x *= MOVE_FACT;
-	m_info.move.y -= GRAVITY;
+	if (m_info.pBody->GetMotion() != MOTION_DASH || m_info.pBody->IsFinish())
+	{
+		m_info.move.y -= GRAVITY;
+	}
 }
 
 //=====================================================
@@ -347,7 +351,7 @@ void CPlayer::InputMove(void)
 #ifdef _DEBUG
 	if (pKeyboard->GetTrigger(DIK_E))
 	{// ボス戦までワープ
-		m_info.pos = { 2579.0f,204.57f,0.0f };
+		m_info.pos = { 2599.0f,204.57f,0.0f };
 		m_info.posOld = { 2579.0f,204.57f,0.0f };
 	}
 #endif
@@ -380,6 +384,21 @@ void CPlayer::InputAttack(void)
 		}
 	}
 
+	if (pInputManager->GetTrigger(CInputManager::BUTTON_DASH))
+	{// ダッシュ
+		if (m_info.pBody->GetMotion() != MOTION_DASH)
+		{
+			D3DXVECTOR3 move = GetMove();
+
+			move.x -= sinf(m_info.rotDest.y) * DASH_SPEED;
+			move.y = 0;
+
+			SetMove(move);
+
+			SetMotion(MOTION_DASH);
+		}
+	}
+
 	if (m_info.pBody != nullptr)
 	{
 		if (m_info.pBody->IsFinish())
@@ -401,11 +420,7 @@ void CPlayer::InputAttack(void)
 			}
 		}
 
-		if (pInputManager->GetTrigger(CInputManager::BUTTON_PARRY) &&
-			m_info.pBody->GetMotion() != MOTION_PARRY)
-		{// パリィ
-			Parry();
-		}
+		Parry();
 	}
 }
 
@@ -414,11 +429,29 @@ void CPlayer::InputAttack(void)
 //=====================================================
 void CPlayer::Parry(void)
 {
-	SetMotion(MOTION_PARRY);
+	// 情報入手
+	CInputManager *pInputManager = CInputManager::GetInstance();
 
-	if (m_info.pClsnAttack == nullptr)
-	{// 判定のエラー
+	if (m_info.pBody == nullptr || m_info.pClsnAttack == nullptr)
+	{
 		return;
+	}
+
+	if (pInputManager->GetTrigger(CInputManager::BUTTON_PARRY) &&
+		m_info.pBody->GetMotion() != MOTION_PARRY)
+	{// パリィ
+		SetMotion(MOTION_PARRY);
+
+		m_info.nCntParry = 0;
+	}
+
+	if (m_info.nCntParry >= m_info.nTimeParry)
+	{// ここから下はパリィ中しか通らない
+		return;
+	}
+	else
+	{
+		m_info.nCntParry++;
 	}
 
 	CUniversal *pUniversal = CManager::GetUniversal();
@@ -543,7 +576,10 @@ void CPlayer::ManageMotion(void)
 	if (m_info.jump == JUMPSTATE_NONE)
 	{
 		if (m_info.bAttack == false &&
-			(m_info.pBody->GetMotion() != MOTION_ATTACK && m_info.pBody->GetMotion() != MOTION_ATTACKTURN && m_info.pBody->GetMotion() != MOTION_PARRY))
+			(m_info.pBody->GetMotion() != MOTION_ATTACK && 
+				m_info.pBody->GetMotion() != MOTION_ATTACKTURN && 
+				m_info.pBody->GetMotion() != MOTION_PARRY &&
+				m_info.pBody->GetMotion() != MOTION_DASH))
 		{// 移動モーション
 			if (move.x * move.x > LINE_STOP * LINE_STOP)
 			{// ある程度動いていれば歩きモーション
@@ -570,7 +606,8 @@ void CPlayer::ManageMotion(void)
 			(nMotion == MOTION_AIRATTACK && bFinish == false) == false &&
 			(nMotion == MOTION_PARRY && bFinish == false) == false && 
 			(nMotion == MOTION_ATTACK && bFinish == false) == false &&
-			(nMotion == MOTION_ATTACKTURN && bFinish == false) == false)
+			(nMotion == MOTION_ATTACKTURN && bFinish == false) == false &&
+			(nMotion == MOTION_DASH && bFinish == false) == false)
 		{// 落下モーション
 			SetMotion(MOTION_FALL);
 		}
@@ -790,6 +827,11 @@ void CPlayer::InputCamera(void)
 //=====================================================
 void CPlayer::Hit(float fDamage)
 {
+	if (m_info.pBody->GetMotion() == MOTION_DASH)
+	{
+		return;
+	}
+
 	if (m_info.state == STATE_NORMAL)
 	{
 		m_info.nLife -= (int)fDamage;
@@ -1027,6 +1069,13 @@ void CPlayer::Load(void)
 						fscanf(pFile, "%s", &cTemp[0]);
 
 						fscanf(pFile, "%f", &m_info.fRadiusParry);
+					}
+
+					if (strcmp(cTemp, "TIME") == 0)
+					{// パリィ継続時間
+						fscanf(pFile, "%s", &cTemp[0]);
+
+						fscanf(pFile, "%d", &m_info.nTimeParry);
 					}
 					
 					if (strcmp(cTemp, "END_PARRYSET") == 0)

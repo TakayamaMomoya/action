@@ -160,4 +160,11 @@ void CInputManager::Update(void)
 		pMouse->GetTrigger(CInputMouse::BUTTON_RMB) ||
 		pKeyboard->GetTrigger(DIK_BACKSPACE)
 	);
+
+	// ƒ_ƒbƒVƒ…
+	m_info.abTrigger[BUTTON_DASH] =
+	(
+		pJoypad->GetTrigger(CInputJoypad::PADBUTTONS_B, 0) ||
+		pKeyboard->GetTrigger(DIK_LSHIFT)
+	);
 }

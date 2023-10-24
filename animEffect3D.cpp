@@ -30,7 +30,10 @@ CAnimEffect3D *CAnimEffect3D::m_pAnimEffect3D = nullptr;	// 自身のポインタ
 //=====================================================
 CAnimEffect3D::CAnimEffect3D(int nPriority) : CObject(nPriority)
 {
-
+	for (int i = 0; i < TYPE_MAX; i++)
+	{
+		m_apAnimEffect[i] = nullptr;
+	}
 }
 
 //=====================================================

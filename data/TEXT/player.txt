@@ -18,7 +18,7 @@ TIME_DAMAGE = 30	# ダメージ後の無敵時間
 #====================================================================
 # 攻撃判定
 #====================================================================
-NUM_ATTACK = 3
+NUM_ATTACK = 6
 
 ATTACKSET
 	MOTION = 4
@@ -47,12 +47,40 @@ ATTACKSET
 	RADIUS = 20.0
 END_ATTACKSET
 
+ATTACKSET
+	MOTION = 8
+	PARENT = 0
+	POS = 0.0 7.0 -50.0
+	KEY = 0
+	FRAME = 0
+	RADIUS = 20.0
+END_ATTACKSET
+
+ATTACKSET
+	MOTION = 8
+	PARENT = 0
+	POS = 0.0 0.0 0.0
+	KEY = 0
+	FRAME = 3
+	RADIUS = 20.0
+END_ATTACKSET
+
+ATTACKSET
+	MOTION = 8
+	PARENT = 0
+	POS = 0.0 0.0 0.0
+	KEY = 0
+	FRAME = 5
+	RADIUS = 20.0
+END_ATTACKSET
+
 #====================================================================
 # パリィのオフセット位置
 #====================================================================
 PARRYSET
 	POS = 0.0 7.0 -15.0
 	RADIUS = 7.0
+	TIME = 10
 END_PARRYSET
 
 END_SCRIPT

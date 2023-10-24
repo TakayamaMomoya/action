@@ -27,6 +27,7 @@ public:
 		BUTTON_PARRY,	// パリィ
 		BUTTON_MOVE_RIGHT,	// 右移動
 		BUTTON_MOVE_LEFT,	// 左移動
+		BUTTON_DASH,	// ダッシュ
 		BUTTON_MAX
 	};
 

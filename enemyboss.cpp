@@ -23,7 +23,7 @@
 //*****************************************************
 // マクロ定義
 //*****************************************************
-#define INITIAL_LIFE	(50.0f)	// 初期体力
+#define INITIAL_LIFE	(60.0f)	// 初期体力
 #define INITIAL_SCORE	(500)	// 初期スコア
 #define TIME_SHOT	(240)	// 射撃までのカウンター
 #define ROLL_FACT	(0.1f)	// 回転係数
@@ -40,6 +40,7 @@
 #define DAMAGE_FRAME	(10)	// ダメージ状態の時間
 #define FLOAT_HEIGTH	(180.0f)	// 高さ
 #define SHOT_TIME	(3)	// 射撃の頻度
+#define SHOT_HEIGHT	(30.0f)	// 射撃時の高度
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -327,6 +328,8 @@ void CEnemyBoss::UpdateShotUnder(void)
 
 	RotDest();
 
+	FollowDest();
+
 	bool bFinish = IsFinish();
 	int nKey = GetKey();
 
@@ -443,8 +446,17 @@ void CEnemyBoss::SwitchState(void)
 {
 	m_info.nNumAttack = 0;
 
+	ATTACKSTATE state;
+
 	// 状態を振る
-	m_info.attackState = (ATTACKSTATE)(rand() % (ATTACK_MAX));
+	state = (ATTACKSTATE)(rand() % (ATTACK_MAX));
+
+	while (m_info.attackState == state)
+	{
+		state = (ATTACKSTATE)(rand() % (ATTACK_MAX));
+	}
+
+	m_info.attackState = state;
 
 	switch (m_info.attackState)
 	{
@@ -480,6 +492,17 @@ void CEnemyBoss::SwitchState(void)
 		else
 		{
 			SetMotion(MOTION_SHOT_UNDER);
+		}
+
+		D3DXVECTOR3 pos = GetPosition();
+
+		if (pos.x < MID_POINT)
+		{// 左にいた場合
+			m_info.posDest = { MID_POINT - WIDTH_STAGE, FLOAT_HEIGTH + SHOT_HEIGHT, 0.0f };
+		}
+		else
+		{
+			m_info.posDest = { MID_POINT + WIDTH_STAGE, FLOAT_HEIGTH + SHOT_HEIGHT, 0.0f };
 		}
 	}
 		break;

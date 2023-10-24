@@ -71,6 +71,7 @@ private:
 		MOTION_ATTACKTURN,	// 反転攻撃モーション
 		MOTION_AIRATTACK,	// 空中攻撃モーション
 		MOTION_PARRY,	// パリィモーション
+		MOTION_DASH,	// ダッシュモーション
 		MOTION_MAX
 	};
 	struct AttackInfo
@@ -95,6 +96,8 @@ private:
 		int nInitialLife;	// 初期体力
 		int nCntAfterImage;	// 残像を出すカウンター
 		int nCntState;	// 状態遷移カウンター
+		int nTimeParry;	// パリィ継続時間
+		int nCntParry;	// パリィのカウンター
 		bool bSprint;	// ダッシュ状態かどうか
 		bool bAttack;	// 攻撃フラグ
 		float fRadiusParry;	// パリィ判定の半径

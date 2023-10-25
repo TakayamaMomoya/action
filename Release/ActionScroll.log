@@ -1,22 +1,29 @@
-﻿  enemyTurret.cpp
-  frame.cpp
-  life.cpp
+﻿  block.cpp
   bullet.cpp
   camera.cpp
+  edit.cpp
   enemy.cpp
+  enemyManager.cpp
+  enemyNormal.cpp
+  enemyTurret.cpp
   enemyboss.cpp
   enemydrone.cpp
-  enemyNormal.cpp
   enemyshot.cpp
   game.cpp
+  life.cpp
+  manager.cpp
   missile.cpp
+  motion.cpp
+  object.cpp
   player.cpp
-  UI.cpp
-  UIManager.cpp
+  scene.cpp
+  title.cpp
+  コンパイル中...
+  tutorial.cpp
   コード生成しています。
-  63 of 797 functions ( 7.9%) were compiled, the rest were copied from previous compilation.
-    15 functions were new in current compilation
-    48 functions had inline decision re-evaluated but remain unchanged
+  11 of 799 functions ( 1.4%) were compiled, the rest were copied from previous compilation.
+    3 functions were new in current compilation
+    88 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   ActionScroll.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\ActionScroll\ActionScroll.exe
   ActionScroll.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\ActionScroll\ActionScroll.pdb (Full PDB)

@@ -13,6 +13,8 @@
 #include "renderer.h"
 #include "game.h"
 #include "texture.h"
+#include "number.h"
+#include "UI.h"
 
 //*****************************************************
 // マクロ定義
@@ -21,6 +23,11 @@
 #define SCORE_SPEED	(71)	// スコアの変わるスピード
 #define RANK_BONUS	(0.05f)	// 1ランクにおけるボーナス倍率
 #define RANK_RATE	(0.0004f)	// ランクの上がる倍率
+
+//*****************************************************
+// 静的メンバ変数宣言
+//*****************************************************
+CScore *CScore::m_pScore = nullptr;	// 自身のポインタ
 
 //=====================================================
 // コンストラクタ
@@ -59,7 +66,7 @@ void CScore::Uninit(void)
 		m_pObjNumber = nullptr;
 	}
 
-	CGame::ReleaseScore();
+	m_pScore = nullptr;
 
 	Release();
 }
@@ -93,33 +100,31 @@ int CScore::AddScore(int nValue)
 //=====================================================
 CScore *CScore::Create(void)
 {
-	CScore *pScore = nullptr;
-	
-	CObject2D *pObject2D = CObject2D::Create(7);
-
-	if (pObject2D != nullptr)
+	if (m_pScore == nullptr)
 	{
-		pObject2D->SetPosition(D3DXVECTOR3(1030.0f, 80.0f, 0.0f));
-		pObject2D->SetSize(70.0f, 35.0f);
+		m_pScore = new CScore;
 
-		// テクスチャ番号取得
-		int nIdx = CManager::GetTexture()->Regist("data\\TEXTURE\\UI\\scoreBack.png");
-
-		pObject2D->SetIdxTexture(nIdx);
-		pObject2D->SetVtx();
-	}
-
-	if (pScore == nullptr)
-	{
-		pScore = new CScore;
-
-		if (pScore->m_pObjNumber == nullptr)
+		if (m_pScore->m_pObjNumber == nullptr)
 		{
-			pScore->m_pObjNumber = CNumber::Create(NUM_PLACE, pScore->m_nScore);
-			pScore->m_pObjNumber->SetPosition(D3DXVECTOR3(1100.0f, 80.0f, 0.0f));
-			pScore->m_pObjNumber->SetSizeAll(15.0f,32.5f);
+			m_pScore->m_pObjNumber = CNumber::Create(NUM_PLACE, m_pScore->m_nScore);
+			m_pScore->m_pObjNumber->SetPosition(D3DXVECTOR3(1100.0f, 80.0f, 0.0f));
+			m_pScore->m_pObjNumber->SetSizeAll(15.0f,32.5f);
+
+			CUI *pObject2D = CUI::Create();
+
+			if (pObject2D != nullptr)
+			{
+				pObject2D->SetPosition(D3DXVECTOR3(1030.0f, 80.0f, 0.0f));
+				pObject2D->SetSize(70.0f, 35.0f);
+
+				// テクスチャ番号取得
+				int nIdx = CManager::GetTexture()->Regist("data\\TEXTURE\\UI\\scoreBack.png");
+
+				pObject2D->SetIdxTexture(nIdx);
+				pObject2D->SetVtx();
+			}
 		}
 	}
 
-	return pScore;
+	return m_pScore;
 }

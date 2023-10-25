@@ -17,6 +17,8 @@
 // 前方宣言
 //*****************************************************
 class CLife;
+class CScore;
+class CTimer;
 
 //*****************************************************
 // クラスの定義
@@ -40,6 +42,8 @@ private:
 	static CUIManager *m_pUIManager;	// 自身のポインタ
 	bool m_bDisp;	// UIを表示するかどうか
 	CLife *m_pLife;	// ライフ
+	CScore *m_pScore;	// スコア
+	CTimer *m_pTimer;	// タイマー
 };
 
 #endif

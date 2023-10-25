@@ -40,6 +40,7 @@ public:
 	float GetWidth(void) { return 0.0f; }	// サイズ取得
 	float GetHeight(void) { return 0.0f; }	// サイズ取得
 	int GetSecond(void) { return m_nSecond; }	// 時間取得
+	static CTimer *GetInstance(void) { return m_pTimer; }
 
 private:
 	CNumber *m_pObjMinute;	// 分表示のポインタ

@@ -52,8 +52,6 @@
 //*****************************************************
 // 静的メンバ変数宣言
 //*****************************************************
-CScore *CGame::m_pScore = nullptr;	// スコアのポインタ
-CTimer *CGame::m_pTimer = nullptr;	// タイマーのポインタ
 CGame::STATE CGame::m_state = STATE_NONE;
 int CGame::m_nProgress = 0;
 
@@ -82,21 +80,6 @@ HRESULT CGame::Init(void)
 	m_state = STATE_NORMAL;
 
 	CObjectManager *pObjManager = CManager::GetObjectManager();
-
-	if (m_pScore == nullptr)
-	{// スコア生成
-		m_pScore = CScore::Create();
-	}
-
-	if (m_pScore != nullptr)
-	{// スコア初期化
-		m_pScore->Init();
-	}
-
-	if (m_pTimer == nullptr)
-	{// タイマー生成
-		m_pTimer = CTimer::Create();
-	}
 
 	// カメラ距離の設定
 	CCamera *pCamera = CManager::GetCamera();
@@ -238,20 +221,6 @@ void CGame::LoadCheckPoint(void)
 //=====================================================
 void CGame::Uninit(void)
 {
-	if (m_pScore != nullptr)
-	{// スコアの終了・破棄
-		m_pScore->Uninit();
-
-		m_pScore = nullptr;
-	}
-
-	if (m_pTimer != nullptr)
-	{// タイマーの終了・破棄
-		m_pTimer->Uninit();
-
-		m_pTimer = nullptr;
-	}
-
 	if (m_pPosCheckPoint != nullptr)
 	{
 		delete[] m_pPosCheckPoint;
@@ -263,28 +232,6 @@ void CGame::Uninit(void)
 
 	// オブジェクト全棄
 	CObject::ReleaseAll();
-}
-
-//=====================================================
-// スコア終了処理
-//=====================================================
-void CGame::ReleaseScore(void)
-{
-	if (m_pScore != nullptr)
-	{// スコアの終了・破棄
-		m_pScore = nullptr;
-	}
-}
-
-//=====================================================
-// タイマー終了処理
-//=====================================================
-void CGame::ReleaseTimer(void)
-{
-	if (m_pTimer != nullptr)
-	{// スコアの終了・破棄
-		m_pTimer = nullptr;
-	}
 }
 
 //=====================================================

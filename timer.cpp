@@ -70,8 +70,6 @@ void CTimer::Uninit(void)
 		m_pObjSecond = nullptr;
 	}
 
-	CGame::ReleaseTimer();
-
 	m_pTimer = nullptr;
 
 	Release();

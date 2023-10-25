@@ -43,10 +43,6 @@ public:
 	virtual void Uninit(void);
 	virtual void Update();
 	virtual void Draw();
-	static CScore *GetScore(void) { return m_pScore; }
-	static CTimer *GetTimer(void) { return m_pTimer; }
-	static void ReleaseScore(void);
-	static void ReleaseTimer(void);
 	static void SetState(STATE state) { m_state = state; }
 	static STATE GetState(void) { return m_state; }
 	static void SetProgress(int nProgress) { m_nProgress = nProgress; }
@@ -57,8 +53,6 @@ private:
 	void ManageState(void);
 	void Debug(void);
 
-	static CScore *m_pScore;	// スコアのポインタ
-	static CTimer *m_pTimer;	// タイマーのポインタ
 	static STATE m_state;	// 状態
 	static int m_nProgress;	// 進行度合い
 	D3DXVECTOR3 *m_pPosCheckPoint;	// チェックポイント座標のポインタ

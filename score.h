@@ -11,7 +11,12 @@
 //*****************************************************
 // インクルード
 //*****************************************************
-#include "number.h"
+#include "object.h"
+
+//*****************************************************
+// 前方宣言
+//*****************************************************
+class CNumber;
 
 //*****************************************************
 // クラスの定義
@@ -34,12 +39,14 @@ public:
 	float GetWidth(void) { return 0.0f; }	// サイズ取得
 	float GetHeight(void) { return 0.0f; }	// サイズ取得
 	int GetScore(void) { return m_nSocreDest; }
+	static CScore *GetInstance(void) { return m_pScore; }
 
 private:
 	CNumber *m_pObjNumber;	// スコア値のポインタ
 	int m_nScore;	// スコアの値
 	int m_nSocreDest;	// 目標のスコア値
 	int m_nIdxTexture;	// テクスチャ番号
+	static CScore *m_pScore;	// 自身のポインタ
 };
 
 #endif

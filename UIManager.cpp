@@ -13,6 +13,8 @@
 #include "UIManager.h"
 #include "UI.h"
 #include "life.h"
+#include "score.h"
+#include "timer.h"
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -25,6 +27,7 @@ CUIManager *CUIManager::m_pUIManager = nullptr;	// 自身のポインタ
 CUIManager::CUIManager()
 {
 	m_pLife = nullptr;
+	m_pScore = nullptr;
 	m_bDisp = false;
 }
 
@@ -62,6 +65,12 @@ HRESULT CUIManager::Init(void)
 	// ライフの生成
 	m_pLife = CLife::Create();
 
+	// スコアの生成
+	m_pScore = CScore::Create();
+
+	// タイマーの生成
+	m_pTimer = CTimer::Create();
+
 	return S_OK;
 }
 
@@ -76,6 +85,18 @@ void CUIManager::Uninit(void)
 	{
 		m_pLife->Uninit();
 		m_pLife = nullptr;
+	}
+
+	if (m_pScore != nullptr)
+	{
+		m_pScore->Uninit();
+		m_pScore = nullptr;
+	}
+
+	if (m_pTimer != nullptr)
+	{
+		m_pTimer->Uninit();
+		m_pTimer = nullptr;
 	}
 
 	Release();
@@ -96,7 +117,6 @@ void CUIManager::Update(void)
 			m_bDisp = m_bDisp ? false : true;
 		}
 	}
-
 #endif
 }
 

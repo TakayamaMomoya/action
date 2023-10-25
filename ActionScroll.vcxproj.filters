@@ -35,11 +35,9 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="scene.cpp" />
-    <ClCompile Include="score.cpp" />
     <ClCompile Include="skybox.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="texture.cpp" />
-    <ClCompile Include="timer.cpp" />
     <ClCompile Include="universal.cpp" />
     <ClCompile Include="input.cpp">
       <Filter>input</Filter>
@@ -101,6 +99,12 @@
     <ClCompile Include="ranking.cpp">
       <Filter>scene</Filter>
     </ClCompile>
+    <ClCompile Include="score.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="timer.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="afterimage.h" />
@@ -137,11 +141,9 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="scene.h" />
-    <ClInclude Include="score.h" />
     <ClInclude Include="skybox.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="texture.h" />
-    <ClInclude Include="timer.h" />
     <ClInclude Include="universal.h" />
     <ClInclude Include="input.h">
       <Filter>input</Filter>
@@ -202,6 +204,12 @@
     </ClInclude>
     <ClInclude Include="ranking.h">
       <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="score.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="timer.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

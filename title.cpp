@@ -134,9 +134,9 @@ void CTitle::Update(void)
 			{// フェード
 				if (m_pMotion != nullptr)
 				{
-					if (m_pMotion->GetMotion() != 2)
+					if (m_pMotion->GetMotion() != 10)
 					{
-						m_pMotion->SetMotion(2);
+						m_pMotion->SetMotion(10);
 
 						m_state = STATE_MOTION;
 					}

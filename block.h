@@ -66,7 +66,7 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-	static HRESULT Load(void);	// “Ç
+	static HRESULT Load(char *pPath);	// “Ç
 	static void Save(void);	// •Û‘¶
 	static void Delete(int nIdx);	// •”•ªíœˆ—
 	static void DeleteAll(void);	// ‘Síœˆ—

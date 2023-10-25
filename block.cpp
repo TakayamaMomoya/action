@@ -203,7 +203,7 @@ void CBlock::DeleteIdx(void)
 //=====================================================
 // 読込処理
 //=====================================================
-HRESULT CBlock::Load(void)
+HRESULT CBlock::Load(char *pPath)
 {
 	int nNumBlock;
 	MemBlock memBlock;
@@ -212,7 +212,7 @@ HRESULT CBlock::Load(void)
 	FILE *pFile;
 
 	//ファイルを開く
-	pFile = fopen(MAP_FILE, "rb");
+	pFile = fopen(pPath, "rb");
 
 	if (pFile != nullptr)
 	{//ファイルが開けた場合

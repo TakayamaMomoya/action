@@ -17,7 +17,6 @@
     <ClCompile Include="effect3D.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="field.cpp" />
-    <ClCompile Include="game.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager.cpp" />
@@ -34,7 +33,6 @@
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="parts.cpp" />
     <ClCompile Include="player.cpp" />
-    <ClCompile Include="ranking.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="score.cpp" />
@@ -42,8 +40,6 @@
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="timer.cpp" />
-    <ClCompile Include="title.cpp" />
-    <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="universal.cpp" />
     <ClCompile Include="input.cpp">
       <Filter>input</Filter>
@@ -93,6 +89,18 @@
     <ClCompile Include="frame.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="title.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorial.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ranking.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="afterimage.h" />
@@ -111,7 +119,6 @@
     <ClInclude Include="effect3D.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="field.h" />
-    <ClInclude Include="game.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="manager.h" />
@@ -128,7 +135,6 @@
     <ClInclude Include="particle.h" />
     <ClInclude Include="parts.h" />
     <ClInclude Include="player.h" />
-    <ClInclude Include="ranking.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="score.h" />
@@ -136,8 +142,6 @@
     <ClInclude Include="sound.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="timer.h" />
-    <ClInclude Include="title.h" />
-    <ClInclude Include="tutorial.h" />
     <ClInclude Include="universal.h" />
     <ClInclude Include="input.h">
       <Filter>input</Filter>
@@ -187,6 +191,18 @@
     <ClInclude Include="frame.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="title.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorial.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ranking.h">
+      <Filter>scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="input">
@@ -197,6 +213,9 @@
     </Filter>
     <Filter Include="UI">
       <UniqueIdentifier>{1d18e045-bb02-470d-abc0-5e84767fd5a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene">
+      <UniqueIdentifier>{bba9a947-bd44-40de-9468-378ea68cbfd7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

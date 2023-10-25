@@ -121,7 +121,7 @@ HRESULT CGame::Init(void)
 	CSkybox::Create();
 
 	// ブロック配置読込
-	CBlock::Load();
+	CBlock::Load("data\\MAP\\map01.bin");
 
 	// 敵マネージャー生成
 	CEnemyManager::Create();

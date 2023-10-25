@@ -19,6 +19,8 @@
 #include "renderer.h"
 #include "sound.h"
 #include "game.h"
+#include "skybox.h"
+#include "edit.h"
 
 //*****************************************************
 // マクロ定義
@@ -38,6 +40,7 @@ CTitle::CTitle()
 {
 	m_pStart = nullptr;
 	m_state = STATE_NONE;
+	m_pMotion = nullptr;
 }
 
 //=====================================================
@@ -75,6 +78,30 @@ HRESULT CTitle::Init(void)
 		m_pStart->SetVtx();
 	}
 
+	// スカイボックスの生成
+	CSkybox::Create();
+
+	// ブロック配置読込
+	CBlock::Load("data\\MAP\\map00.bin");
+
+	m_pMotion = CMotion::Create("data\\MOTION\\rayleigh.txt");
+
+	if (m_pMotion != nullptr)
+	{
+		m_pMotion->SetPosition(D3DXVECTOR3(10.0f, 35.0f, 460.0f));
+		m_pMotion->SetRot(D3DXVECTOR3(0.0f, 0.7f, 0.0f));
+		m_pMotion->SetMotion(9);
+		m_pMotion->InitPose(9);
+		m_pMotion->SetMatrix();
+	}
+
+	CCamera *pCamera = CManager::GetCamera();
+
+	if (pCamera != nullptr)
+	{
+		pCamera->SetTitle();
+	}
+
 	return S_OK;
 }
 
@@ -93,7 +120,6 @@ void CTitle::Uninit(void)
 void CTitle::Update(void)
 {
 	CInputManager *pInputManager = CInputManager::GetInstance();
-	CCamera *pCamera = CManager::GetCamera();
 
 	// シーンの更新
 	CScene::Update();
@@ -106,11 +132,14 @@ void CTitle::Update(void)
 		{
 			if (pInputManager->GetTrigger(CInputManager::BUTTON_ENTER))
 			{// フェード
-				if (pFade != nullptr)
+				if (m_pMotion != nullptr)
 				{
-					CGame::SetProgress(0);
+					if (m_pMotion->GetMotion() != 2)
+					{
+						m_pMotion->SetMotion(2);
 
-					pFade->SetFade(CScene::MODE_GAME);
+						m_state = STATE_MOTION;
+					}
 				}
 			}
 		}
@@ -119,6 +148,22 @@ void CTitle::Update(void)
 	{
 		// スタート表示の管理
 		ManageStart();
+	}
+
+	if (m_state == STATE_MOTION)
+	{
+		if (m_pMotion != nullptr)
+		{
+			if (m_pMotion->IsFinish())
+			{
+				if (pFade != nullptr)
+				{
+					CGame::SetProgress(0);
+
+					pFade->SetFade(CScene::MODE_GAME);
+				}
+			}
+		}
 	}
 }
 

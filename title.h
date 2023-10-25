@@ -4,6 +4,7 @@
 // Author:髙山桃也
 //
 //*****************************************************
+
 #ifndef _TITLE_H_
 #define _TITLE_H_
 
@@ -18,6 +19,7 @@
 //*****************************************************
 class CMenu;
 class CObject2D;
+class CMotion;
 
 //*****************************************************
 // クラスの定義
@@ -37,6 +39,7 @@ private:
 	enum STATE
 	{
 		STATE_NONE = 0,	// 何もしてない状態
+		STATE_MOTION,	// モーションしてる状態
 		STATE_OUT,	// フェードアウト状態
 		START_MAX
 	};
@@ -45,6 +48,7 @@ private:
 
 	CObject2D *m_pStart;	// スタート表示のポインタ
 	STATE m_state;	// 状態
+	CMotion *m_pMotion;	// モーション
 };
 
 #endif

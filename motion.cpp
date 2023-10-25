@@ -221,7 +221,7 @@ void CMotion::Update(void)
 }
 
 //=====================================================
-//モーション設定
+// モーション設定
 //=====================================================
 void CMotion::SetMotion(int nMotionType)
 {
@@ -252,6 +252,20 @@ void CMotion::SetKeyOld(void)
 		m_aKeyOld[nCntPart].fRotX = m_apParts[nCntPart]->m_pParts->GetRot().x;
 		m_aKeyOld[nCntPart].fRotY = m_apParts[nCntPart]->m_pParts->GetRot().y;
 		m_aKeyOld[nCntPart].fRotZ = m_apParts[nCntPart]->m_pParts->GetRot().z;
+	}
+}
+
+//=====================================================
+// ポーズの初期設定
+//=====================================================
+void CMotion::InitPose(int nMotion)
+{
+	for (int i = 0; i < m_aMotionInfo[nMotion].nNumKey;i++)
+	{
+		for (int nCntPart = 0; nCntPart < m_nNumParts; nCntPart++)
+		{
+			m_aKeyOld[nCntPart] = m_aMotionInfo[nMotion].aKeyInfo[i].aKey[nCntPart];
+		}
 	}
 }
 

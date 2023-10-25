@@ -248,6 +248,21 @@ void CCamera::Control(void)
 }
 
 //====================================================
+// É^ÉCÉgÉãÇÃê›íË
+//====================================================
+void CCamera::SetTitle(void)
+{
+	D3DXVECTOR3 posV = { -1.29f,43.68f,475.58f };
+	D3DXVECTOR3 posR = { 106.19f,-62.93f,-3.55f };
+
+	m_camera.posV = posV;
+	m_camera.posVDest = posV;
+
+	m_camera.posR = posR;
+	m_camera.posRDest = posR;
+}
+
+//====================================================
 // í«è]èàóù
 //====================================================
 void CCamera::FollowPlayer(void)

@@ -114,6 +114,7 @@ public:
 	int GetFrame(void) { return m_nCounterMotion; }
 	void SetAllCol(D3DXCOLOR col);
 	void ResetAllCol(void);
+	void InitPose(int nMotion);
 
 private:
 	Parts *m_apParts[MAX_PARTS];	// パーツの構造体

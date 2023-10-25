@@ -55,6 +55,7 @@ public:
 	void Quake(void);
 	void TitleMove(void);
 	void UpdateResult(void);
+	void SetTitle(void);
 
 private:
 	void UpdateTitle(void);

@@ -79,6 +79,7 @@ protected:
 
 private:
 	void ManageState(void);
+	void ManageScore(void);
 
 	static int m_nNumAll;	// ‘”
 	float m_fLife;	// ‘Ì—Í

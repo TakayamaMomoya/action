@@ -53,7 +53,7 @@ HRESULT COrbit::Init(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	// テクスチャ読込
-	m_nIdxTexture = CManager::GetTexture()->Regist("data\\TEXTURE\\EFFECT\\orbit001.png");
+	m_nIdxTexture = CTexture::GetInstance()->Regist("data\\TEXTURE\\EFFECT\\orbit001.png");
 
 	if (m_pVtxBuff == nullptr)
 	{
@@ -239,7 +239,7 @@ void COrbit::Draw()
 	pDevice->SetFVF(FVF_VERTEX_3D);
 
 	// テクスチャ取得
-	pTexture = CManager::GetTexture()->GetAddress(m_nIdxTexture);
+	pTexture = CTexture::GetInstance()->GetAddress(m_nIdxTexture);
 
 	// テクスチャの設定
 	pDevice->SetTexture(0, pTexture);

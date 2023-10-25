@@ -80,7 +80,7 @@ CField *CField::Create(D3DXVECTOR3 pos,float width,float height)
 			pField->Init();
 
 			// テクスチャの読込
-			int nIdx = CManager::GetTexture()->Regist("data\\TEXTURE\\BG\\metal000.jpg");
+			int nIdx = CTexture::GetInstance()->Regist("data\\TEXTURE\\BG\\metal000.jpg");
 			//pField->SetIdxTexture(nIdx);
 		}
 	}

@@ -825,7 +825,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "acTex001.png";
+    "data\\TEXTURE\\MATERIAL\\acTex001.png";
    }
   }
  }

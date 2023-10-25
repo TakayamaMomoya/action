@@ -61,7 +61,7 @@ HRESULT CTitle::Init(void)
 	pObject2D->SetSize(875.0f * 0.45f, 320.0f * 0.45f);
 	pObject2D->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.7f, 200.0f, 0.0f));
 
-	int nIdx = CManager::GetTexture()->Regist(LOGO_PATH);
+	int nIdx = CTexture::GetInstance()->Regist(LOGO_PATH);
 	pObject2D->SetIdxTexture(nIdx);
 	pObject2D->SetVtx();
 
@@ -73,7 +73,7 @@ HRESULT CTitle::Init(void)
 		m_pStart->SetSize(START_WIDTH, START_HEIGHT);
 		m_pStart->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.7f, 0.0f));
 
-		int nIdx = CManager::GetTexture()->Regist(START_PATH);
+		int nIdx = CTexture::GetInstance()->Regist(START_PATH);
 		m_pStart->SetIdxTexture(nIdx);
 		m_pStart->SetVtx();
 	}

@@ -1935,7 +1935,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Documents\\‰æ‘œ•ÒW\\Ql‰æ‘œ\\unnamed.png";
+    "data\\TEXTURE\\MATERIAL\\floor01.jpg";
    }
   }
   Material {

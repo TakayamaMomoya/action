@@ -46,7 +46,6 @@ public:
 	static CSound *GetSound(void) { return m_pSound; }
 	static CCamera *GetCamera(void) { return m_pCamera; }
 	static CLight *GetLight(void) { return m_pLight; }
-	static CTexture *GetTexture(void) { return m_pTexture; }
 	static CObjectManager *GetObjectManager(void) { return m_pObjectManager; }
 	static CUniversal *GetUniversal(void) { return m_pUniversal; }
 	static void SetMode(CScene::MODE mode);

@@ -11,6 +11,7 @@
 #include "texture.h"
 #include "manager.h"
 #include "renderer.h"
+#include <string.h>
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -99,7 +100,7 @@ int CTexture::Regist(const char *pFileName)
 		{
 			if (strcmp(&m_apFilename[nCntTex][0], &pFileName[0]) == 0)
 			{// ファイル名が同じ場合、現在の番号を返す
-				return nCntTex;
+ 				return nCntTex;
 			}
 		}
 	}
@@ -113,8 +114,11 @@ int CTexture::Regist(const char *pFileName)
 	D3DXCreateTextureFromFile
 	(pDevice, pFileName, &m_apTexture[m_nNumAll]);
 
+	m_apFilename[m_nNumAll] = new char[MAX_STRING];
+
 	// ファイル名の保存
-	m_apFilename[m_nNumAll] = (char*)pFileName;
+	strcpy(m_apFilename[m_nNumAll], "\0");
+	strcpy(m_apFilename[m_nNumAll], pFileName);
 
 	// 現在の番号を保存
 	int nIdx = m_nNumAll;

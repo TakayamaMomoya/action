@@ -206,9 +206,13 @@ void CPlayer::Update(void)
 
 	// 移動量減衰
 	m_info.move.x *= MOVE_FACT;
-	if (m_info.pBody->GetMotion() != MOTION_DASH || m_info.pBody->IsFinish())
+
+	if (m_info.pBody != nullptr)
 	{
-		m_info.move.y -= GRAVITY;
+		if (m_info.pBody->GetMotion() != MOTION_DASH || m_info.pBody->IsFinish())
+		{
+			m_info.move.y -= GRAVITY;
+		}
 	}
 }
 
@@ -268,7 +272,7 @@ void CPlayer::InputMove(void)
 	CInputManager *pInputManager = CInputManager::GetInstance();
 	CInputKeyboard *pKeyboard = CInputKeyboard::GetInstance();
 
-	if (pMouse == nullptr)
+	if (pMouse == nullptr || m_info.pBody == nullptr)
 	{
 		return;
 	}
@@ -364,7 +368,7 @@ void CPlayer::InputAttack(void)
 	// 情報入手
 	CInputManager *pInputManager = CInputManager::GetInstance();
 
-	if (pInputManager == nullptr)
+	if (pInputManager == nullptr || m_info.pBody == nullptr)
 	{
 		return;
 	}
@@ -704,7 +708,7 @@ void CPlayer::ManageCollision(void)
 
 		if (pFade != nullptr)
 		{
-			pFade->SetFade(CScene::MODE_GAME);
+			pFade->SetFade(CScene::MODE_RANKING);
 		}
 	}
 	// =======================
@@ -835,9 +839,12 @@ void CPlayer::InputCamera(void)
 //=====================================================
 void CPlayer::Hit(float fDamage)
 {
-	if (m_info.pBody->GetMotion() == MOTION_DASH)
+	if (m_info.pBody != nullptr)
 	{
-		return;
+		if (m_info.pBody->GetMotion() == MOTION_DASH)
+		{
+			return;
+		}
 	}
 
 	if (m_info.state == STATE_NORMAL)
@@ -890,7 +897,7 @@ void CPlayer::Death(void)
 
 	if (pFade != nullptr)
 	{
-		pFade->SetFade(CScene::MODE_GAME);
+		pFade->SetFade(CScene::MODE_RANKING);
 	}
 
 	Uninit();
@@ -909,7 +916,6 @@ void CPlayer::Draw(void)
 #ifdef _DEBUG
 	CManager::GetDebugProc()->Print("\nプレイヤーの位置：[%f,%f,%f]", GetPosition().x, GetPosition().y, GetPosition().z);
 	CManager::GetDebugProc()->Print("\nプレイヤー体力[%d]", m_info.nLife);
-	CManager::GetDebugProc()->Print("\nモーション[%d]", m_info.pBody->GetMotion());
 	CManager::GetDebugProc()->Print("\n攻撃[%d]", m_info.bAttack);
 	CManager::GetDebugProc()->Print("\nリセット[F3]");
 #else

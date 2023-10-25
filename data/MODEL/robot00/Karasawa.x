@@ -1638,7 +1638,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Documents\\3d\\UV\\karasawaUV.png";
+    "data\\TEXTURE\\MATERIAL\\karasawaUV.png";
    }
   }
   Material {
@@ -1647,7 +1647,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Documents\\3d\\UV\\karasawaUV.png";
+    "data\\TEXTURE\\MATERIAL\\karasawaUV.png";
    }
   }
   Material {
@@ -1656,7 +1656,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "acTex001.png";
+    "data\\TEXTURE\\MATERIAL\\acTex001.png";
    }
   }
  }

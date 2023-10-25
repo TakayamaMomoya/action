@@ -11,8 +11,6 @@
 #include "manager.h"
 #include "renderer.h"
 #include "game.h"
-#include "score.h"
-#include "timer.h"
 #include "object.h"
 #include "universal.h"
 #include "particle.h"
@@ -40,11 +38,6 @@
 // マクロ定義
 //*****************************************************
 #define TRANS_TIME	(60)	// 終了までの余韻のフレーム数
-#define LIMIT_LENGTH	(10000)	// 移動制限の距離
-#define LIMIT_WIDTH	(100)	// 推定プレイヤーの幅
-#define LIMIT_HEIGHT	(2000)	// 制限高度
-#define BONUS_TIME	(40)	// ボーナスが付与される最低限のタイム
-#define RATE_BONUS	(0.015f)	// 1秒当たりのタイムボーナス
 #define RESULT_TIME	(5)	// リザルト画面表示までのラグ
 #define BOSS_LINE	(2737.0f)	// ボス戦に突入するライン
 #define CHECKPOINT_PATH "data\\MAP\\checkpoint.txt"	// チェックポイントデータのパス
@@ -155,7 +148,7 @@ void CGame::LoadCheckPoint(void)
 
 					for (int i = 0; i < m_nNumCheckPoint; i++)
 					{// 情報のクリア
-						ZeroMemory(&m_pPosCheckPoint[i], sizeof(D3DXVECTOR3));
+						m_pPosCheckPoint[i] = { 0.0f,0.0f,0.0f };
 					}
 				}
 				else

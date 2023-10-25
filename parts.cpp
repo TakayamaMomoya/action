@@ -106,7 +106,7 @@ void CParts::Draw(void)
 		pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
 
 		// テクスチャの取得
-		pTexture = CManager::GetTexture()->GetAddress(m_pModel->pIdxTexture[nCntMat]);
+		pTexture = CTexture::GetInstance()->GetAddress(m_pModel->pIdxTexture[nCntMat]);
 
 		//テクスチャ設定
 		pDevice->SetTexture(0, pTexture);

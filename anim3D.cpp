@@ -12,6 +12,7 @@
 #include "manager.h"
 #include "renderer.h"
 #include "texture.h"
+#include "debugproc.h"
 
 //=====================================================
 // コンストラクタ
@@ -104,6 +105,10 @@ void CAnim3D::Draw(void)
 
 	// ライティングを戻す
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+
+#ifdef _DEBUG
+	CManager::GetDebugProc()->Print("\nパス：[%d]", GetIdxTexture());
+#endif
 }
 
 //=====================================================

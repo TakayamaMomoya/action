@@ -65,7 +65,7 @@ HRESULT CRanking::Init(void)
 	pObject2D->SetSize(300.0f,90.0f);
 	pObject2D->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 100.0f, 0.0f));
 
-	int nIdx = CManager::GetTexture()->Regist(RANKING_PATH);
+	int nIdx = CTexture::GetInstance()->Regist(RANKING_PATH);
 	pObject2D->SetIdxTexture(nIdx);
 	pObject2D->SetVtx();
 
@@ -234,7 +234,7 @@ void CRanking::Set(int nScore)
 
 				pObject2D->SetPosition(pos);
 
-				int nIdx = CManager::GetTexture()->Regist(apPath[nCnt]);
+				int nIdx = CTexture::GetInstance()->Regist(apPath[nCnt]);
 				pObject2D->SetIdxTexture(nIdx);
 				pObject2D->SetVtx();
 			}

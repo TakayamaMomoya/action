@@ -77,7 +77,14 @@ void CScore::Uninit(void)
 void CScore::Update(void)
 {
 	//スコア値上昇演出==============================
-	m_nScore += (int)((m_nSocreDest - m_nScore) * 0.1f);
+	if (m_nScore >= m_nSocreDest)
+	{
+		m_nScore = m_nSocreDest;
+	}
+	else
+	{
+		m_nScore += 50;
+	}
 
 	if (m_pObjNumber != nullptr)
 	{
@@ -118,7 +125,7 @@ CScore *CScore::Create(void)
 				pObject2D->SetSize(70.0f, 35.0f);
 
 				// テクスチャ番号取得
-				int nIdx = CManager::GetTexture()->Regist("data\\TEXTURE\\UI\\scoreBack.png");
+				int nIdx = CTexture::GetInstance()->Regist("data\\TEXTURE\\UI\\scoreBack.png");
 
 				pObject2D->SetIdxTexture(nIdx);
 				pObject2D->SetVtx();

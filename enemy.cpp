@@ -387,10 +387,13 @@ void CEnemy::Hit(float fDamage)
 		m_fLife -= fDamage;
 
 		if (m_fLife <= 0.0f)
-		{
+		{// 死亡状態
 			m_fLife = 0.0f;
 
 			m_state = STATE_DEATH;
+
+			// スコア管理
+			ManageScore();
 		}
 		else
 		{
@@ -407,6 +410,21 @@ void CEnemy::Death(void)
 {
 	// 自身の終了
 	Uninit();
+}
+
+//=====================================================
+// スコア管理
+//=====================================================
+void CEnemy::ManageScore(void)
+{
+	CScore *pScore = CScore::GetInstance();
+
+	if (pScore != nullptr)
+	{
+		int nScore = GetScore();
+
+		pScore->AddScore(nScore);
+	}
 }
 
 //=====================================================

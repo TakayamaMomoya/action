@@ -80,9 +80,9 @@ void CAnimEffect3D::Load(void)
 				{
 					// インスタンス生成
 					m_apAnimEffect[nCntEffect] = new SInfoAnimEffect;
-				}
 
-				SInfoAnimEffect *pInfo = m_apAnimEffect[nCntEffect];
+					ZeroMemory(m_apAnimEffect[nCntEffect],sizeof(SInfoAnimEffect));
+				}
 
 				while (true)
 				{
@@ -100,7 +100,7 @@ void CAnimEffect3D::Load(void)
 					{// パス
 						fscanf(pFile, "%s", &cTemp[0]);
 						
-						fscanf(pFile, "%s", &pInfo->acPath[0]);
+						fscanf(pFile, "%s", &m_apAnimEffect[nCntEffect]->acPath[0]);
 					}
 
 					if (strcmp(cTemp, "NUM_ANIM") == 0)

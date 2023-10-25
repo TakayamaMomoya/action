@@ -181,7 +181,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Documents\\Visual Studio 2015\\Projects\\ŒãŠú§ì‰‰K\\00_proto\\data\\TEXTURE\\MATERIAL\\floor.jpg";
+    "data\\TEXTURE\\MATERIAL\\floor.jpg";
    }
   }
   Material {

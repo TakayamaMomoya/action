@@ -82,7 +82,7 @@ HRESULT CLife::Init(void)
 		{
 			m_pFrame->SetPosition(D3DXVECTOR3(FRAME_POS.x, FRAME_POS.y, 0.0f));
 			m_pFrame->SetSize(FRAME_WIDTH, FRAME_HEIGHT);
-			int nIdx = CManager::GetTexture()->Regist(FRAME_PATH);
+			int nIdx = CTexture::GetInstance()->Regist(FRAME_PATH);
 			m_pFrame->SetIdxTexture(nIdx);
 			m_pFrame->SetCol(COL_FINE);
 			m_pFrame->SetVtx();
@@ -97,7 +97,7 @@ HRESULT CLife::Init(void)
 		{
 			m_pPulse->SetPosition(D3DXVECTOR3(FRAME_POS.x, FRAME_POS.y, 0.0f));
 			m_pPulse->SetSize(FRAME_WIDTH, FRAME_HEIGHT);
-			int nIdx = CManager::GetTexture()->Regist(PULSE_PATH);
+			int nIdx = CTexture::GetInstance()->Regist(PULSE_PATH);
 			m_pPulse->SetIdxTexture(nIdx);
 			m_pPulse->SetCol(COL_FINE);
 			m_pPulse->SetVtx();
@@ -229,9 +229,6 @@ void CLife::FadePulse(void)
 	}
 		break;
 	case PULSESTATE_OUT:
-
-
-
 		break;
 	default:
 		break;

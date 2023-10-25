@@ -219,7 +219,7 @@ void CObject2D::Draw(void)
 		// 頂点フォーマットの設定
 		pDevice->SetFVF(FVF_VERTEX_2D);
 
-		LPDIRECT3DTEXTURE9 pTexture = CManager::GetTexture()->GetAddress(m_nIdxTexture);
+		LPDIRECT3DTEXTURE9 pTexture = CTexture::GetInstance()->GetAddress(m_nIdxTexture);
 
 		// テクスチャ設定
 		pDevice->SetTexture(0, pTexture);

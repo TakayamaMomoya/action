@@ -94,7 +94,7 @@ int CModel::Load(char *pPath)
 				if (pMat[nCntMat].pTextureFilename != nullptr)
 				{// テクスチャが存在する
 					// テクスチャ番号取得
-					m_apModel[nCntModel]->pIdxTexture[nCntMat] = CManager::GetTexture()->Regist(pMat[nCntMat].pTextureFilename);
+					m_apModel[nCntModel]->pIdxTexture[nCntMat] = CTexture::GetInstance()->Regist(pMat[nCntMat].pTextureFilename);
 				}
 				else
 				{

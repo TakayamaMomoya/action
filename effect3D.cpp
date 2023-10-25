@@ -174,7 +174,7 @@ CEffect3D *CEffect3D::Create(D3DXVECTOR3 pos, float fRadius, int nLife, D3DXCOLO
 			pEffect3D->SetColor(col);
 
 			// テクスチャの読込
-			int nIdx = CManager::GetTexture()->Regist("data\\TEXTURE\\EFFECT\\effect000.png");
+			int nIdx = CTexture::GetInstance()->Regist("data\\TEXTURE\\EFFECT\\effect000.png");
 			pEffect3D->SetIdxTexture(nIdx);
 
 			pEffect3D->m_nLife = nLife;

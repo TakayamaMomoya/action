@@ -646,7 +646,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "acTex000.png";
+    "data\\TEXTURE\\MATERIAL\\acTex000.png";
    }
   }
   Material {
@@ -655,7 +655,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "acTex000.png";
+    "data\\TEXTURE\\MATERIAL\\acTex000.png";
    }
   }
  }

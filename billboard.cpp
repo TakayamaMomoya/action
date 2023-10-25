@@ -186,7 +186,7 @@ void CBillboard::Draw(void)
 	pDevice->SetFVF(FVF_VERTEX_3D);
 
 	// テクスチャ設定
-	LPDIRECT3DTEXTURE9 pTexture = CManager::GetTexture()->GetAddress(m_nIdxTexture);
+	LPDIRECT3DTEXTURE9 pTexture = CTexture::GetInstance()->GetAddress(m_nIdxTexture);
 	pDevice->SetTexture(0, pTexture);
 
 	// 描画

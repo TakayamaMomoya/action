@@ -33,6 +33,8 @@
 #include "debugproc.h"
 #include <stdio.h>
 #include "UIManager.h"
+#include "anim3D.h"
+#include "texture.h"
 
 //*****************************************************
 // マクロ定義
@@ -45,8 +47,9 @@
 //*****************************************************
 // 静的メンバ変数宣言
 //*****************************************************
-CGame::STATE CGame::m_state = STATE_NONE;
-int CGame::m_nProgress = 0;
+CGame::STATE CGame::m_state = STATE_NONE;	// 状態
+int CGame::m_nProgress = 0;	// 進行状況
+CGame *CGame::m_pGame = nullptr;	// 自身のポインタ
 
 //=====================================================
 // コンストラクタ
@@ -70,6 +73,8 @@ CGame::~CGame()
 //=====================================================
 HRESULT CGame::Init(void)
 {
+	m_pGame = this;
+
 	m_state = STATE_NORMAL;
 
 	CObjectManager *pObjManager = CManager::GetObjectManager();
@@ -107,6 +112,22 @@ HRESULT CGame::Init(void)
 
 	// UIマネージャー
 	CUIManager::Create();
+
+	// インスタンス生成
+	CAnim3D *pAnim3D = CAnim3D::Create(D3DXVECTOR3(161.0f, 15.0f, 20.0f), 2, 40, true);
+
+	if (pAnim3D != nullptr)
+	{
+		// 色の設定
+		CTexture *pTexture = CTexture::GetInstance();
+
+		if (pTexture != nullptr)
+		{// テクスチャの設定
+			int nIdx = pTexture->Regist("data\\TEXTURE\\UI\\tutorial00.png");
+			pAnim3D->SetIdxTexture(nIdx);
+			pAnim3D->SetSize(35.0f,25.0f);
+		}
+	}
 
 #ifdef _DEBUG
 	//CEdit::Create();
@@ -225,6 +246,8 @@ void CGame::Uninit(void)
 
 	// オブジェクト全棄
 	CObject::ReleaseAll();
+
+	m_pGame = nullptr;
 }
 
 //=====================================================

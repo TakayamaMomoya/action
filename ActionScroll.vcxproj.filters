@@ -106,6 +106,7 @@
       <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="shadow.cpp" />
+    <ClCompile Include="tutorialManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="afterimage.h" />
@@ -213,6 +214,7 @@
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="shadow.h" />
+    <ClInclude Include="tutorialManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="input">

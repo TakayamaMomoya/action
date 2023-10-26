@@ -46,6 +46,8 @@ public:
 	static void SetState(STATE state) { m_state = state; }
 	static STATE GetState(void) { return m_state; }
 	static void SetProgress(int nProgress) { m_nProgress = nProgress; }
+	void EnableStop(bool bStop) { m_bStop = bStop; }
+	CGame *GetInstance(void) { return m_pGame; }
 
 private:
 	void LoadCheckPoint(void);
@@ -55,6 +57,8 @@ private:
 
 	static STATE m_state;	// 状態
 	static int m_nProgress;	// 進行度合い
+	static CGame *m_pGame;	// 自身のポインタ
+
 	D3DXVECTOR3 *m_pPosCheckPoint;	// チェックポイント座標のポインタ
 	int m_nNumCheckPoint;	// チェックポイントの数
 	bool m_bStop;	// 停止状態

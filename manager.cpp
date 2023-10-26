@@ -43,7 +43,6 @@ CDebugProc *CManager::m_pDebugProc = nullptr;	// デバッグプロシージャのポインタ
 CSound *CManager::m_pSound = nullptr;	// サウンドのポインタ
 CCamera *CManager::m_pCamera = nullptr;	// カメラのポインタ
 CLight *CManager::m_pLight = nullptr;	// ライトのポインタ
-CTexture *CManager::m_pTexture = nullptr;	// テクスチャ管理へのポインタ
 CUniversal *CManager::m_pUniversal = nullptr;	// 汎用処理へのポインタ
 CObjectManager *CManager::m_pObjectManager = nullptr;	// オブジェクト管理へのポインタ
 CScene *CManager::m_pScene = nullptr;	// シーンへのポインタ
@@ -141,19 +140,8 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 		}
 	}
 
-	if (m_pTexture == nullptr)
-	{// テクスチャ管理生成
-		m_pTexture = new CTexture;
-
-		if (m_pTexture != nullptr)
-		{
-			// 初期化
-			if (FAILED(m_pTexture->Load()))
-			{// 初期化に失敗した場合
-				return E_FAIL;
-			}
-		}
-	}
+	// テクスチャ管理の生成
+	CTexture::Create();
 
 	if (m_pFade == nullptr)
 	{// フェード生成
@@ -271,12 +259,15 @@ void CManager::Uninit(void)
 		m_pCamera = nullptr;
 	}
 
-	if (m_pTexture != nullptr)
-	{// テクスチャの終了・破棄
-		m_pTexture->Unload();
+	// テクスチャの終了・破棄
+	CTexture *pTexture = CTexture::GetInstance();
 
-		delete m_pTexture;
-		m_pTexture = nullptr;
+	if (pTexture != nullptr)
+	{
+		pTexture->Unload();
+
+		delete pTexture;
+		pTexture = nullptr;
 	}
 
 	// モデル破棄

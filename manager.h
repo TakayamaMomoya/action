@@ -60,7 +60,6 @@ private:
 	static CSound *m_pSound;	// サウンドのクラス
 	static CCamera *m_pCamera;	// カメラのポインタ
 	static CLight *m_pLight;	// ライトのポインタ
-	static CTexture *m_pTexture;	// テクスチャ管理へのポインタ
 	static CUniversal *m_pUniversal;	// 汎用処理のポインタ
 	static CScene *m_pScene;	// 現在のシーン
 	static CScene::MODE m_mode;	// 現在のモード

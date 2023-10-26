@@ -41,7 +41,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR lpCmdLine
 	// マネージャーの宣言
 	CManager *pManager = nullptr;
 	
-	//変数宣言
+	// 変数宣言
 	DWORD dwCurrentTime;				//現在時刻
 	DWORD dwExecLastTime;				//最後に処理した時刻
 	DWORD dwFrameCount;					//フレームカウント

@@ -1,6 +1,6 @@
 //*****************************************************
 //
-// テクスチャーの処理[texture.cpp]
+// テクスチャの管理[texture.cpp]
 // Author:髙山桃也
 //
 //*****************************************************
@@ -36,6 +36,24 @@ CTexture::CTexture()
 CTexture::~CTexture()
 {
 	m_pTexture = nullptr;
+}
+
+//=====================================================
+// 生成処理
+//=====================================================
+CTexture *CTexture::Create(void)
+{
+	if (m_pTexture == nullptr)
+	{
+		m_pTexture = new CTexture;
+
+		if (m_pTexture != nullptr)
+		{
+			m_pTexture->Load();
+		}
+	}
+
+	return m_pTexture;
 }
 
 //=====================================================

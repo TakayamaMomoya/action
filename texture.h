@@ -1,6 +1,6 @@
 //*****************************************************
 //
-// テクスチャーの処理[texture.h]
+// テクスチャの管理[texture.h]
 // Author:髙山桃也
 //
 //*****************************************************
@@ -29,6 +29,7 @@ public:
 	CTexture();	// コンストラクタ
 	~CTexture();	// デストラクタ
 	
+	static CTexture *Create(void);
 	HRESULT Load(void);
 	void Unload(void);
 	int Regist(const char *pFileName);

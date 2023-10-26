@@ -25,6 +25,7 @@ public:
 	void Update(void);
 	void Draw(void);
 	static CEnemyBoss *GetInstance(void) { return m_pEnemyBoss; }
+	void Hit(float fDamage);
 
 private:
 	enum STATE

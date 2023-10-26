@@ -9,6 +9,7 @@
 // インクルード
 //*****************************************************
 #include "score.h"
+#include "timer.h"
 #include "manager.h"
 #include "renderer.h"
 #include "game.h"
@@ -23,6 +24,8 @@
 #define SCORE_SPEED	(71)	// スコアの変わるスピード
 #define RANK_BONUS	(0.05f)	// 1ランクにおけるボーナス倍率
 #define RANK_RATE	(0.0004f)	// ランクの上がる倍率
+#define MAX_TIME	(180)	// タイムボーナスが付与される最低時間
+#define TIME_BONUS	(500)	// 一秒あたりのボーナス
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -134,4 +137,29 @@ CScore *CScore::Create(void)
 	}
 
 	return m_pScore;
+}
+
+//=====================================================
+// リザルトスコア設定
+//=====================================================
+void CScore::SetResultScore(void)
+{
+	CTimer *pTimer = CTimer::GetInstance();
+	int nTime = 0;
+	int nScore = GetScore();
+
+	if (pTimer != nullptr)
+	{// 時間の取得
+		nTime = pTimer->GetSecond();
+	}
+
+	int nBonus = 0;
+
+	// ボーナスの計算
+	nBonus = (MAX_TIME - nTime) * TIME_BONUS;
+
+	// ボーナスを加算
+	nScore += nBonus;
+
+	CManager::SetScore(nScore);
 }

@@ -40,6 +40,7 @@ public:
 	float GetHeight(void) { return 0.0f; }	// サイズ取得
 	int GetScore(void) { return m_nSocreDest; }
 	static CScore *GetInstance(void) { return m_pScore; }
+	void SetResultScore(void);
 
 private:
 	CNumber *m_pObjNumber;	// スコア値のポインタ

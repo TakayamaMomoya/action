@@ -21,12 +21,13 @@
 #include "effect3D.h"
 #include "frame.h"
 #include "shadow.h"
+#include "score.h"
 
 //*****************************************************
 // マクロ定義
 //*****************************************************
 #define INITIAL_LIFE	(60.0f)	// 初期体力
-#define INITIAL_SCORE	(500)	// 初期スコア
+#define INITIAL_SCORE	(30000)	// 初期スコア
 #define TIME_SHOT	(240)	// 射撃までのカウンター
 #define ROLL_FACT	(0.1f)	// 回転係数
 #define BULLET_SPEED	(2.0f)	// 弾の速度
@@ -530,6 +531,47 @@ void CEnemyBoss::SwitchState(void)
 void CEnemyBoss::ManageAttack(void)
 {
 
+}
+
+//=====================================================
+// ヒット処理
+//=====================================================
+void CEnemyBoss::Hit(float fDamage)
+{
+	CEnemy::STATE state = CEnemy::GetState();
+
+	if (state == STATE_NORMAL)
+	{
+		float fLife = CEnemy::GetLife();
+
+		fLife -= fDamage;
+
+		if (fLife <= 0.0f)
+		{// 死亡状態
+			fLife = 0.0f;
+
+			state = STATE_DEATH;
+
+			// スコア管理
+			ManageScore();
+
+			// スコア設定
+			CScore *pScore = CScore::GetInstance();
+
+			if (pScore != nullptr)
+			{
+				pScore->SetResultScore();
+			}
+		}
+		else
+		{
+			state = STATE_DAMAGE;
+		}
+
+		CEnemy::SetLife(fLife);
+	}
+
+	CEnemy::SetState(state);
 }
 
 //=====================================================

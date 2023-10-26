@@ -74,10 +74,10 @@ public:
 protected:
 	void RotDest(void);
 	CShadow *GetShadow(void) { return m_pShadow; }
+	void ManageScore(void);
 
 private:
 	void ManageState(void);
-	void ManageScore(void);
 
 	static int m_nNumAll;	// ‘”
 	float m_fLife;	// ‘Ì—Í

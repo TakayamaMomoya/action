@@ -239,4 +239,5 @@ void CRenderer::DrawFPS(void)
 	//文字列に代入
 	CManager::GetDebugProc()->Print("FPS:%d\n", GetFPS());
 	CManager::GetDebugProc()->Print("オブジェクト総数:[%d]\n", CObject::GetNumAll());
+	CManager::GetDebugProc()->Print("保存スコア:[%d]\n", CManager::GetScore());
 }

@@ -240,6 +240,42 @@ HRESULT CBlock::Load(char *pPath)
 }
 
 //=====================================================
+// 影のチェック処理
+//=====================================================
+float CBlock::CheckShadow(D3DXVECTOR3 pos)
+{
+	float fHeight = -1000;
+
+	for (int i = 0; i < NUM_OBJECT; i++)
+	{
+		if (m_apBlock[i] != nullptr)
+		{
+			// ブロックの情報取得
+			D3DXVECTOR3 posBlock = m_apBlock[i]->GetPosition();
+			D3DXVECTOR3 vtxMax = m_apBlock[i]->GetVtxMax() + posBlock;
+			D3DXVECTOR3 vtxMin = m_apBlock[i]->GetVtxMin() + posBlock;
+
+			if (pos.x >= vtxMin.x && pos.x <= vtxMax.x && 
+				posBlock.z <= 5.0f && posBlock.z >= -5.0f)
+			{// 横以内にいるとき
+				if (pos.y >= posBlock.y)
+				{
+					float fDiff = vtxMax.y - pos.y;
+					float fDiffMax = fHeight - pos.y;
+
+					if (fDiff * fDiff < fDiffMax * fDiffMax)
+					{// 最小の差分より小さかったら
+						fHeight = vtxMax.y;
+					}
+				}
+			}
+		}
+	}
+
+	return fHeight;
+}
+
+//=====================================================
 // モデル番号読込処理
 //=====================================================
 void CBlock::LoadModel(void)

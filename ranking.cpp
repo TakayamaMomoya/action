@@ -16,6 +16,8 @@
 #include "manager.h"
 #include "texture.h"
 #include "inputManager.h"
+#include "skybox.h"
+#include "universal.h"
 
 //*****************************************************
 // マクロ定義
@@ -24,14 +26,12 @@
 #define TIMER_TRANS					(360)									// 遷移時間
 #define RANKING_WIDTH			(80)	// 横幅
 #define RANKING_HEIGHT			(80)	// 高さ
-
 #define FLASH_SPEED					(10)	// 点滅スピード
-
 #define RANKING_BIN_FILE			"data\\BIN\\ranking"								// ランキングファイル名
-
 #define RANKING_TEX_FILE			"data\\TEXTURE\\UI\\Number000.png"		// ランキングテクスチャ名
 #define BG_TEX_FILE					"data\\TEXTURE\\BG\\ResultBg000.png"	// ランキング背景テクスチャ名
 #define RANKING_PATH	"data\\TEXTURE\\UI\\ranking.png"	// 項目テクスチャ名
+#define ROTATION_SPEED	(0.001f)	// 回転速度
 
 //=====================================================
 // コンストラクタ
@@ -45,6 +45,7 @@ CRanking::CRanking()
 	m_nTimerTrans = 0;
 	ZeroMemory(&m_aScore[0],sizeof(int) * NUM_RANK);
 	m_state = STATE_NORMAL;
+	m_pSkybox = nullptr;
 }
 
 //=====================================================
@@ -88,6 +89,9 @@ HRESULT CRanking::Init(void)
 	// 保存
 	Save();
 
+	// スカイボックス
+	m_pSkybox = CSkybox::Create();
+
 	return S_OK;
 }
 
@@ -96,6 +100,12 @@ HRESULT CRanking::Init(void)
 //=====================================================
 void CRanking::Uninit(void)
 {
+	if (m_pSkybox != nullptr)
+	{
+		m_pSkybox->Uninit();
+		m_pSkybox = nullptr;
+	}
+
 	CObject::ReleaseAll();
 }
 
@@ -106,6 +116,7 @@ void CRanking::Update(void)
 {
 	CInputManager *pInputManager = CInputManager::GetInstance();
 	CFade *pFade = CManager::GetFade();
+	CUniversal *pUniversal = CManager::GetUniversal();
 
 	// シーンの更新
 	CScene::Update();
@@ -159,6 +170,18 @@ void CRanking::Update(void)
 		{
 			pFade->SetFade(CScene::MODE_TITLE);
 		}
+	}
+
+	// スカイボックスの回転
+	if (m_pSkybox != nullptr)
+	{
+		D3DXVECTOR3 rot = m_pSkybox->GetRot();
+
+		rot.y += ROTATION_SPEED;
+
+		pUniversal->LimitRot(&rot.y);
+
+		m_pSkybox->SetRot(rot);
 	}
 
 	// 遷移タイマー進行

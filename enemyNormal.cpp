@@ -117,6 +117,13 @@ void CEnemyNormal::Uninit(void)
 		m_pCollisionSphere = nullptr;
 	}
 
+	if (m_pCollisionCube == nullptr)
+	{// —§•û‘Ì‚Ì“–‚½‚è”»’è
+		m_pCollisionCube->Uninit();
+
+		m_pCollisionCube = nullptr;
+	}
+
 	// Œp³ƒNƒ‰ƒX‚ÌI—¹
 	CEnemy::Uninit();
 }

@@ -105,6 +105,7 @@
     <ClCompile Include="timer.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="shadow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="afterimage.h" />
@@ -211,6 +212,7 @@
     <ClInclude Include="timer.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="shadow.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="input">

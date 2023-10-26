@@ -116,10 +116,10 @@ void CParts::Draw(void)
 
 		// 色を戻す
 		pMat[nCntMat].MatD3D = matDef;
-	}
 
-	// マテリアルを戻す
-	pDevice->SetMaterial(&matDef);
+		// マテリアルを戻す
+		pDevice->SetMaterial(&matDef);
+	}
 }
 
 //=====================================================

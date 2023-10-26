@@ -34,6 +34,7 @@
 #include "enemyManager.h"
 #include "bullet.h"
 #include "animEffect3D.h"
+#include "shadow.h"
 
 //*****************************************************
 // マクロ定義
@@ -52,6 +53,7 @@
 #define BULLET_SIZE	(1.0f)	// 弾サイズ
 #define TIME_DAMAGE	(30)	// ダメージ状態の時間
 #define TIME_FLASH	(4)	// 点滅速度
+#define MODE_DEATH	(CScene::MODE_GAME)	// 死んだ後に遷移するモード
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -94,6 +96,11 @@ HRESULT CPlayer::Init(void)
 	if (m_info.pBody == nullptr)
 	{// 体の生成
 		m_info.pBody = CMotion::Create(BODY_PATH);
+	}
+
+	if (m_info.pShadow == nullptr)
+	{// 影の生成
+		m_info.pShadow = CShadow::Create(GetPosition(), 10.0f, 10.0f);
 	}
 
 	if (m_info.pCollisionCube == nullptr)
@@ -213,6 +220,13 @@ void CPlayer::Update(void)
 		{
 			m_info.move.y -= GRAVITY;
 		}
+	}
+
+	if (m_info.pShadow != nullptr)
+	{// 影の追従
+		D3DXVECTOR3 posShadow = GetPosition();
+
+		m_info.pShadow->SetPosition(posShadow);
 	}
 }
 
@@ -708,7 +722,7 @@ void CPlayer::ManageCollision(void)
 
 		if (pFade != nullptr)
 		{
-			pFade->SetFade(CScene::MODE_RANKING);
+			pFade->SetFade(MODE_DEATH);
 		}
 	}
 	// =======================
@@ -777,7 +791,7 @@ void CPlayer::ManageAttack(void)
 
 					if (pAnim3D != nullptr)
 					{
-						pAnim3D->CreateEffect(pObj->GetPosition(), CAnimEffect3D::TYPE_FLASH);
+						pAnim3D->CreateEffect(pos, CAnimEffect3D::TYPE_FLASH);
 					}
 
 					pObj->Hit(5.0f);
@@ -897,7 +911,7 @@ void CPlayer::Death(void)
 
 	if (pFade != nullptr)
 	{
-		pFade->SetFade(CScene::MODE_RANKING);
+		pFade->SetFade(MODE_DEATH);
 	}
 
 	Uninit();

@@ -72,6 +72,7 @@ public:
 	static void DeleteAll(void);	// ‘Síœˆ—
 	static int GetNumAll(void) { return m_nNumAll; }
 	static CBlock **GetBlock(void) { return &m_apBlock[0]; }
+	static float CheckShadow(D3DXVECTOR3 pos);
 	static void LoadModel(void);
 	static void DeleteIdx(void);
 	static int *GetIndex(void) { return m_pIdxObject; }

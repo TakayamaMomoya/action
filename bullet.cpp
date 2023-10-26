@@ -266,40 +266,44 @@ CBullet *CBullet::Create(D3DXVECTOR3 pos,D3DXVECTOR3 move, int nLife,TYPE type, 
 	if (pBullet == nullptr)
 	{// インスタンス生成
 		pBullet = new CBullet;
-		pBullet->m_move = move;
-		pBullet->m_pos = pos;
-		pBullet->m_posOld = pos;
-		pBullet->m_nLife = nLife;
-		pBullet->m_type = type;
-		pBullet->m_bPierce = bPierce;
-		pBullet->m_fDamage = fDamage;
-		pBullet->m_col = col;
-		pBullet->m_fSize = fRadius;
 
-		if (pBullet->m_pCollisionSphere == nullptr)
-		{// 当たり判定生成
-			switch (type)
-			{// 種類ごとにタグの設定
-			case TYPE_PLAYER:
-				pBullet->m_pCollisionSphere = CCollisionSphere::Create(CCollision::TAG_PLAYERBULLET, CCollision::TYPE_SPHERE, pBullet);
-					break;
-			case TYPE_ENEMY:
-				pBullet->m_pCollisionSphere = CCollisionSphere::Create(CCollision::TAG_ENEMYBULLET, CCollision::TYPE_SPHERE, pBullet);
-				break;
-			default:
-				break;
-			}
-		}
-
-		if (pBullet->m_pCollisionSphere != nullptr)
+		if (pBullet != nullptr)
 		{
-			pBullet->m_pCollisionSphere->SetPosition(pBullet->m_pos);
+			pBullet->m_move = move;
+			pBullet->m_pos = pos;
+			pBullet->m_posOld = pos;
+			pBullet->m_nLife = nLife;
+			pBullet->m_type = type;
+			pBullet->m_bPierce = bPierce;
+			pBullet->m_fDamage = fDamage;
+			pBullet->m_col = col;
+			pBullet->m_fSize = fRadius;
 
-			pBullet->m_pCollisionSphere->SetRadius(fRadius * 1.5f);
+			if (pBullet->m_pCollisionSphere == nullptr)
+			{// 当たり判定生成
+				switch (type)
+				{// 種類ごとにタグの設定
+				case TYPE_PLAYER:
+					pBullet->m_pCollisionSphere = CCollisionSphere::Create(CCollision::TAG_PLAYERBULLET, CCollision::TYPE_SPHERE, pBullet);
+					break;
+				case TYPE_ENEMY:
+					pBullet->m_pCollisionSphere = CCollisionSphere::Create(CCollision::TAG_ENEMYBULLET, CCollision::TYPE_SPHERE, pBullet);
+					break;
+				default:
+					break;
+				}
+			}
+
+			if (pBullet->m_pCollisionSphere != nullptr)
+			{
+				pBullet->m_pCollisionSphere->SetPosition(pBullet->m_pos);
+
+				pBullet->m_pCollisionSphere->SetRadius(fRadius * 1.5f);
+			}
+
+			// 初期化処理
+			pBullet->Init();
 		}
-
-		// 初期化処理
-		pBullet->Init();
 	}
 
 	return pBullet;

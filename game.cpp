@@ -85,6 +85,12 @@ HRESULT CGame::Init(void)
 	// リスポーン地点設定
 	LoadCheckPoint();
 
+	// スカイボックス
+	CSkybox::Create();
+
+	// ブロック配置読込
+	CBlock::Load("data\\MAP\\map01.bin");
+
 	// プレイヤー生成
 	CPlayer *pPlayer = CPlayer::Create();
 
@@ -92,12 +98,6 @@ HRESULT CGame::Init(void)
 	{// スポーン地点の設定
 		pPlayer->SetPosition(m_pPosCheckPoint[m_nProgress]);
 	}
-
-	// スカイボックス
-	CSkybox::Create();
-
-	// ブロック配置読込
-	CBlock::Load("data\\MAP\\map01.bin");
 
 	// 敵マネージャー生成
 	CEnemyManager::Create();

@@ -20,6 +20,7 @@
 //*****************************************************
 class CCollisionCube;
 class CCollisionSphere;
+class CShadow;
 
 //*****************************************************
 // マクロ定義
@@ -111,6 +112,7 @@ private:
 		D3DXVECTOR3 rot;	// 向き
 		D3DXVECTOR3 rotDest;	// 目標の向き
 		CMotion *pBody;	// 体のポインタ
+		CShadow *pShadow;	// 影のポインタ
 		CCollisionCube *pCollisionCube;	// 立方体の当たり判定
 		CCollisionSphere *pClsnAttack;	// 攻撃の当たり判定
 		CCollisionSphere *pClsnHit;	// 被弾当たり判定

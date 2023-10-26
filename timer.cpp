@@ -19,7 +19,8 @@
 // マクロ定義
 //*****************************************************
 #define NUM_PLACE	(2)	// 桁数
-#define INITIAL_TIME	(120)	// 初期の時間
+#define INITIAL_TIME	(0)	// 初期の時間
+#define MAX_TIME	(180)	// タイムボーナスが付与される最低時間
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -51,7 +52,7 @@ CTimer::~CTimer()
 HRESULT CTimer::Init(void)
 {
 	m_nSecond = INITIAL_TIME;
-
+	
 	return S_OK;
 }
 
@@ -91,10 +92,7 @@ void CTimer::Update(void)
 	{
 		m_nCntSecond = 0;
 		
-		if (m_nSecond >= 1)
-		{
-			m_nSecond--;
-		}
+		m_nSecond++;
 	}
 
 	// 分の計算

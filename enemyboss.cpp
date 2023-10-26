@@ -20,6 +20,7 @@
 #include "missile.h"
 #include "effect3D.h"
 #include "frame.h"
+#include "shadow.h"
 
 //*****************************************************
 // ƒ}ƒNƒ’è‹`
@@ -105,6 +106,14 @@ HRESULT CEnemyBoss::Init(void)
 	CMotion::Update();
 
 	FollowCollision();
+
+	// ‰e‚ÌÝ’è
+	CShadow *pShadow = GetShadow();
+
+	if (pShadow != nullptr)
+	{
+		pShadow->SetSize(40.0f, 40.0f);
+	}
 
 	return S_OK;
 }

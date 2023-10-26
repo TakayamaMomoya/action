@@ -109,7 +109,7 @@ HRESULT CGame::Init(void)
 	CUIManager::Create();
 
 #ifdef _DEBUG
-	CEdit::Create();
+	//CEdit::Create();
 #endif
 
 	m_bStop = false;

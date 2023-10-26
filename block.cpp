@@ -255,8 +255,8 @@ float CBlock::CheckShadow(D3DXVECTOR3 pos)
 			D3DXVECTOR3 vtxMax = m_apBlock[i]->GetVtxMax() + posBlock;
 			D3DXVECTOR3 vtxMin = m_apBlock[i]->GetVtxMin() + posBlock;
 
-			if (pos.x >= vtxMin.x && pos.x <= vtxMax.x && 
-				posBlock.z <= 5.0f && posBlock.z >= -5.0f)
+			if (pos.x >= vtxMin.x && pos.x <= vtxMax.x &&
+				vtxMax.z >= pos.z && vtxMin.z <= pos.z)
 			{// ‰¡ˆÈ“à‚É‚¢‚é‚Æ‚«
 				if (pos.y >= posBlock.y)
 				{

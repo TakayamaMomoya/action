@@ -15,10 +15,7 @@
 //*****************************************************
 class CCollisionSphere;
 class CCollisionCube;
-class CBillboard;
 class CShadow;
-class CExplSpawner;
-class CArrow;
 
 //*****************************************************
 // マクロ定義
@@ -76,6 +73,7 @@ public:
 
 protected:
 	void RotDest(void);
+	CShadow *GetShadow(void) { return m_pShadow; }
 
 private:
 	void ManageState(void);
@@ -86,6 +84,7 @@ private:
 	int m_nTimerState;	// 状態遷移カウンター
 	CCollisionSphere *m_pCollisionSphere;	// 球の当たり判定
 	CCollisionCube *m_pCollisionCube;	// 立方体の当たり判定
+	CShadow *m_pShadow;	// 影のポインタ
 	STATE m_state;	// 状態
 	int m_nScore;	// スコア値
 

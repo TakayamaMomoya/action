@@ -24,7 +24,7 @@
 #define MAX_SPEED	(2.0f)	// 移動速度
 #define CHASE_SPEED	(0.05f)	// 追跡速度
 #define INITIAL_LIFE	(1)	// 初期体力
-#define DEATH_TIME	(300)	// 自滅までの時間
+#define DEATH_TIME	(180)	// 自滅までの時間
 #define SIZE_ORBIT	(5.0f)	// 軌跡のサイズ
 #define LENGTH_ORBIT	(50)	// 軌跡の長さ
 

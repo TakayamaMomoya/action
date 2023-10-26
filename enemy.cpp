@@ -20,6 +20,7 @@
 #include "game.h"
 #include "enemyshot.h"
 #include "enemyManager.h"
+#include "shadow.h"
 
 //*****************************************************
 // マクロ定義
@@ -60,6 +61,8 @@ CEnemy::CEnemy()
 	m_nScore = 0;
 	m_nTimerState = 0;
 	m_pCollisionSphere = nullptr;
+	m_pCollisionCube = nullptr;
+	m_pShadow = nullptr;
 	m_state = STATE_NORMAL;
 
 	// 値のクリア
@@ -225,6 +228,11 @@ HRESULT CEnemy::Init(void)
 
 	m_nScore = INITIAL_SCORE;
 
+	if (m_pShadow == nullptr)
+	{// 影の生成
+		m_pShadow = CShadow::Create(GetPosition(), 10.0f, 10.0f);
+	}
+
 	return S_OK;
 }
 
@@ -240,6 +248,12 @@ void CEnemy::Uninit(void)
 		m_pCollisionSphere = nullptr;
 	}
 
+	if (m_pShadow != nullptr)
+	{
+		m_pShadow->Uninit();
+		m_pShadow = nullptr;
+	}
+
 	// 継承クラスの終了
 	CMotion::Uninit();
 }
@@ -253,6 +267,13 @@ void CEnemy::Update(void)
 	{
 		// 継承クラスの更新
 		CMotion::Update();
+
+		if (m_pShadow != nullptr)
+		{// 影の追従
+			D3DXVECTOR3 pos = GetMtxPos(0);
+
+			m_pShadow->SetPosition(pos);
+		}
 	}
 }
 

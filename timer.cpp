@@ -80,7 +80,7 @@ void CTimer::Uninit(void)
 //=====================================================
 void CTimer::Update(void)
 {
-	if (CGame::GetState() != CGame::STATE_NORMAL)
+	if (CGame::GetState() == CGame::STATE_END)
 	{
 		return;
 	}

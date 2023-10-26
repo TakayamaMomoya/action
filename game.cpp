@@ -35,6 +35,7 @@
 #include "UIManager.h"
 #include "anim3D.h"
 #include "texture.h"
+#include "timer.h"
 
 //*****************************************************
 // マクロ定義
@@ -91,10 +92,14 @@ HRESULT CGame::Init(void)
 	LoadCheckPoint();
 
 	// スカイボックス
-	CSkybox::Create();
+	CSkybox *pSkybox = CSkybox::Create();
+	pSkybox->SetRot(D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f));
 
 	// ブロック配置読込
 	CBlock::Load("data\\MAP\\map01.bin");
+
+	// UIマネージャー
+	CUIManager::Create();
 
 	// プレイヤー生成
 	CPlayer *pPlayer = CPlayer::Create();
@@ -110,24 +115,8 @@ HRESULT CGame::Init(void)
 	// ３Dエフェクト管理生成
 	CAnimEffect3D::Create();
 
-	// UIマネージャー
-	CUIManager::Create();
-
-	// インスタンス生成
-	CAnim3D *pAnim3D = CAnim3D::Create(D3DXVECTOR3(161.0f, 15.0f, 20.0f), 2, 40, true);
-
-	if (pAnim3D != nullptr)
-	{
-		// 色の設定
-		CTexture *pTexture = CTexture::GetInstance();
-
-		if (pTexture != nullptr)
-		{// テクスチャの設定
-			int nIdx = pTexture->Regist("data\\TEXTURE\\UI\\tutorial00.png");
-			pAnim3D->SetIdxTexture(nIdx);
-			pAnim3D->SetSize(35.0f,25.0f);
-		}
-	}
+	// チュートリアルの生成
+	CreateTutorial();
 
 #ifdef _DEBUG
 	//CEdit::Create();
@@ -227,6 +216,49 @@ void CGame::LoadCheckPoint(void)
 
 		// ファイルを閉じる
 		fclose(pFile);
+	}
+}
+
+//=====================================================
+// チュートリアル表記の生成
+//=====================================================
+void CGame::CreateTutorial(void)
+{
+	D3DXVECTOR3 aPos[5] =
+	{
+		{ 161.0f, 15.0f, 20.0f },
+		{ 300.0f, 15.0f, 20.0f },
+		{ 526.0f, 11.0f, 20.0f },
+		{ 631.0f, 80.0f, 20.0f },
+		{ 842.0f, 80.0f, 20.0f },
+	};
+
+	char *apPath[5] = 
+	{
+		"data\\TEXTURE\\UI\\tutorial00.png",
+		"data\\TEXTURE\\UI\\tutorial01.png",
+		"data\\TEXTURE\\UI\\tutorial02.png",
+		"data\\TEXTURE\\UI\\tutorial03.png",
+		"data\\TEXTURE\\UI\\tutorial04.png",
+	};
+
+	for (int i = 0; i < 5; i++)
+	{
+		// インスタンス生成
+		CAnim3D *pAnim3D = CAnim3D::Create(aPos[i], 2, 40, true);
+
+		if (pAnim3D != nullptr)
+		{
+			// 色の設定
+			CTexture *pTexture = CTexture::GetInstance();
+
+			if (pTexture != nullptr)
+			{// テクスチャの設定
+				int nIdx = pTexture->Regist(apPath[i]);
+				pAnim3D->SetIdxTexture(nIdx);
+				pAnim3D->SetSize(35.0f, 25.0f);
+			}
+		}
 	}
 }
 

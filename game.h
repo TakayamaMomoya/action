@@ -47,10 +47,12 @@ public:
 	static STATE GetState(void) { return m_state; }
 	static void SetProgress(int nProgress) { m_nProgress = nProgress; }
 	void EnableStop(bool bStop) { m_bStop = bStop; }
-	CGame *GetInstance(void) { return m_pGame; }
+	static CGame *GetInstance(void) { return m_pGame; }
+	int GetProgress(void) { return m_nProgress; }
 
 private:
 	void LoadCheckPoint(void);
+	void CreateTutorial(void);
 	void UpdateCamera(void);
 	void ManageState(void);
 	void Debug(void);

@@ -497,12 +497,12 @@ void CPlayer::Parry(void)
 
 	// ˆÊ’uÝ’è
 	m_info.pClsnAttack->SetPosition(pos);
-
+	
 	// ”¼Œa‚ÌÝ’è
 	m_info.pClsnAttack->SetRadius(m_info.fRadiusParry);
 
 #ifdef _DEBUG
-	CEffect3D::Create(pos, m_info.fRadiusParry, 10, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	//  CEffect3D::Create(pos, m_info.fRadiusParry, 10, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 #endif
 
 	// –½’†‚µ‚½‚©‚Ì”»’è
@@ -649,7 +649,7 @@ void CPlayer::ManageMotion(void)
 		if (m_info.nCntAfterImage >= TIME_AFTERIMAGE)
 		{
 			// Žc‘œ‚Ì¶¬
-			m_info.pBody->SetAfterImage(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f), 20);
+			m_info.pBody->SetAfterImage(D3DXCOLOR(1.0f, 0.2f, 0.2f, 1.0f), 20);
 
 			m_info.nCntAfterImage = 0;
 		}
@@ -777,7 +777,7 @@ void CPlayer::ManageAttack(void)
 				m_info.pClsnAttack->SetRadius(m_info.pAttackInfo[i].fRadius);
 
 #ifdef _DEBUG
-				CEffect3D::Create(pos, m_info.pAttackInfo[i].fRadius, 10, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+				//CEffect3D::Create(pos, m_info.pAttackInfo[i].fRadius, 10, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 #endif
 				// –½’†‚µ‚½‚©‚Ì”»’è
 				bHit = m_info.pClsnAttack->SphereCollision(CCollision::TAG_ENEMY);

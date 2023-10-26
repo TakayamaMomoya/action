@@ -1,65 +1,9 @@
-﻿  UIManager.cpp
-  afterimage.cpp
-  anim3D.cpp
-  animEffect3D.cpp
-  animation2D.cpp
-  bg.cpp
-  billboard.cpp
-  block.cpp
-  bullet.cpp
-  camera.cpp
-  collision.cpp
-  debugproc.cpp
-  edit.cpp
-  effect2D.cpp
-  effect3D.cpp
-  enemy.cpp
-  enemyManager.cpp
-  enemyNormal.cpp
-  enemyTurret.cpp
-  enemyboss.cpp
-  コンパイル中...
-  enemydrone.cpp
-  enemyshot.cpp
-  fade.cpp
-  field.cpp
-  game.cpp
-  inputManager.cpp
-  inputjoypad.cpp
-  inputkeyboard.cpp
-  inputmouse.cpp
-  life.cpp
-  light.cpp
-  main.cpp
-  manager.cpp
-  missile.cpp
-  model.cpp
-  motion.cpp
-  number.cpp
-  object.cpp
-  object2D.cpp
-  object3D.cpp
-  コンパイル中...
-  objectX.cpp
-  orbit.cpp
-  parts.cpp
+﻿  game.cpp
   player.cpp
-  ranking.cpp
-  renderer.cpp
-  scene.cpp
-  score.cpp
-  shadow.cpp
-  skybox.cpp
-  texture.cpp
-  timer.cpp
-  title.cpp
-  tutorial.cpp
-  tutorialManager.cpp
-  universal.cpp
   コード生成しています。
-  26 of 828 functions ( 3.1%) were compiled, the rest were copied from previous compilation.
-    9 functions were new in current compilation
-    33 functions had inline decision re-evaluated but remain unchanged
+  2 of 832 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   ActionScroll.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\ActionScroll\ActionScroll.exe
   ActionScroll.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\ActionScroll\ActionScroll.pdb (Full PDB)

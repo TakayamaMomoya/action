@@ -11,10 +11,15 @@
 #include "main.h"
 #include "inputkeyboard.h"
 #include "UIManager.h"
-#include "UI.h"
 #include "life.h"
 #include "score.h"
 #include "timer.h"
+#include "game.h"
+
+//*****************************************************
+// マクロ定義
+//*****************************************************
+#define TIME_PENALTY	(15)	// タイムペナルティ
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -70,6 +75,19 @@ HRESULT CUIManager::Init(void)
 
 	// タイマーの生成
 	m_pTimer = CTimer::Create();
+
+	if (m_pTimer != nullptr)
+	{// 進行度合いによるタイムペナルティ
+		CGame *pGame = CGame::GetInstance();
+
+		if (pGame != nullptr)
+		{
+			int nProgress = pGame->GetProgress();
+			int nPenalty = TIME_PENALTY * nProgress;
+
+			m_pTimer->AddTimer(nPenalty);
+		}
+	}
 
 	return S_OK;
 }

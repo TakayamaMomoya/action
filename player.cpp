@@ -35,6 +35,7 @@
 #include "bullet.h"
 #include "animEffect3D.h"
 #include "shadow.h"
+#include "block.h"
 
 //*****************************************************
 // ƒ}ƒNƒ’è‹`
@@ -96,11 +97,16 @@ HRESULT CPlayer::Init(void)
 	if (m_info.pBody == nullptr)
 	{// ‘Ì‚Ì¶¬
 		m_info.pBody = CMotion::Create(BODY_PATH);
+
+		if (m_info.pBody != nullptr)
+		{
+			m_info.pBody->EnableShadow(true);
+		}
 	}
 
 	if (m_info.pShadow == nullptr)
 	{// ‰e‚Ì¶¬
-		m_info.pShadow = CShadow::Create(GetPosition(), 10.0f, 10.0f);
+		//m_info.pShadow = CShadow::Create(GetPosition(), 10.0f, 10.0f);
 	}
 
 	if (m_info.pCollisionCube == nullptr)
@@ -222,11 +228,16 @@ void CPlayer::Update(void)
 		}
 	}
 
-	if (m_info.pShadow != nullptr)
+	if (m_info.pBody != nullptr)
 	{// ‰e‚Ì’Ç]
-		D3DXVECTOR3 posShadow = GetPosition();
 
-		m_info.pShadow->SetPosition(posShadow);
+		float fHeight = 0.0f;
+
+		// ƒuƒƒbƒN‚Ì‚‚³‚ðŽæ“¾
+		fHeight = CBlock::CheckShadow(GetPosition());
+
+		// ‰e‚ÌˆÊ’uÝ’è
+		m_info.pBody->SetPosShadow(D3DXVECTOR3(GetPosition().x, fHeight + 0.1f, GetPosition().z));
 	}
 }
 

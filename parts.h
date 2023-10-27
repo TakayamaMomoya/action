@@ -32,6 +32,7 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+	void DrawShadow(void);
 	static CParts *Create(D3DXVECTOR3 pos = { 0.0f,0.0f,0.0f }, D3DXVECTOR3 rot = { 0.0f,0.0f,0.0f });
 	float GetWidth(void) { return 0.0f; }	// サイズ取得
 	float GetHeight(void) { return 0.0f; }	// サイズ取得

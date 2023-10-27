@@ -41,8 +41,10 @@ CMotion::CMotion(int nPriority) : CObject(nPriority)
 	m_nNumMotion = 0;
 	m_nNumParts = 0;
 	m_bFinish = false;
+	m_bShadow = false;
 	m_pos = { 0.0f,0.0f,0.0f };
 	m_posOld = { 0.0f,0.0f,0.0f };
+	m_posShadow = { 0.0f,0.0f,0.0f };
 	m_move = { 0.0f,0.0f,0.0f };
 }
 
@@ -305,10 +307,23 @@ void CMotion::MultiplyMtx(void)
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	//変数宣言
 	D3DXMATRIX mtxRotModel, mtxTransModel;
 	D3DXMATRIX *pMtxParent;
 	D3DXMATRIX *pMtx;
+
+	D3DXMATRIX mtxShadow;
+	D3DLIGHT9 light;
+	D3DXVECTOR4 posLight;
+	D3DXVECTOR3 normal;
+	D3DXPLANE plane;
+
+	// ライトの位置設定
+	pDevice->GetLight(2, &light);
+	posLight = { -light.Direction.x, -light.Direction.y, -light.Direction.z, 0.0f };
+
+	// 平面情報の生成
+	normal = { 0.0f,1.0f,0.0f };
+	D3DXPlaneFromPointNormal(&plane, &m_posShadow, &normal);
 
 	for (int nCntParts = 0;nCntParts < m_nNumParts;nCntParts++)
 	{
@@ -340,6 +355,21 @@ void CMotion::MultiplyMtx(void)
 
 		//親パーツとパーツのワールドマトリックスをかけ合わせる
 		D3DXMatrixMultiply(pMtx, pMtx, pMtxParent);
+
+		if (m_bShadow)
+		{
+			// シャドウマトリックス初期化
+			D3DXMatrixIdentity(&mtxShadow);
+
+			// シャドウマトリックスの作成
+			D3DXMatrixShadow(&mtxShadow, &posLight, &plane);
+			D3DXMatrixMultiply(&mtxShadow, pMtx, &mtxShadow);
+
+			// シャドウマトリックスの設定
+			pDevice->SetTransform(D3DTS_WORLD, &mtxShadow);
+
+			m_apParts[nCntParts]->m_pParts->DrawShadow();
+		}
 
 		//ワールドマトリックス設定
 		pDevice->SetTransform(D3DTS_WORLD, pMtx);

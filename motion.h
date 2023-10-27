@@ -91,6 +91,7 @@ public:
 	void Load(char *pPath);
 	void MultiplyMtx(void);
 	void SetPosition(D3DXVECTOR3 pos) { m_pos = pos; }	// 設定処理
+	void SetPosShadow(D3DXVECTOR3 pos) { m_posShadow = pos; }	// 設定処理
 	void SetPositionOld(D3DXVECTOR3 pos) { m_posOld = pos; }	// 設定処理
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }	// 取得処理
 	D3DXVECTOR3 *GetPosAddress(void) { return &m_pos; }	// 取得処理
@@ -115,6 +116,7 @@ public:
 	void SetAllCol(D3DXCOLOR col);
 	void ResetAllCol(void);
 	void InitPose(int nMotion);
+	void EnableShadow(bool bShadow) { m_bShadow = bShadow; }
 
 private:
 	Parts *m_apParts[MAX_PARTS];	// パーツの構造体
@@ -130,10 +132,12 @@ private:
 	int m_nNumParts;	// パーツの数
 	D3DXVECTOR3 m_pos;	// 位置
 	D3DXVECTOR3 m_posOld;	// 前回の位置
+	D3DXVECTOR3 m_posShadow;	// 影の位置
 	D3DXVECTOR3 m_move;	// 移動量
 	D3DXVECTOR3 m_rot;							//向き
 	D3DXMATRIX m_mtxWorld;	// マトリックス
 	bool m_bFinish;	// モーションが終わったかどうか
+	bool m_bShadow;	// 影を描画するかどうか
 };
 
 #endif

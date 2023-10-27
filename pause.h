@@ -47,17 +47,18 @@ private:
 	{
 		STATE_NONE = 0,	// 何でもない状態
 		STATE_IN,	// フェードイン状態
-		STATE_INPUT,	// 入力状態
 		STATE_OUT,	// フェードアウト状態
 		STATE_MAX
 	};
 
 	void ManageState(void);
+	void ManageBg(void);
 	void Input(void);
 	void Fade(MENU menu);
 
 	MENU m_menu;	// 選択項目
 	CObject2D *m_apMenu[MENU_MAX];	// メニュー項目の２Dオブジェクト
+	CObject2D *m_pBg;	// 背景２Dオブジェクト
 	D3DXVECTOR3 m_aPosDest[MENU_MAX];	// 目標の位置
 	STATE m_state;	// 状態
 	static CPause *m_pPause;	// 自身のポインタ

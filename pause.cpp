@@ -25,6 +25,8 @@
 #define MOVE_FACT	(0.15f)	// ˆÚ“®‘¬“x
 #define LINE_ARRIVAL	(90.0f)	// “ž’…‚µ‚½‚Æ‚³‚ê‚é‚µ‚«‚¢’l
 #define LINE_UNINIT	(3.0f)	// I—¹‚·‚é‚Ü‚Å‚Ì‚µ‚«‚¢’l
+#define SPEED_FADE	(0.03f)	// ”wŒi‚ÌƒtƒF[ƒh‘¬“x
+#define ALPHA_BG	(0.5f)	// ”wŒi‚Ì•s“§–¾“x
 
 //*****************************************************
 // Ã“Iƒƒ“ƒo•Ï”éŒ¾
@@ -81,6 +83,20 @@ HRESULT CPause::Init(void)
 		pGame->EnableStop(true);
 	}
 
+	// ”wŒi‚Ì¶¬
+	m_pBg = CObject2D::Create(7);
+
+	if (m_pBg != nullptr)
+	{
+		m_pBg->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.5, SCREEN_HEIGHT * 0.5f, 0.0f));
+
+		m_pBg->SetSize(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f);
+
+		m_pBg->SetCol(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
+
+		m_pBg->SetVtx();
+	}
+
 	char *pPath[MENU_MAX] = 
 	{// ƒƒjƒ…[€–Ú‚ÌƒpƒX
 		"data\\TEXTURE\\UI\\menu_resume.png",
@@ -95,7 +111,7 @@ HRESULT CPause::Init(void)
 	{// ƒƒjƒ…[€–Ú‚Ìƒ|ƒŠƒSƒ“‚ð¶¬
 		if (m_apMenu[nCntMenu] == nullptr)
 		{
-			m_apMenu[nCntMenu] = CObject2D::Create(6);
+			m_apMenu[nCntMenu] = CObject2D::Create(7);
 
 			if (m_apMenu[nCntMenu] != nullptr)
 			{
@@ -137,6 +153,12 @@ void CPause::Uninit(void)
 		pGame->EnableStop(false);
 	}
 
+	if (m_pBg != nullptr)
+	{
+		m_pBg->Uninit();
+		m_pBg = nullptr;
+	}
+
 	for (int nCnt = 0; nCnt < MENU_MAX; nCnt++)
 	{// ƒƒjƒ…[€–Ú‚Ì”jŠü
 		if (m_apMenu[nCnt] != nullptr)
@@ -170,6 +192,9 @@ void CPause::ManageState(void)
 	{
 		Input();
 	}
+
+	// ”wŒi‚ÌŠÇ—
+	ManageBg();
 
 	// I—¹ƒtƒ‰ƒO—p
 	int nEnd = 0;
@@ -216,11 +241,52 @@ void CPause::ManageState(void)
 		}
 	}
 
-	if (nEnd == MENU_MAX - 1 &&
+	if (nEnd == MENU_MAX &&
 		m_state == STATE_OUT)
 	{
 		Uninit();
 	}
+}
+
+//====================================================
+// ”wŒi‚ÌŠÇ—
+//====================================================
+void CPause::ManageBg(void)
+{
+	if (m_pBg == nullptr)
+	{
+		return;
+	}
+
+	D3DXCOLOR col = m_pBg->GetCol();
+
+	switch (m_state)
+	{
+	case CPause::STATE_IN:
+
+		col.a += SPEED_FADE;
+
+		if (col.a >= ALPHA_BG)
+		{
+			col.a = ALPHA_BG;
+		}
+
+		break;
+	case CPause::STATE_OUT:
+
+		col.a -= SPEED_FADE;
+
+		if (col.a <= 0.0f)
+		{
+			col.a = 0.0f;
+		}
+
+		break;
+	default:
+		break;
+	}
+
+	m_pBg->SetCol(col);
 }
 
 //====================================================
@@ -308,6 +374,7 @@ void CPause::Fade(MENU menu)
 	case CPause::MENU_RESTART:
 
 		CGame::SetProgress(0);
+		CGame::SetState(CGame::STATE_END);
 		pFade->SetFade(CScene::MODE_GAME);
 
 		break;

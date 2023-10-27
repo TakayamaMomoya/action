@@ -86,6 +86,15 @@ CEnemyBoss *CEnemyBoss::Create(void)
 //=====================================================
 HRESULT CEnemyBoss::Init(void)
 {
+	CSound *pSound = CSound::GetInstance();
+
+	if (pSound != nullptr)
+	{
+		pSound->Stop();
+
+		pSound->Play(CSound::LABEL_BGM_BOSS);
+	}
+
 	// ƒtƒŒ[ƒ€‰‰o‚Ì¶¬
 	CFrame::Create(100, 240, 70);
 

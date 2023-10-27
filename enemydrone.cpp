@@ -109,6 +109,13 @@ void CEnemyDrone::ManageAttack(void)
 
 			move = posTarget - pos;
 
+			float fLength = D3DXVec3LengthSq(&move);
+
+			if (fLength > 300.0f)
+			{
+				return;
+			}
+
 			D3DXVec3Normalize(&move, &move);
 
 			move *= BULLET_SPEED;

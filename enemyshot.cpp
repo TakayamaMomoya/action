@@ -127,6 +127,23 @@ void CEnemyShot::ManageAttack(void)
 			cosf(fRot) * BULLET_SPEED
 		};
 
+		// –Ú•WˆÊ’uŽæ“¾
+		CPlayer *pPlayer = CPlayer::GetInstance();
+
+		if (pPlayer != nullptr)
+		{
+			D3DXVECTOR3 posTarget = pPlayer->GetPosition();
+
+			D3DXVECTOR3 vecDiff = posTarget - pos;
+
+			float fLength = D3DXVec3Length(&vecDiff);
+
+			if (fLength > 300.0f)
+			{
+				return;
+			}
+		}
+
 		CBullet::Create(pos, -move, 500, CBullet::TYPE_ENEMY,false,BULLET_SIZE,5.0f,D3DXCOLOR(1.0f,0.0f,0.0f,1.0f));
 
 		SetAttackCounter(0);

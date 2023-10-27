@@ -633,6 +633,13 @@ void CPlayer::Parry(void)
 		}
 
 		CParticle::Create(pos,CParticle::TYPE_FLASH);
+
+		CSound *pSound = CSound::GetInstance();
+
+		if (pSound != nullptr)
+		{
+			pSound->Play(CSound::LABEL_SE_PARRY);
+		}
 	}
 }
 

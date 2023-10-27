@@ -19,6 +19,7 @@ public:
 	{
 		LABEL_BGM000 = 0,				// タイトルBGM
 		LABEL_BGM_BATTLE,				// 戦闘BGM 
+		LABEL_BGM_BOSS,				// ボスBGM 
 		LABEL_SE_ATTACK,				// 通常攻撃 
 		LABEL_SE_AIRATTACK,				// 二段ジャンプ攻撃 
 		LABEL_SE_LASER,				// レーザー
@@ -28,7 +29,7 @@ public:
 		LABEL_SE_JUMP,				// ジャンプ
 		LABEL_SE_DASH,				// ダッシュ
 		LABEL_SE_LAND,				// 着地
-		LABEL_SE_WIN,				// 勝利
+		LABEL_SE_PARRY,				// パリィ
 		LABEL_MAX
 	} LABEL;
 
@@ -83,6 +84,7 @@ private:
 	{
 		{ "data/SOUND/BGM/Control_Station.wav", -1 },			// タイトル	
 		{ "data/SOUND/BGM/GENIX.wav", -1 },			// 戦闘BGM
+		{ "data/SOUND/BGM/Virus_Entry.wav", -1 },			// ボスBGM
 		{ "data/SOUND/SE/attack00.wav", 0 },		// 通常攻撃 
 		{ "data/SOUND/SE/attack01.wav", 0 },			// 二段ジャンプ攻撃
 		{ "data/SOUND/SE/shot00.wav", 0 },			// レーザー
@@ -92,7 +94,7 @@ private:
 		{ "data/SOUND/SE/jump.wav", 0 },			// ジャンプ
 		{ "data/SOUND/SE/dash.wav", 0 },			// ダッシュ
 		{ "data/SOUND/SE/land.wav", 0 },			// 着地
-		{ "data/SOUND/SE/win.wav", 0 },			// 勝利
+		{ "data/SOUND/SE/parry.wav", 0 },			// パリィ
 	};
 
 	static CSound *m_pSound;	// 自身のポインタ

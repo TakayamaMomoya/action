@@ -89,7 +89,9 @@ HRESULT CTitle::Init(void)
 	if (m_pMotion != nullptr)
 	{
 		m_pMotion->SetPosition(D3DXVECTOR3(10.0f, 35.0f, 460.0f));
+		m_pMotion->SetPosShadow(m_pMotion->GetPosition());
 		m_pMotion->SetRot(D3DXVECTOR3(0.0f, 0.7f, 0.0f));
+		m_pMotion->EnableShadow(true);
 		m_pMotion->SetMotion(9);
 		m_pMotion->InitPose(9);
 		m_pMotion->SetMatrix();

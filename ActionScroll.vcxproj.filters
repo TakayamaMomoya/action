@@ -107,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="shadow.cpp" />
     <ClCompile Include="tutorialManager.cpp" />
+    <ClCompile Include="pause.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="afterimage.h" />
@@ -215,6 +218,9 @@
     </ClInclude>
     <ClInclude Include="shadow.h" />
     <ClInclude Include="tutorialManager.h" />
+    <ClInclude Include="pause.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="input">

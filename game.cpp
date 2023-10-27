@@ -36,6 +36,7 @@
 #include "anim3D.h"
 #include "texture.h"
 #include "timer.h"
+#include "pause.h"
 
 //*****************************************************
 // マクロ定義
@@ -288,19 +289,37 @@ void CGame::Uninit(void)
 void CGame::Update(void)
 {
 	CFade *pFade = CManager::GetFade();
+	CInputKeyboard *pKeyboard = CInputKeyboard::GetInstance();
 
 	if (m_bStop == false)
 	{
 		// シーンの更新
 		CScene::Update();
+
+		if (pKeyboard != nullptr)
+		{
+			if (pKeyboard->GetTrigger(DIK_P))
+			{
+				CPause::Create();
+			}
+		}
 	}
 	else
 	{
+#ifdef DEBUG
 		CEdit *pEdit = CEdit::GetInstatnce();
 
 		if (pEdit != nullptr)
 		{
 			pEdit->Update();
+		}
+#endif // DEBUG
+
+		CPause *pPause = CPause::GetInstance();
+
+		if (pPause != nullptr)
+		{
+			pPause->Update();
 		}
 	}
 

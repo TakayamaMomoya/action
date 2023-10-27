@@ -125,6 +125,13 @@ HRESULT CGame::Init(void)
 
 	m_bStop = false;
 
+	CSound *pSound = CSound::GetInstance();
+
+	if (pSound != nullptr)
+	{
+		pSound->Play(CSound::LABEL_BGM_BATTLE);
+	}
+
 	return S_OK;
 }
 

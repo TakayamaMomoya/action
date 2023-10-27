@@ -43,7 +43,6 @@ public:
 	void Draw();
 	static CRenderer *GetRenderer(void) { return m_pRenderer; }
 	static CDebugProc *GetDebugProc(void) { return m_pDebugProc; }
-	static CSound *GetSound(void) { return m_pSound; }
 	static CCamera *GetCamera(void) { return m_pCamera; }
 	static CLight *GetLight(void) { return m_pLight; }
 	static CObjectManager *GetObjectManager(void) { return m_pObjectManager; }
@@ -57,7 +56,6 @@ public:
 private:
 	static CRenderer *m_pRenderer;	// レンダラーのクラス
 	static CDebugProc *m_pDebugProc;	// デバッグプロシージャのクラス
-	static CSound *m_pSound;	// サウンドのクラス
 	static CCamera *m_pCamera;	// カメラのポインタ
 	static CLight *m_pLight;	// ライトのポインタ
 	static CUniversal *m_pUniversal;	// 汎用処理のポインタ

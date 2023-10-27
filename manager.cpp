@@ -40,7 +40,6 @@
 //*****************************************************
 CRenderer *CManager::m_pRenderer = nullptr;	// レンダラーのポインタ
 CDebugProc *CManager::m_pDebugProc = nullptr;	// デバッグプロシージャのポインタ
-CSound *CManager::m_pSound = nullptr;	// サウンドのポインタ
 CCamera *CManager::m_pCamera = nullptr;	// カメラのポインタ
 CLight *CManager::m_pLight = nullptr;	// ライトのポインタ
 CUniversal *CManager::m_pUniversal = nullptr;	// 汎用処理へのポインタ
@@ -98,19 +97,8 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 		}
 	}
 
-	if (m_pSound == nullptr)
-	{// サウンド生成
-		m_pSound = new CSound;
-
-		if (m_pSound != nullptr)
-		{
-			// サウンド初期化
-			if (FAILED(m_pSound->Init(hWnd)))
-			{// 初期化に失敗した場合
-				return E_FAIL;
-			}
-		}
-	}
+	// サウンド生成
+	CSound::Create(hWnd);
 
 	if (m_pCamera == nullptr)
 	{// カメラ生成
@@ -227,12 +215,12 @@ void CManager::Uninit(void)
 		pInputManager->Uninit();
 	}
 
-	if (m_pSound != nullptr)
-	{// サウンドの終了・破棄
-		m_pSound->Uninit();
+	CSound *pSound = CSound::GetInstance();
 
-		delete m_pSound;
-		m_pSound = nullptr;
+	if (pSound != nullptr)
+	{// サウンドの終了・破棄
+		pSound->Uninit();
+		pSound = nullptr;
 	}
 
 	if (m_pDebugProc != nullptr)
@@ -297,10 +285,11 @@ void CManager::Update(void)
 		pInputManager->Update();
 	}
 
-	if (m_pSound != nullptr)
-	{
-		// サウンドの更新
-		m_pSound->Update();
+	CSound *pSound = CSound::GetInstance();
+
+	if (pSound != nullptr)
+	{// サウンドの更新
+		pSound->Update();
 	}
 
 	if (m_pDebugProc != nullptr)
@@ -346,6 +335,13 @@ void CManager::Draw(void)
 //=====================================================
 void CManager::SetMode(CScene::MODE mode)
 {
+	CSound *pSound = CSound::GetInstance();
+
+	if (pSound != nullptr)
+	{// 音の停止
+		pSound->Stop();
+	}
+
 	if (m_pCamera != nullptr)
 	{
 		m_pCamera->Init();

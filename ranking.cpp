@@ -18,6 +18,7 @@
 #include "inputManager.h"
 #include "skybox.h"
 #include "universal.h"
+#include "sound.h"
 
 //*****************************************************
 // マクロ定義
@@ -91,6 +92,13 @@ HRESULT CRanking::Init(void)
 
 	// スカイボックス
 	m_pSkybox = CSkybox::Create();
+
+	CSound *pSound = CSound::GetInstance();
+
+	if (pSound != nullptr)
+	{
+		pSound->Play(CSound::LABEL_BGM000);
+	}
 
 	return S_OK;
 }

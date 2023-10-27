@@ -18,6 +18,7 @@ public:
 	typedef enum
 	{
 		LABEL_BGM000 = 0,				// タイトルBGM
+		LABEL_BGM_BATTLE,				// 戦闘BGM 
 		LABEL_MAX
 	} LABEL;
 
@@ -32,6 +33,7 @@ public:
 	CSound();	// コンストラクタ
 	~CSound();	// デストラクタ
 
+	static CSound *Create(HWND hWnd);
 	HRESULT Init(HWND hWnd);
 	void Uninit(void);
 	void Update(void);
@@ -42,6 +44,8 @@ public:
 
 	void SetVolume(LABEL label, float fVolume);
 	void SetFade(LABEL LabelNow, LABEL LabelNext, float fSpeed);
+
+	static CSound *GetInstance(void) { return m_pSound; }
 
 private:
 	typedef struct
@@ -67,8 +71,11 @@ private:
 	// サウンドの情報
 	SOUNDINFO m_aSoundInfo[LABEL_MAX] =
 	{
-		{ "data/SOUND/BGM/title.wav", -1 },			// タイトル	
+		{ "data/SOUND/BGM/Control_Station.wav", -1 },			// タイトル	
+		{ "data/SOUND/BGM/GENIX.wav", -1 },			// 戦闘BGM
 	};
+
+	static CSound *m_pSound;	// 自身のポインタ
 };
 
 #endif

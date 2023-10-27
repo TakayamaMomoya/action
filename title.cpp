@@ -102,6 +102,13 @@ HRESULT CTitle::Init(void)
 		pCamera->SetTitle();
 	}
 
+	CSound *pSound = CSound::GetInstance();
+
+	if (pSound != nullptr)
+	{
+		pSound->Play(CSound::LABEL_BGM000);
+	}
+
 	return S_OK;
 }
 

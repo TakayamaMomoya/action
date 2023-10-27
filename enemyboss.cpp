@@ -22,6 +22,7 @@
 #include "frame.h"
 #include "shadow.h"
 #include "score.h"
+#include "sound.h"
 
 //*****************************************************
 // ƒ}ƒNƒ’è‹`
@@ -383,6 +384,13 @@ void CEnemyBoss::UpdateShotUnder(void)
 			CBullet::Create(posMazzle, vecBullet, 400, CBullet::TYPE_ENEMY);
 
 			m_info.nCntAttack = 0;
+
+			CSound *pSound = CSound::GetInstance();
+
+			if (pSound != nullptr)
+			{
+				pSound->Play(CSound::LABEL_SE_BULLET);
+			}
 		}
 	}
 

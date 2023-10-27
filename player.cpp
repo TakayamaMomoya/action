@@ -344,6 +344,13 @@ void CPlayer::InputMove(void)
 
 						pAnim3D->CreateEffect(posEffect, CAnimEffect3D::TYPE_JUMP);
 					}
+
+					CSound *pSound = CSound::GetInstance();
+
+					if (pSound != nullptr)
+					{
+						pSound->Play(CSound::LABEL_SE_JUMP);
+					}
 				}
 				else if (m_info.jump == JUMPSTATE_NORMAL)
 				{// ‹ó’†UŒ‚
@@ -365,6 +372,13 @@ void CPlayer::InputMove(void)
 						posEffect.y += 10.0f;
 
 						pAnim3D->CreateEffect(posEffect, CAnimEffect3D::TYPE_AIRSLASH);
+					}
+
+					CSound *pSound = CSound::GetInstance();
+
+					if (pSound != nullptr)
+					{
+						pSound->Play(CSound::LABEL_SE_AIRATTACK);
 					}
 				}
 
@@ -409,6 +423,13 @@ void CPlayer::InputAttack(void)
 			SetMotion(MOTION_ATTACK);
 
 			m_info.bAttack = false;
+
+			CSound *pSound = CSound::GetInstance();
+
+			if (pSound != nullptr)
+			{
+				pSound->Play(CSound::LABEL_SE_ATTACK);
+			}
 		}
 	}
 
@@ -428,6 +449,13 @@ void CPlayer::InputAttack(void)
 				SetMotion(MOTION_DASH);
 
 				m_info.nCntDash = 0;
+
+				CSound *pSound = CSound::GetInstance();
+
+				if (pSound != nullptr)
+				{
+					pSound->Play(CSound::LABEL_SE_DASH);
+				}
 			}
 		}
 	}
@@ -453,6 +481,13 @@ void CPlayer::InputAttack(void)
 					SetMotion(MOTION_ATTACK);
 
 					m_info.bAttack = false;
+				}
+
+				CSound *pSound = CSound::GetInstance();
+
+				if (pSound != nullptr)
+				{
+					pSound->Play(CSound::LABEL_SE_ATTACK);
 				}
 			}
 		}
@@ -480,6 +515,13 @@ void CPlayer::Parry(void)
 		SetMotion(MOTION_PARRY);
 
 		m_info.nCntParry = 0;
+
+		CSound *pSound = CSound::GetInstance();
+
+		if (pSound != nullptr)
+		{
+			pSound->Play(CSound::LABEL_SE_ATTACK);
+		}
 	}
 
 	if (m_info.nCntParry >= m_info.nTimeParry)
@@ -806,6 +848,13 @@ void CPlayer::ManageAttack(void)
 					}
 
 					pObj->Hit(5.0f);
+
+					CSound *pSound = CSound::GetInstance();
+
+					if (pSound != nullptr)
+					{
+						pSound->Play(CSound::LABEL_SE_HIT_NORMAL);
+					}
 				}
 			}
 		}

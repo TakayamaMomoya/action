@@ -49,6 +49,7 @@ private:
 		MOTION_DASH,	// 突進モーション
 		MOTION_SHOT_UNDER,	// 射撃モーション
 		MOTION_SHOT_UPPER,	// 反転射撃モーション
+		MOTION_DEATH,	// 死亡モーション
 		MOTION_MAX
 	};
 	enum IDXPARTS
@@ -78,6 +79,7 @@ private:
 		D3DXVECTOR3 posDest;	// 目標位置
 		int nCntAttack;	// 攻撃カウンター
 		int nNumAttack;	// 攻撃した回数
+		int nCntState;	// 状態遷移カウンター
 	};
 
 	void ManageState(void);

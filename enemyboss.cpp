@@ -23,6 +23,7 @@
 #include "shadow.h"
 #include "score.h"
 #include "sound.h"
+#include "particle.h"
 
 //*****************************************************
 // マクロ定義
@@ -134,6 +135,8 @@ HRESULT CEnemyBoss::Init(void)
 //=====================================================
 void CEnemyBoss::Uninit(void)
 {
+	CParticle::Create(GetMtxPos(0), CParticle::TYPE_EXPLOSION);
+
 	CGame::SetState(CGame::STATE_END);
 
 	m_pEnemyBoss = nullptr;
@@ -164,11 +167,6 @@ void CEnemyBoss::Update(void)
 
 	// 攻撃の管理
 	ManageAttack();
-
-	if (CEnemy::GetState() == STATE_DEATH)
-	{
-		Death();
-	}
 }
 
 //=====================================================
@@ -199,8 +197,14 @@ void CEnemyBoss::ManageState(void)
 		}
 		break;
 	case CEnemy::STATE_DEATH:
-
-		Uninit();
+		if (m_info.nCntState >= 180)
+		{
+			Death();
+		}
+		else
+		{
+			m_info.nCntState++;
+		}
 
 		break;
 	default:
@@ -557,7 +561,7 @@ void CEnemyBoss::Hit(float fDamage)
 {
 	CEnemy::STATE state = CEnemy::GetState();
 
-	if (state == STATE_NORMAL)
+	if (state == CEnemy::STATE_NORMAL)
 	{
 		float fLife = CEnemy::GetLife();
 
@@ -565,9 +569,14 @@ void CEnemyBoss::Hit(float fDamage)
 
 		if (fLife <= 0.0f)
 		{// 死亡状態
+			SetMotion(MOTION_DEATH);
+
+			CParticle::Create(GetMtxPos(0), CParticle::TYPE_FIRE);
+
 			fLife = 0.0f;
 
-			state = STATE_DEATH;
+			m_info.state = STATE_NONE;
+			state = CEnemy::STATE_DEATH;
 
 			// スコア管理
 			ManageScore();
@@ -582,7 +591,7 @@ void CEnemyBoss::Hit(float fDamage)
 		}
 		else
 		{
-			state = STATE_DAMAGE;
+			state = CEnemy::STATE_DAMAGE;
 		}
 
 		CEnemy::SetLife(fLife);

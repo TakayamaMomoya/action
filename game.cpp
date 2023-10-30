@@ -61,6 +61,7 @@ CGame::CGame()
 {
 	m_pPosCheckPoint = nullptr;
 	m_nNumCheckPoint = 0;
+	m_nCntState = 0;
 }
 
 //=====================================================
@@ -422,8 +423,10 @@ void CGame::ManageState(void)
 	case CGame::STATE_RESULT:
 		break;
 	case CGame::STATE_END:
-		
-		if(pFade != nullptr)
+
+		m_nCntState++;
+
+		if (m_nCntState >= 120 && pFade != nullptr)
 		{
 			pFade->SetFade(CScene::MODE_RANKING);
 		}

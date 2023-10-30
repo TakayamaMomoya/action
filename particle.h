@@ -24,6 +24,7 @@ public:
 		TYPE_NONE = 0,	// ‰½‚Å‚à‚È‚¢
 		TYPE_EXPLOSION,	// ”š”­
 		TYPE_FLASH,	// ‰Î‰Ô
+		TYPE_FIRE,	// ‰Î
 		TYPE_MAX
 	}TYPE;
 

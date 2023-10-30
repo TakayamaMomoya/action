@@ -63,6 +63,7 @@ private:
 
 	D3DXVECTOR3 *m_pPosCheckPoint;	// チェックポイント座標のポインタ
 	int m_nNumCheckPoint;	// チェックポイントの数
+	int m_nCntState;	// 状態遷移カウンター
 	bool m_bStop;	// 停止状態
 };
 

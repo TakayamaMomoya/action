@@ -13,6 +13,7 @@
 #include "object2D.h"
 #include "inputkeyboard.h"
 #include "inputjoypad.h"
+#include "inputManager.h"
 #include "texture.h"
 #include "fade.h"
 #include "game.h"
@@ -296,6 +297,7 @@ void CPause::Input(void)
 {
 	CInputKeyboard *pKeyboard = CInputKeyboard::GetInstance();
 	CInputJoypad *pJoypad = CInputJoypad::GetInstance();
+	CInputManager *pInputManager = CInputManager::GetInstance();
 
 	CFade *pFade = CManager::GetFade();
 
@@ -311,12 +313,13 @@ void CPause::Input(void)
 		}
 	}
 
-	if (pKeyboard == nullptr)
+	if (pInputManager == nullptr)
 	{
 		return;
 	}
 
-	if (pKeyboard->GetTrigger(DIK_P))
+	if (pInputManager->GetTrigger(CInputManager::BUTTON_PAUSE) || 
+		pInputManager->GetTrigger(CInputManager::BUTTON_BACK))
 	{// ポーズ解除、以降の操作を受け付けない
 		m_state = STATE_OUT;
 		m_aPosDest[0].x = -MENU_WIDTH;
@@ -330,12 +333,12 @@ void CPause::Input(void)
 	}
 
 	// 項目切り替え
-	if (pKeyboard->GetTrigger(DIK_S) || pJoypad->GetTrigger(CInputJoypad::PADBUTTONS_DOWN, 0))
+	if (pInputManager->GetTrigger(CInputManager::BUTTON_AXIS_DOWN))
 	{
 		m_menu = (MENU)((m_menu + 1) % MENU_MAX);
 	}
 
-	if (pKeyboard->GetTrigger(DIK_W) || pJoypad->GetTrigger(CInputJoypad::PADBUTTONS_UP, 0))
+	if (pInputManager->GetTrigger(CInputManager::BUTTON_AXIS_UP))
 	{
 		m_menu = (MENU)((m_menu + MENU_MAX - 1) % MENU_MAX);
 	}
@@ -345,7 +348,7 @@ void CPause::Input(void)
 		m_apMenu[m_menu]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 
-	if (pKeyboard->GetTrigger(DIK_RETURN) || pJoypad->GetTrigger(CInputJoypad::PADBUTTONS_A, 0))
+	if (pInputManager->GetTrigger(CInputManager::BUTTON_ENTER))
 	{// 選択項目にフェードする
 		Fade(m_menu);
 	}

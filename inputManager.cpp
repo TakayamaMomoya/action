@@ -132,6 +132,14 @@ void CInputManager::Update(void)
 		pKeyboard->GetTrigger(DIK_RETURN)
 	);
 
+	// 戻るボタン
+	m_info.abTrigger[BUTTON_BACK] =
+	(
+		pJoypad->GetTrigger(CInputJoypad::PADBUTTONS_B, 0) ||
+		pJoypad->GetTrigger(CInputJoypad::PADBUTTONS_BACK, 0) ||
+		pMouse->GetTrigger(CInputMouse::BUTTON_RMB)
+	);
+
 	// ジャンプ
 	m_info.abTrigger[BUTTON_JUMP] =
 	(
@@ -166,5 +174,28 @@ void CInputManager::Update(void)
 	(
 		pJoypad->GetTrigger(CInputJoypad::PADBUTTONS_B, 0) ||
 		pKeyboard->GetTrigger(DIK_LSHIFT)
+	);
+
+	// ポーズ
+	m_info.abTrigger[BUTTON_PAUSE] =
+	(
+		pJoypad->GetTrigger(CInputJoypad::PADBUTTONS_START, 0) ||
+		pKeyboard->GetTrigger(DIK_P)
+	);
+
+	// 上方向キー
+	m_info.abTrigger[BUTTON_AXIS_UP] =
+	(
+		pJoypad->GetLStickTrigger(CInputJoypad::DIRECTION_UP,0) || 
+		pJoypad->GetTrigger(CInputJoypad::PADBUTTONS_UP,0) ||
+		pKeyboard->GetTrigger(DIK_W)
+	);
+
+	// 下方向キー
+	m_info.abTrigger[BUTTON_AXIS_DOWN] =
+	(
+		pJoypad->GetLStickTrigger(CInputJoypad::DIRECTION_DOWN, 0) ||
+		pJoypad->GetTrigger(CInputJoypad::PADBUTTONS_DOWN, 0) ||
+		pKeyboard->GetTrigger(DIK_S)
 	);
 }

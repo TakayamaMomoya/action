@@ -22,12 +22,18 @@ public:
 	enum BUTTON
 	{
 		BUTTON_ENTER = 0,	// エンターボタン
+		BUTTON_BACK,	// 戻るボタン
 		BUTTON_JUMP,	// ジャンプ
 		BUTTON_ATTACK,	// 攻撃
 		BUTTON_PARRY,	// パリィ
 		BUTTON_MOVE_RIGHT,	// 右移動
 		BUTTON_MOVE_LEFT,	// 左移動
 		BUTTON_DASH,	// ダッシュ
+		BUTTON_PAUSE,	// ポーズ
+		BUTTON_AXIS_UP,	// 上方向キー
+		BUTTON_AXIS_DOWN,	// 下方向キー
+		BUTTON_AXIS_RIGHT,	// 右方向キー
+		BUTTON_AXIS_LEFT,	// 左方向キー
 		BUTTON_MAX
 	};
 

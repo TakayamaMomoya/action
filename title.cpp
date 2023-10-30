@@ -41,6 +41,7 @@ CTitle::CTitle()
 	m_pStart = nullptr;
 	m_state = STATE_NONE;
 	m_pMotion = nullptr;
+	m_pLogo = nullptr;
 }
 
 //=====================================================
@@ -57,13 +58,17 @@ CTitle::~CTitle()
 HRESULT CTitle::Init(void)
 {
 	// ロゴの生成
-	CObject2D *pObject2D = CObject2D::Create(7);
-	pObject2D->SetSize(875.0f * 0.45f, 320.0f * 0.45f);
-	pObject2D->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.7f, 200.0f, 0.0f));
+	m_pLogo = CObject2D::Create(7);
 
-	int nIdx = CTexture::GetInstance()->Regist(LOGO_PATH);
-	pObject2D->SetIdxTexture(nIdx);
-	pObject2D->SetVtx();
+	if (m_pLogo != nullptr)
+	{
+		m_pLogo->SetSize(875.0f * 0.45f, 320.0f * 0.45f);
+		m_pLogo->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.7f, 200.0f, 0.0f));
+
+		int nIdx = CTexture::GetInstance()->Regist(LOGO_PATH);
+		m_pLogo->SetIdxTexture(nIdx);
+		m_pLogo->SetVtx();
+	}
 
 	// スタート表示の生成
 	m_pStart = CObject2D::Create(7);
@@ -119,6 +124,24 @@ HRESULT CTitle::Init(void)
 //=====================================================
 void CTitle::Uninit(void)
 {
+	if (m_pLogo != nullptr)
+	{
+		m_pLogo->Uninit();
+		m_pLogo = nullptr;
+	}
+
+	if (m_pStart != nullptr)
+	{
+		m_pStart->Uninit();
+		m_pStart = nullptr;
+	}
+
+	if (m_pMotion != nullptr)
+	{
+		m_pMotion->Uninit();
+		m_pMotion = nullptr;
+	}
+
 	// オブジェクト全破棄
 	CObject::ReleaseAll();
 }
@@ -153,7 +176,7 @@ void CTitle::Update(void)
 			}
 		}
 	}
-	else if(m_state == STATE_OUT)
+	else
 	{
 		// スタート表示の管理
 		ManageStart();
@@ -206,6 +229,7 @@ void CTitle::ManageStart(void)
 	}
 
 	m_pStart->SetCol(col);
+	m_pLogo->SetCol(col);
 
 	// サイズ設定
 	m_pStart->SetSize(fWidth + fDiffWidth, fHeight + fDiffHeight);

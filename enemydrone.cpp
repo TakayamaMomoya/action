@@ -23,7 +23,7 @@
 //*****************************************************
 #define INITIAL_LIFE	(5)	// 初期体力
 #define INITIAL_SCORE	(500)	// 初期スコア
-#define TIME_SHOT	(240)	// 射撃までのカウンター
+#define TIME_SHOT	(120)	// 射撃までのカウンター
 #define BULLET_SPEED	(2.0f)	// 弾の速度
 #define BULLET_SIZE	(1.0f)	// 弾の大きさ
 #define GRAVITY	(0.3f)	// 重力
@@ -105,11 +105,13 @@ void CEnemyDrone::ManageAttack(void)
 
 		if (pPlayer != nullptr)
 		{
-			posTarget = pPlayer->GetPosition();
+			CMotion *pMotion = pPlayer->GetBody();
+
+			posTarget = pMotion->GetMtxPos(0);
 
 			move = posTarget - pos;
 
-			float fLength = D3DXVec3LengthSq(&move);
+			float fLength = D3DXVec3Length(&move);
 
 			if (fLength > 300.0f)
 			{

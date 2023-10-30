@@ -47,6 +47,7 @@ private:
 	void ManageStart(void);
 
 	CObject2D *m_pStart;	// スタート表示のポインタ
+	CObject2D *m_pLogo;	// ロゴのポインタ
 	STATE m_state;	// 状態
 	CMotion *m_pMotion;	// モーション
 };

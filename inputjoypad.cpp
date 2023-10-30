@@ -140,7 +140,10 @@ void CInputJoypad::Update(void)
 		//入力デバイスからデータを取得
 		if (XInputGetState(nCntPlayer, &aState[nCntPlayer]) == ERROR_SUCCESS)
 		{
-			for (int nCntKey = 0; nCntKey < MAX_PLAYER; nCntKey++)
+			// スティックのトリガー判定
+			CheckStickTrigger(aState[nCntPlayer], nCntPlayer);
+
+			for (int nCntKey = 0; nCntKey < CInputJoypad::PADBUTTONS_MAX; nCntKey++)
 			{
 				//トリガー
 				m_aStateTrigger[nCntKey].Gamepad.wButtons =
@@ -153,26 +156,49 @@ void CInputJoypad::Update(void)
 					& m_aState[nCntKey].Gamepad.wButtons;
 
 				//プレス
-				m_aState[nCntKey] = aState[nCntKey];
+				m_aState[nCntPlayer] = aState[nCntPlayer];
 			}
 		}
 	}
+
+	CManager::GetDebugProc()->Print("スティック[%f]", (float)m_aState[0].Gamepad.sThumbLY / USHRT_MAX * 2);
+
 }
 
 //====================================================
 // ジョイスティックトリガー判定処理
 //====================================================
-void CInputJoypad::CheckStickTrigger(XINPUT_STATE state)
+void CInputJoypad::CheckStickTrigger(XINPUT_STATE state, int nPlayer)
 {
-	//// 左スティック==========================================
-	//// 前回のスティック入力の長さを計算
-	//D3DXVECTOR3 vecStick = { 0.0f,0.0f,0.0f };
+	// 左スティック==========================================
+	// 左右
+	float fDiff = (float)state.Gamepad.sThumbLX / USHRT_MAX * 2 - (float)m_aState[nPlayer].Gamepad.sThumbLX / USHRT_MAX * 2;
+	
+	m_abTrigggerLStick[nPlayer][DIRECTION_LEFT] = fDiff < -0.4f;
+	
+	m_abTrigggerLStick[nPlayer][DIRECTION_RIGHT] = fDiff > 0.4f;
 
-	//vecStick.x = m_aState->Gamepad.sThumbLX;
-	//vecStick.y = m_aState->Gamepad.sThumbLY;
+	// 上下
+	fDiff = (float)state.Gamepad.sThumbLY / USHRT_MAX * 2 - (float)m_aState[nPlayer].Gamepad.sThumbLY / USHRT_MAX * 2;
 
-	//// 長さ計算
-	//D3DXVec3Length(&vecStick);
+	m_abTrigggerLStick[nPlayer][DIRECTION_UP] = fDiff > 0.5f && (float)m_aState[nPlayer].Gamepad.sThumbLY >= 0.0f;
+
+	m_abTrigggerLStick[nPlayer][DIRECTION_DOWN] = fDiff < -0.5f && (float)m_aState[nPlayer].Gamepad.sThumbLY <= 0.0f;
+
+	if (m_abTrigggerLStick[nPlayer][DIRECTION_DOWN])
+	{
+		int n = 10;
+	}
+
+	CManager::GetDebugProc()->Print("スティック差分[%f]", fDiff);
+}
+
+//====================================================
+// ジョイスティックトリガー情報
+//====================================================
+bool CInputJoypad::GetLStickTrigger(DIRECTION direction, int nPlayer)
+{
+	return m_abTrigggerLStick[nPlayer][direction];
 }
 
 //====================================================

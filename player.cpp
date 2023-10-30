@@ -709,7 +709,7 @@ void CPlayer::ManageMotion(void)
 		if (m_info.nCntAfterImage >= TIME_AFTERIMAGE)
 		{
 			// Žc‘œ‚Ì¶¬
-			m_info.pBody->SetAfterImage(D3DXCOLOR(1.0f, 0.2f, 0.2f, 1.0f), 20);
+			m_info.pBody->SetAfterImage(D3DXCOLOR(1.0f, 0.1f, 0.1f, 1.0f), 20);
 
 			m_info.nCntAfterImage = 0;
 		}

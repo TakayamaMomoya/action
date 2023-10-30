@@ -24,10 +24,9 @@
 class CInputJoypad
 {
 public:
-	//ゲームパッドボタン
 	typedef enum
-	{
-		PADBUTTONS_UP = 0,				//ゲームパッドのボタン
+	{//ゲームパッドボタン
+		PADBUTTONS_UP = 0,
 		PADBUTTONS_DOWN,
 		PADBUTTONS_LEFT,
 		PADBUTTONS_RIGHT,
@@ -45,14 +44,20 @@ public:
 		PADBUTTONS_Y,
 		PADBUTTONS_MAX
 	}PADBUTTOS;
-
-	//バイブレーションの状態
 	typedef enum
-	{
+	{//バイブレーションの状態
 		PADVIB_NONE = 0,						//使用していない状態
 		PADVIB_USE,								//使用している状態
 		PADVIB_MAX
 	}PADVIB;
+	enum DIRECTION
+	{// スティックのトリガー
+		DIRECTION_UP = 0,
+		DIRECTION_DOWN,
+		DIRECTION_RIGHT,
+		DIRECTION_LEFT,
+		DIRECTION_MAX
+	};
 
 	CInputJoypad();	// コンストラクタ
 	~CInputJoypad();	// デストラクタ
@@ -69,12 +74,13 @@ public:
 	float GetJoyStickLY(int nPlayer);
 	float GetJoyStickRX(int nPlayer);
 	float GetJoyStickRY(int nPlayer);
+	bool GetLStickTrigger(DIRECTION direction,int nPlayer);
 	D3DXVECTOR3 GetVecStickL(void);
 	void Vibration(int nPlayer, PADVIB state, short sVib, int nTime);
 	static CInputJoypad *GetInstance(void) { return m_pJoyPad; }
 
 private:
-	void CheckStickTrigger(XINPUT_STATE state);
+	void CheckStickTrigger(XINPUT_STATE state,int nPlayer);
 
 	XINPUT_STATE m_aState[MAX_PLAYER];				//ゲームパッドのプレス情報
 	XINPUT_STATE m_aStateTrigger[MAX_PLAYER];		//ゲームパッドのトリガー情報
@@ -84,6 +90,7 @@ private:
 	PADVIB m_aVibState[MAX_PLAYER];					//振動の状態
 	int m_nVibTimer;		// バイブレーションのタイマー
 	int m_aCntRepeat[MAX_PLAYER][PADBUTTONS_MAX];	// リピートカウンター
+	bool m_abTrigggerLStick[MAX_PLAYER][DIRECTION_MAX];	// スティックのトリガー判定
 
 	static CInputJoypad *m_pJoyPad;	// 自身のポインタ
 };

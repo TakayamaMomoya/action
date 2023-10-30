@@ -37,6 +37,7 @@
 #include "texture.h"
 #include "timer.h"
 #include "pause.h"
+#include "inputManager.h"
 
 //*****************************************************
 // マクロ定義
@@ -296,16 +297,16 @@ void CGame::Uninit(void)
 void CGame::Update(void)
 {
 	CFade *pFade = CManager::GetFade();
-	CInputKeyboard *pKeyboard = CInputKeyboard::GetInstance();
+	CInputManager *pInputManager = CInputManager::GetInstance();
 
 	if (m_bStop == false)
 	{
 		// シーンの更新
 		CScene::Update();
 
-		if (pKeyboard != nullptr)
+		if (pInputManager != nullptr)
 		{
-			if (pKeyboard->GetTrigger(DIK_P))
+			if (pInputManager->GetTrigger(CInputManager::BUTTON_PAUSE))
 			{
 				CPause::Create();
 			}

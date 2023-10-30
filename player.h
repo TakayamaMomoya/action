@@ -53,6 +53,7 @@ public:
 	static CPlayer *GetInstance(void) { return m_pPlayer; }
 	int GetLife(void) { return m_info.nLife; }
 	int GetinitialLife(void) { return m_info.nInitialLife; }
+	CMotion *GetBody(void) { return m_info.pBody; }
 
 private:
 	enum STATE

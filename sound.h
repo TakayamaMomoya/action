@@ -31,6 +31,9 @@ public:
 		LABEL_SE_LAND,				// 着地
 		LABEL_SE_PARRY,				// パリィ
 		LABEL_SE_EXPLOSION,				// 爆発
+		LABEL_SE_MISSILE,				// ミサイル
+		LABEL_SE_ENTER,				// エンター
+		LABEL_SE_DAMAGE,				// ダメージ
 		LABEL_MAX
 	} LABEL;
 
@@ -72,13 +75,13 @@ private:
 	IXAudio2 *m_pXAudio2;								// XAudio2オブジェクトへのインターフェイス
 	IXAudio2MasteringVoice *m_pMasteringVoice;			// マスターボイス
 	IXAudio2SourceVoice *m_apSourceVoice[LABEL_MAX];	// ソースボイス
-	BYTE *m_apDataAudio[LABEL_MAX];					// オーディオデータ
-	DWORD m_aSizeAudio[LABEL_MAX];					// オーディオデータサイズ
-	FADESTATE m_fadeSound;								// フェード状態
-	LABEL m_SoundLabelNow;								// 現在のサウンドラベル
-	LABEL m_SoundLabelNext;								// 次のサウンドラベル
-	float m_fSpeedFadeSound;									// サウンドがフェードするスピード
-	float m_fVolumeSound;										// サウンドのボリューム
+	BYTE *m_apDataAudio[LABEL_MAX];	// オーディオデータ
+	DWORD m_aSizeAudio[LABEL_MAX];	// オーディオデータサイズ
+	FADESTATE m_fadeSound;	// フェード状態
+	LABEL m_SoundLabelNow;	// 現在のサウンドラベル
+	LABEL m_SoundLabelNext;	// 次のサウンドラベル
+	float m_fSpeedFadeSound;	// サウンドがフェードするスピード
+	float m_fVolumeSound;	// サウンドのボリューム
 
 	// サウンドの情報
 	SOUNDINFO m_aSoundInfo[LABEL_MAX] =
@@ -97,6 +100,9 @@ private:
 		{ "data/SOUND/SE/land.wav", 0 },			// 着地
 		{ "data/SOUND/SE/parry.wav", 0 },			// パリィ
 		{ "data/SOUND/SE/explosion.wav", 0 },			// 爆発
+		{ "data/SOUND/SE/missile.wav", 0 },			// ミサイル
+		{ "data/SOUND/SE/enter.wav", 0 },			// エンター
+		{ "data/SOUND/SE/damage.wav", 0 },			// ダメージ
 	};
 
 	static CSound *m_pSound;	// 自身のポインタ

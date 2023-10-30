@@ -113,7 +113,7 @@ void CEnemyDrone::ManageAttack(void)
 
 			float fLength = D3DXVec3Length(&move);
 
-			if (fLength > 300.0f)
+			if (fLength > 250.0f)
 			{
 				return;
 			}
@@ -123,7 +123,7 @@ void CEnemyDrone::ManageAttack(void)
 			move *= BULLET_SPEED;
 		}
 
-		CBullet::Create(pos, move, 500, CBullet::TYPE_ENEMY, false, BULLET_SIZE, 5.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+		CBullet::Create(pos, move, 500, CBullet::TYPE_ENEMY, false, BULLET_SIZE, 2.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
 
 		SetAttackCounter(0);
 	}

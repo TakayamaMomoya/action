@@ -137,6 +137,13 @@ void CEnemyBoss::Uninit(void)
 {
 	CParticle::Create(GetMtxPos(0), CParticle::TYPE_EXPLOSION);
 
+	CSound *pSound = CSound::GetInstance();
+
+	if (pSound != nullptr)
+	{
+		pSound->Play(CSound::LABEL_SE_EXPLOSION);
+	}
+
 	CGame::SetState(CGame::STATE_END);
 
 	m_pEnemyBoss = nullptr;
@@ -310,6 +317,13 @@ void CEnemyBoss::UpdateMissile(void)
 				pMissile->SetMove(D3DXVECTOR3(0.0f, MISSILE_UP, 0.0f));
 			}
 
+			CSound *pSound = CSound::GetInstance();
+
+			if (pSound != nullptr)
+			{
+				pSound->Play(CSound::LABEL_SE_MISSILE);
+			}
+
 			m_info.nCntAttack = 0;
 
 			// UŒ‚‰ñ”‰ÁŽZ
@@ -394,7 +408,7 @@ void CEnemyBoss::UpdateShotUnder(void)
 
 			vecBullet *= BULLET_SPEED;
 
-			CBullet::Create(posMazzle, vecBullet, 400, CBullet::TYPE_ENEMY);
+			CBullet::Create(posMazzle, vecBullet, 400, CBullet::TYPE_ENEMY, false, 10.0f, 5.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
 
 			m_info.nCntAttack = 0;
 
@@ -566,6 +580,13 @@ void CEnemyBoss::Hit(float fDamage)
 		float fLife = CEnemy::GetLife();
 
 		fLife -= fDamage;
+
+		CSound *pSound = CSound::GetInstance();
+
+		if (pSound != nullptr)
+		{
+			pSound->Play(CSound::LABEL_SE_HIT_BOSS);
+		}
 
 		if (fLife <= 0.0f)
 		{// Ž€–Só‘Ô

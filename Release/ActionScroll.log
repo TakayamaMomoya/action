@@ -1,5 +1,7 @@
 ﻿  bullet.cpp
   enemyboss.cpp
+  enemydrone.cpp
+  enemyshot.cpp
   game.cpp
   manager.cpp
   motion.cpp
@@ -8,9 +10,9 @@
   sound.cpp
   title.cpp
   コード生成しています。
-  20 of 858 functions ( 2.3%) were compiled, the rest were copied from previous compilation.
+  27 of 858 functions ( 3.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    7 functions had inline decision re-evaluated but remain unchanged
+    9 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   ActionScroll.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\ActionScroll\ActionScroll.exe
   ActionScroll.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\後期制作演習\ActionScroll\ActionScroll.pdb (Full PDB)

@@ -174,6 +174,13 @@ void CTitle::Update(void)
 						m_pMotion->SetMotion(10);
 
 						m_state = STATE_MOTION;
+
+						CSound *pSound = CSound::GetInstance();
+
+						if (pSound != nullptr)
+						{
+							pSound->Play(CSound::LABEL_SE_ENTER);
+						}
 					}
 				}
 			}

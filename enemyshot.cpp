@@ -138,13 +138,13 @@ void CEnemyShot::ManageAttack(void)
 
 			float fLength = D3DXVec3Length(&vecDiff);
 
-			if (fLength > 300.0f)
+			if (fLength > 250.0f)
 			{
 				return;
 			}
 		}
 
-		CBullet::Create(pos, -move, 500, CBullet::TYPE_ENEMY,false,BULLET_SIZE,5.0f,D3DXCOLOR(1.0f,0.0f,0.0f,1.0f));
+		CBullet::Create(pos, -move, 500, CBullet::TYPE_ENEMY,false,BULLET_SIZE, 2.0f,D3DXCOLOR(1.0f,0.0f,0.0f,1.0f));
 
 		SetAttackCounter(0);
 	}

@@ -930,6 +930,13 @@ void CPlayer::Hit(float fDamage)
 
 	if (m_info.state == STATE_NORMAL)
 	{
+		CSound *pSound = CSound::GetInstance();
+
+		if (pSound != nullptr)
+		{
+			pSound->Play(CSound::LABEL_SE_DAMAGE);
+		}
+
 		m_info.nLife -= (int)fDamage;
 
 		if (m_info.nLife <= 0)

@@ -311,7 +311,7 @@ void CRanking::Reset(void)
 	//外部ファイル読み込み
 	Load();
 
-#if 0
+#if 1
 	//ランキング初期設定
 	m_aScore[0] = 32;
 	m_aScore[1] = 31;

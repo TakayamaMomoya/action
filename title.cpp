@@ -142,6 +142,9 @@ void CTitle::Uninit(void)
 		m_pMotion = nullptr;
 	}
 
+	// ブロック情報削除
+	CBlock::DeleteAll();
+
 	// オブジェクト全破棄
 	CObject::ReleaseAll();
 }

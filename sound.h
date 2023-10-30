@@ -30,6 +30,7 @@ public:
 		LABEL_SE_DASH,				// ダッシュ
 		LABEL_SE_LAND,				// 着地
 		LABEL_SE_PARRY,				// パリィ
+		LABEL_SE_EXPLOSION,				// 爆発
 		LABEL_MAX
 	} LABEL;
 
@@ -95,6 +96,7 @@ private:
 		{ "data/SOUND/SE/dash.wav", 0 },			// ダッシュ
 		{ "data/SOUND/SE/land.wav", 0 },			// 着地
 		{ "data/SOUND/SE/parry.wav", 0 },			// パリィ
+		{ "data/SOUND/SE/explosion.wav", 0 },			// 爆発
 	};
 
 	static CSound *m_pSound;	// 自身のポインタ

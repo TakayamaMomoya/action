@@ -125,7 +125,6 @@ void CUIManager::Uninit(void)
 //=====================================================
 void CUIManager::Update(void)
 {
-#ifdef _DEBUG
 	CInputKeyboard *pKeyboard = CInputKeyboard::GetInstance();
 
 	if (pKeyboard != nullptr)
@@ -135,7 +134,6 @@ void CUIManager::Update(void)
 			m_bDisp = m_bDisp ? false : true;
 		}
 	}
-#endif
 }
 
 //=====================================================

@@ -44,7 +44,7 @@ CObjectX::~CObjectX()
 HRESULT CObjectX::Init(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	m_fScale = 1.0f;
 
@@ -81,7 +81,7 @@ void CObjectX::Draw(void)
 		CalcMatrix();
 
 		// デバイスの取得
-		LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+		LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 		D3DXMATERIAL *pMat;				// マテリアルデータへのポインタ
 		D3DMATERIAL9 matDef;			// 現在のマテリアル保存用
@@ -131,7 +131,7 @@ void CObjectX::Draw(void)
 void CObjectX::JustDraw(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	//ワールドマトリックス設定
 	pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
@@ -186,7 +186,7 @@ void CObjectX::JustDraw(void)
 void CObjectX::CalcMatrix(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	//変数宣言
 	D3DXMATRIX mtxRot, mtxTrans;

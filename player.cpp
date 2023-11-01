@@ -36,6 +36,9 @@
 #include "animEffect3D.h"
 #include "shadow.h"
 #include "block.h"
+#include "orbit.h"
+#include "frame.h"
+#include "timer.h"
 
 //*****************************************************
 // マクロ定義
@@ -44,15 +47,13 @@
 #define PARAM_PATH	"data\\TEXT\\player.txt"	// パラメーターのパス
 #define SPEED_MOVE	(0.3f)	// 移動速度
 #define GRAVITY	(0.09f)	// 重力
-#define JUMP_POW	(2.5f)	// ジャンプ力
 #define MOVE_FACT	(0.8f)	// 移動量減衰
 #define ROLL_FACT	(0.2f)	// 回転係数
 #define LINE_STOP	(0.3f)	// 動いてる判定のしきい値
 #define TIME_AFTERIMAGE	(4)	// 残像を出す頻度
 #define ATTACK_JUMP	(2.8f)	// 空中攻撃のジャンプ力
 #define BULLET_SPEED	(5.0f)	// 弾速度
-#define BULLET_SIZE	(1.0f)	// 弾サイズ
-#define TIME_DAMAGE	(30)	// ダメージ状態の時間
+#define BULLET_SIZE	(3.0f)	// 弾サイズ
 #define TIME_FLASH	(4)	// 点滅速度
 #define MODE_DEATH	(CScene::MODE_GAME)	// 死んだ後に遷移するモード
 
@@ -88,7 +89,7 @@ HRESULT CPlayer::Init(void)
 	// 初期体力の設定
 	m_info.nInitialLife = m_info.nLife;
 
-	SetPosition(D3DXVECTOR3(0.0f, 10.0f, 0.0f));
+	SetPosition(D3DXVECTOR3(0.0f, -16.0f, 0.0f));
 
 	// 値の初期化
 	m_info.state = STATE_NORMAL;
@@ -102,11 +103,6 @@ HRESULT CPlayer::Init(void)
 		{
 			m_info.pBody->EnableShadow(true);
 		}
-	}
-
-	if (m_info.pShadow == nullptr)
-	{// 影の生成
-		//m_info.pShadow = CShadow::Create(GetPosition(), 10.0f, 10.0f);
 	}
 
 	if (m_info.pCollisionCube == nullptr)
@@ -142,6 +138,37 @@ HRESULT CPlayer::Init(void)
 			m_info.pClsnHit->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 			m_info.pClsnHit->SetRadius(1.0f);
 		}
+	}
+
+	// 初期の向き設定
+	D3DXVECTOR3 rot = { 0.0f,-D3DX_PI * 0.5f,0.0f };
+
+	m_info.rotDest = rot;
+	SetRot(rot);
+
+	// 出現モーションの設定
+	CGame *pGame = CGame::GetInstance();
+	int nProgress = 0;
+
+	if (pGame != nullptr)
+	{
+		nProgress = pGame->GetProgress();
+	}
+
+	if (nProgress == 0)
+	{
+		SetMotion(MOTION_APPER);
+
+		// タイマーを止める
+		CTimer *pTimer = CTimer::GetInstance();
+
+		if (pTimer != nullptr)
+		{
+			pTimer->EnableStop(true);
+		}
+
+		// フレーム演出の生成
+		CFrame::Create(20, 120, 70);
 	}
 
 	return S_OK;
@@ -196,36 +223,74 @@ void CPlayer::Update(void)
 	// 状態管理
 	ManageState();
 
-	// 操作処理
-	Input();
+	int nMotion = MOTION_NEUTRAL;
 
-	// モーションの管理
-	ManageMotion();
+	if (m_info.pBody != nullptr)
+	{
+		nMotion = m_info.pBody->GetMotion();
+	}
 
-	// 目標方向を向く処理
-	RotDest();
+	if (nMotion != MOTION_APPER)
+	{
+		// 操作処理
+		Input();
 
-	// 位置に移動量を反映
-	m_info.pos += m_info.move;
+		// モーションの管理
+		ManageMotion();
 
-	// 当たり判定管理
-	ManageCollision();
+		// 目標方向を向く処理
+		RotDest();
+
+		// 位置に移動量を反映
+		m_info.pos += m_info.move;
+
+		// 当たり判定管理
+		ManageCollision();
+
+		// 移動量減衰
+		m_info.move.x *= MOVE_FACT;
+
+		if (m_info.pBody != nullptr)
+		{
+			if (m_info.pBody->GetMotion() != MOTION_DASH || m_info.pBody->IsFinish())
+			{
+				m_info.move.y -= GRAVITY;
+			}
+		}
+	}
+	else
+	{
+		if (m_info.pBody != nullptr)
+		{
+			if (m_info.pBody->IsFinish())
+			{
+				SetMotion(MOTION_NEUTRAL);
+
+				// タイマーを動かす
+				CTimer *pTimer = CTimer::GetInstance();
+
+				if (pTimer != nullptr)
+				{
+					pTimer->EnableStop(false);
+				}
+			}
+		}
+
+		m_info.nCntAfterImage++;
+
+		if (m_info.nCntAfterImage >= TIME_AFTERIMAGE)
+		{
+			// 残像の生成
+			m_info.pBody->SetAfterImage(D3DXCOLOR(1.0f, 0.1f, 0.1f, 1.0f), 20);
+
+			m_info.nCntAfterImage = 0;
+		}
+	}
 
 	if (m_info.pBody != nullptr)
 	{// 体の追従
 		m_info.pBody->SetPosition(m_info.pos);
 		m_info.pBody->SetRot(m_info.rot);
-	}
-
-	// 移動量減衰
-	m_info.move.x *= MOVE_FACT;
-
-	if (m_info.pBody != nullptr)
-	{
-		if (m_info.pBody->GetMotion() != MOTION_DASH || m_info.pBody->IsFinish())
-		{
-			m_info.move.y -= GRAVITY;
-		}
 	}
 
 	if (m_info.pBody != nullptr)
@@ -254,7 +319,7 @@ void CPlayer::ManageState(void)
 
 		m_info.nCntState++;
 
-		if (m_info.nCntState >= TIME_DAMAGE)
+		if (m_info.nCntState >= m_info.nTimeDamage)
 		{
 			m_info.state = STATE_NORMAL;
 
@@ -327,7 +392,7 @@ void CPlayer::InputMove(void)
 			{
 				if (m_info.jump == JUMPSTATE_NONE)
 				{
-					move.y += JUMP_POW;
+					move.y += m_info.fPowJump;
 
 					m_info.jump = JUMPSTATE_NORMAL;
 
@@ -533,7 +598,7 @@ void CPlayer::Parry(void)
 		m_info.nCntParry++;
 	}
 
-	CUniversal *pUniversal = CManager::GetUniversal();
+	CUniversal *pUniversal = CUniversal::GetInstance();
 
 	D3DXMATRIX mtx;
 	D3DXVECTOR3 pos;
@@ -724,7 +789,7 @@ void CPlayer::ManageCollision(void)
 	bool bLandFloor = false;
 	bool bLandBlock = false;
 
-	CFade *pFade = CManager::GetFade();
+	CFade *pFade = CFade::GetInstance();
 
 	if (m_info.pCollisionCube != nullptr)
 	{// 当たり判定の管理
@@ -778,7 +843,7 @@ void CPlayer::ManageCollision(void)
 	// 落下死判定=============
 	if (m_info.pos.y <= -190.0f)
 	{
-		CFade *pFade = CManager::GetFade();
+		CFade *pFade = CFade::GetInstance();
 
 		if (pFade != nullptr)
 		{
@@ -806,7 +871,7 @@ void CPlayer::ManageAttack(void)
 		return;
 	}
 
-	CUniversal *pUniversal = CManager::GetUniversal();
+	CUniversal *pUniversal = CUniversal::GetInstance();
 
 	for (int i = 0; i < m_info.nNumAttack; i++)
 	{
@@ -873,7 +938,6 @@ void CPlayer::ManageAttack(void)
 //=====================================================
 void CPlayer::RotDest(void)
 {
-	// 変数宣言
 	D3DXVECTOR3 vecDest;
 	D3DXVECTOR3 rot = GetRot();
 
@@ -981,7 +1045,7 @@ void CPlayer::SetMotion(MOTION motion)
 //=====================================================
 void CPlayer::Death(void)
 {
-	CFade *pFade = CManager::GetFade();
+	CFade *pFade = CFade::GetInstance();
 
 	if (pFade != nullptr)
 	{
@@ -1002,20 +1066,20 @@ void CPlayer::Draw(void)
 	}
 
 #ifdef _DEBUG
-	CManager::GetDebugProc()->Print("\nプレイヤーの位置：[%f,%f,%f]", GetPosition().x, GetPosition().y, GetPosition().z);
-	CManager::GetDebugProc()->Print("\nプレイヤー体力[%d]", m_info.nLife);
-	CManager::GetDebugProc()->Print("\n攻撃[%d]", m_info.bAttack);
-	CManager::GetDebugProc()->Print("\nリセット[F3]");
+	CDebugProc::GetInstance()->Print("\nプレイヤーの位置：[%f,%f,%f]", GetPosition().x, GetPosition().y, GetPosition().z);
+	CDebugProc::GetInstance()->Print("\nプレイヤー体力[%d]", m_info.nLife);
+	CDebugProc::GetInstance()->Print("\n攻撃[%d]", m_info.bAttack);
+	CDebugProc::GetInstance()->Print("\nリセット[F3]");
 #else
-	CManager::GetDebugProc()->Print("\n");
-	CManager::GetDebugProc()->Print("//----------------------------\n");
-	CManager::GetDebugProc()->Print("// プレイヤー基本操作\n");
-	CManager::GetDebugProc()->Print("//----------------------------\n");
-	CManager::GetDebugProc()->Print("[A D]移動\n");
-	CManager::GetDebugProc()->Print("[LMB]攻撃\n");
-	CManager::GetDebugProc()->Print("[RMB]弾パリィ\n");
-	CManager::GetDebugProc()->Print("[SPACE]ジャンプ\n");
-	CManager::GetDebugProc()->Print("\n");
+	CDebugProc::GetInstance()->Print("\n");
+	CDebugProc::GetInstance()->Print("//----------------------------\n");
+	CDebugProc::GetInstance()->Print("// プレイヤー基本操作\n");
+	CDebugProc::GetInstance()->Print("//----------------------------\n");
+	CDebugProc::GetInstance()->Print("[A D]移動\n");
+	CDebugProc::GetInstance()->Print("[LMB]攻撃\n");
+	CDebugProc::GetInstance()->Print("[RMB]弾パリィ\n");
+	CDebugProc::GetInstance()->Print("[SPACE]ジャンプ\n");
+	CDebugProc::GetInstance()->Print("\n");
 #endif
 }
 
@@ -1224,5 +1288,19 @@ void CPlayer::LoadParam(FILE *pFile, char *pTemp)
 		fscanf(pFile, "%s", pTemp);
 
 		fscanf(pFile, "%f", &m_info.fSpeedDash);
+	}
+
+	if (strcmp(pTemp, "JUMP_POW") == 0)
+	{// ジャンプ力
+		fscanf(pFile, "%s", pTemp);
+
+		fscanf(pFile, "%f", &m_info.fPowJump);
+	}
+
+	if (strcmp(pTemp, "TIME_DAMAGE") == 0)
+	{// 無敵時間
+		fscanf(pFile, "%s", pTemp);
+
+		fscanf(pFile, "%d", &m_info.nTimeDamage);
 	}
 }

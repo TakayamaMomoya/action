@@ -146,7 +146,7 @@ void CMissile::Uninit(void)
 void CMissile::Update(void)
 {
 	// ”Ä—pˆ—æ“¾
-	CUniversal *pUniversal = CManager::GetUniversal();
+	CUniversal *pUniversal = CUniversal::GetInstance();
 
 	D3DXVECTOR3 vecMove;
 	D3DXMATRIX mtx;

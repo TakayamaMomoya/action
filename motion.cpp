@@ -93,7 +93,7 @@ void CMotion::Update(void)
 	}
 
 	// 汎用処理取得
-	CUniversal *pUniversal = CManager::GetUniversal();
+	CUniversal *pUniversal = CUniversal::GetInstance();
 
 	// 現在の位置を保存
 	m_posOld = m_pos;
@@ -280,7 +280,7 @@ void CMotion::SetMatrix(void)
 	D3DXMATRIX mtxRotModel, mtxTransModel;
 
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	//ワールドマトリックス初期化
 	D3DXMatrixIdentity(&m_mtxWorld);
@@ -305,7 +305,7 @@ void CMotion::SetMatrix(void)
 void CMotion::MultiplyMtx(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	D3DXMATRIX mtxRotModel, mtxTransModel;
 	D3DXMATRIX *pMtxParent;
@@ -384,7 +384,7 @@ void CMotion::MultiplyMtx(void)
 void CMotion::Draw(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	pDevice->SetRenderState(D3DRS_STENCILENABLE, TRUE);
 

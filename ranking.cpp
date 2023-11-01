@@ -123,8 +123,8 @@ void CRanking::Uninit(void)
 void CRanking::Update(void)
 {
 	CInputManager *pInputManager = CInputManager::GetInstance();
-	CFade *pFade = CManager::GetFade();
-	CUniversal *pUniversal = CManager::GetUniversal();
+	CFade *pFade = CFade::GetInstance();
+	CUniversal *pUniversal = CUniversal::GetInstance();
 
 	// シーンの更新
 	CScene::Update();

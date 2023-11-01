@@ -161,7 +161,7 @@ void CInputJoypad::Update(void)
 		}
 	}
 
-	CManager::GetDebugProc()->Print("スティック[%f]", (float)m_aState[0].Gamepad.sThumbLY / USHRT_MAX * 2);
+	CDebugProc::GetInstance()->Print("スティック[%f]", (float)m_aState[0].Gamepad.sThumbLY / USHRT_MAX * 2);
 
 }
 
@@ -190,7 +190,7 @@ void CInputJoypad::CheckStickTrigger(XINPUT_STATE state, int nPlayer)
 		int n = 10;
 	}
 
-	CManager::GetDebugProc()->Print("スティック差分[%f]", fDiff);
+	CDebugProc::GetInstance()->Print("スティック差分[%f]", fDiff);
 }
 
 //====================================================

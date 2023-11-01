@@ -113,7 +113,7 @@ void CEnemyDrone::ManageAttack(void)
 
 			float fLength = D3DXVec3Length(&move);
 
-			if (fLength > 250.0f)
+			if (fLength > 200.0f)
 			{
 				return;
 			}

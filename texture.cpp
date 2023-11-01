@@ -71,7 +71,7 @@ HRESULT CTexture::Load(void)
 		if (apFileName[nCntTex] != nullptr)
 		{// ファイル名があったらテクスチャの読込
 			// デバイスの取得
-			LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+			LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 			// テクスチャの読込
 			D3DXCreateTextureFromFile
@@ -126,7 +126,7 @@ int CTexture::Regist(const char *pFileName)
 	// 新しくテクスチャを読み込む場合↓
 
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	// テクスチャの読込
 	D3DXCreateTextureFromFile

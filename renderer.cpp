@@ -20,6 +20,7 @@
 // 静的メンバ変数宣言
 //*****************************************************
 bool CRenderer::m_bFog = false;	// フォグをかけるかどうか
+CRenderer *CRenderer::m_pRenderer = nullptr;	// 自身のポインタ
 
 //=====================================================
 // コンストラクタ
@@ -37,6 +38,24 @@ CRenderer::CRenderer()
 CRenderer::~CRenderer()
 {
 
+}
+
+//=====================================================
+// 生成処理
+//=====================================================
+CRenderer *CRenderer::Create(HWND hWnd, BOOL bWindow)
+{
+	if (m_pRenderer == nullptr)
+	{
+		m_pRenderer = new CRenderer;
+
+		if (m_pRenderer != nullptr)
+		{
+			m_pRenderer->Init(hWnd, bWindow);
+		}
+	}
+
+	return m_pRenderer;
 }
 
 //=====================================================
@@ -156,6 +175,8 @@ void CRenderer::Uninit(void)
 		m_pD3D->Release();
 		m_pD3D = nullptr;
 	}
+
+	delete this;
 }
 
 //=====================================================
@@ -173,7 +194,7 @@ void CRenderer::Update(void)
 void CRenderer::Draw(void)
 {
 	// フェード取得
-	CFade *pFade = CManager::GetFade();
+	CFade *pFade = CFade::GetInstance();
 
 	// 画面クリア
 	m_pD3DDevice->Clear(0, nullptr,
@@ -216,7 +237,7 @@ void CRenderer::Draw(void)
 			pFade->Draw();
 		}
 
-		CManager::GetDebugProc()->Draw();
+		CDebugProc::GetInstance()->Draw();
 
 		// 描画終了
 		m_pD3DDevice->EndScene();
@@ -237,7 +258,7 @@ void CRenderer::Draw(void)
 void CRenderer::DrawFPS(void)
 {
 	//文字列に代入
-	CManager::GetDebugProc()->Print("FPS:%d\n", GetFPS());
-	CManager::GetDebugProc()->Print("オブジェクト総数:[%d]\n", CObject::GetNumAll());
-	CManager::GetDebugProc()->Print("保存スコア:[%d]\n", CManager::GetScore());
+	CDebugProc::GetInstance()->Print("FPS:%d\n", GetFPS());
+	CDebugProc::GetInstance()->Print("オブジェクト総数:[%d]\n", CObject::GetNumAll());
+	CDebugProc::GetInstance()->Print("保存スコア:[%d]\n", CManager::GetScore());
 }

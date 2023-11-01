@@ -12,6 +12,11 @@
 #include "renderer.h"
 #include "universal.h"
 
+//*****************************************
+// 静的メンバ変数宣言
+//*****************************************
+CUniversal *CUniversal::m_pUniversal = nullptr;	// 自身のポインタ
+
 //=========================================
 // コンストラクタ
 //=========================================
@@ -26,6 +31,27 @@ CUniversal::CUniversal()
 CUniversal::~CUniversal()
 {
 
+}
+
+//=========================================
+// 生成処理
+//=========================================
+CUniversal *CUniversal::Create(void)
+{
+	if (m_pUniversal == nullptr)
+	{
+		m_pUniversal = new CUniversal;
+	}
+
+	return m_pUniversal;
+}
+
+//=========================================
+// 終了処理
+//=========================================
+void CUniversal::Uninit(void)
+{
+	delete this;
 }
 
 //=========================================
@@ -49,7 +75,7 @@ void CUniversal::LimitRot(float *fRot)
 void CUniversal::SetOffSet(D3DXMATRIX *pMtxWorldOffset, D3DXMATRIX mtxWorldOwner, D3DXVECTOR3 posOffset, D3DXVECTOR3 rot)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	//計算用マトリックス
 	D3DXMATRIX mtxRot, mtxTrans;

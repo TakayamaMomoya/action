@@ -31,15 +31,15 @@ public:
 
 	CFade();	// コンストラクタ
 	~CFade();	// デストラクタ
-
+	
+	static CFade *Create(void);
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-
 	void SetFade(CScene::MODE modeNext);
-	static CFade *Create(void);
 	FADE GetState(void);
+	static CFade *GetInstance(void) { return m_pFade; }
 
 private:
 	//グローバル変数宣言
@@ -47,5 +47,6 @@ private:
 	CScene::MODE m_modeNext;								//次の画面
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;	// 頂点バッファ
 	D3DXCOLOR m_col;	// 色
+	static CFade *m_pFade;	// 自身のポインタ
 };
 #endif

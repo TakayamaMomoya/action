@@ -54,7 +54,7 @@ void CScene::Uninit(void)
 void CScene::Update(void)
 {
 	// ƒŒƒ“ƒ_ƒ‰[‚Ìæ“¾
-	CRenderer *pRenderer = CManager::GetRenderer();
+	CRenderer *pRenderer = CRenderer::GetInstance();
 
 	if (pRenderer != nullptr)
 	{

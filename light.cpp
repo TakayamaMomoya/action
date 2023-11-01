@@ -28,7 +28,7 @@ HRESULT CLight::Init(void)
 	m_nCurrent = 0;
 
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 	D3DXVECTOR3 vecDir;
 
 	//ライトの種類設定
@@ -100,10 +100,10 @@ void CLight::Uninit(void)
 //====================================================
 void CLight::Update(void)
 {
-	CDebugProc *pDebugProc = CManager::GetDebugProc();
+	CDebugProc *pDebugProc = CDebugProc::GetInstance();
 
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 	D3DXVECTOR3 vecDir;
 
 	// 入力情報入手

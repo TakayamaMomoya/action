@@ -43,7 +43,7 @@ CBg::~CBg()
 HRESULT CBg::Init(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	// 継承クラスの初期化
 	CObject2D::Init();
@@ -112,7 +112,7 @@ HRESULT CBg::Load(void)
 	if (m_pTexture == nullptr)
 	{
 		// デバイスの取得
-		LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+		LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 		D3DXCreateTextureFromFile
 		(

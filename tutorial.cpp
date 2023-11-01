@@ -18,7 +18,6 @@
 #include "inputjoypad.h"
 #include "fade.h"
 #include "camera.h"
-#include "objectmanager.h"
 #include "game.h"
 
 //=====================================================

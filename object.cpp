@@ -224,7 +224,7 @@ void CObject::UpdateAll(void)
 void CObject::DrawAll(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	// カメラの取得
 	CCamera *pCamera = CManager::GetCamera();

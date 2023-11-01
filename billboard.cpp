@@ -42,7 +42,7 @@ CBillboard::~CBillboard()
 HRESULT CBillboard::Init(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	if (m_pVtxBuff == nullptr)
 	{
@@ -140,7 +140,7 @@ void CBillboard::SetTex(D3DXVECTOR2 texLeftUp, D3DXVECTOR2 texRightDown)
 void CBillboard::Draw(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 	D3DXMATRIX mtxView, mtxTrans;
 
 	//ライティング無効化
@@ -215,7 +215,7 @@ void CBillboard::Draw(void)
 void CBillboard::SetMatrix(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 	D3DXMATRIX mtxView, mtxTrans;
 
 	//ワールドマトリックス初期化

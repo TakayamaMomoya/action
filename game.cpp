@@ -19,7 +19,6 @@
 #include "fade.h"
 #include "camera.h"
 #include "effect3D.h"
-#include "objectmanager.h"
 #include "sound.h"
 #include "scene.h"
 #include "player.h"
@@ -80,8 +79,6 @@ HRESULT CGame::Init(void)
 	m_pGame = this;
 
 	m_state = STATE_NORMAL;
-
-	CObjectManager *pObjManager = CManager::GetObjectManager();
 
 	// カメラ距離の設定
 	CCamera *pCamera = CManager::GetCamera();
@@ -297,7 +294,7 @@ void CGame::Uninit(void)
 //=====================================================
 void CGame::Update(void)
 {
-	CFade *pFade = CManager::GetFade();
+	CFade *pFade = CFade::GetInstance();
 	CInputManager *pInputManager = CInputManager::GetInstance();
 
 	if (m_bStop == false)
@@ -380,7 +377,7 @@ void CGame::UpdateCamera(void)
 //=====================================================
 void CGame::ManageState(void)
 {
-	CFade *pFade = CManager::GetFade();
+	CFade *pFade = CFade::GetInstance();
 
 	switch (m_state)
 	{
@@ -426,7 +423,7 @@ void CGame::ManageState(void)
 
 		m_nCntState++;
 
-		if (m_nCntState >= 120 && pFade != nullptr)
+		if (m_nCntState >= 300 && pFade != nullptr)
 		{
 			pFade->SetFade(CScene::MODE_RANKING);
 		}
@@ -461,5 +458,5 @@ void CGame::Debug(void)
 //=====================================================
 void CGame::Draw(void)
 {
-	CManager::GetDebugProc()->Print("\n進行状況：[%d]", m_nProgress);
+	CDebugProc::GetInstance()->Print("\n進行状況：[%d]", m_nProgress);
 }

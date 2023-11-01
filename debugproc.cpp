@@ -16,6 +16,7 @@
 // 静的メンバ変数宣言
 //**********************************************************
 LPD3DXFONT CDebugProc::m_pFont = nullptr;	// デバッグフォントへのポインタ
+CDebugProc *CDebugProc::m_pDebugProc = nullptr;	// 自身のポインタ
 
 //**********************************************************
 //マクロ定義
@@ -41,6 +42,24 @@ CDebugProc::~CDebugProc()
 	
 }
 
+//=====================================================
+// 生成処理
+//=====================================================
+CDebugProc *CDebugProc::Create(void)
+{
+	if (m_pDebugProc == nullptr)
+	{
+		m_pDebugProc = new CDebugProc;
+
+		if (m_pDebugProc != nullptr)
+		{
+			m_pDebugProc->Init();
+		}
+	}
+
+	return m_pDebugProc;
+}
+
 //==========================================================
 //デバッグ表示の初期化処理
 //==========================================================
@@ -49,7 +68,7 @@ void CDebugProc::Init(void)
 	LPDIRECT3DDEVICE9 pDevice;		//デバイスへのポインタ
 
 	//デバイスの取得
-	pDevice = CManager::GetRenderer()->GetDevice();
+	pDevice = CRenderer::GetInstance()->GetDevice();
 
 	//デバッグ表示用フォントの生成
 	D3DXCreateFont(pDevice, 18, 0, 0, 0, FALSE, SHIFTJIS_CHARSET, OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, "Terminal", &m_pFont);
@@ -73,6 +92,8 @@ void CDebugProc::Uninit(void)
 		m_pFont->Release();
 		m_pFont = nullptr;
 	}
+
+	delete this;
 }
 
 //==========================================================

@@ -46,7 +46,7 @@ CObject3D::~CObject3D()
 HRESULT CObject3D::Init(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	if (m_pVtxBuff == nullptr)
 	{
@@ -139,7 +139,7 @@ void CObject3D::Update(void)
 void CObject3D::Draw(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	if (m_bAdd)
 	{// 加算合成に設定する
@@ -173,7 +173,7 @@ void CObject3D::Draw(void)
 void CObject3D::DrawNormal(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 	D3DXMATRIX mtxRot, mtxTrans;
 
 	//ワールドマトリックス初期化
@@ -212,7 +212,7 @@ void CObject3D::DrawNormal(void)
 void CObject3D::DrawBillboard(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 	D3DXMATRIX mtxView, mtxTrans;
 
 	//ライティング無効化

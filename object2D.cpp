@@ -45,7 +45,7 @@ CObject2D::~CObject2D()
 HRESULT CObject2D::Init(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	if (pDevice != nullptr)
 	{
@@ -209,7 +209,7 @@ void CObject2D::SetVtx(void)
 void CObject2D::Draw(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	if (pDevice != nullptr)
 	{

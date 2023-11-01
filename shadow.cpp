@@ -13,7 +13,6 @@
 #include "renderer.h"
 #include "texture.h"
 #include "game.h"
-#include "objectmanager.h"
 #include "block.h"
 #include "debugproc.h"
 
@@ -81,7 +80,7 @@ void CShadow::Draw(void)
 	// 継承クラスの描画
 	CObject3D::Draw();
 
-	CManager::GetDebugProc()->Print("\n影の位置：[%f,%f,%f]", GetPosition().x, GetPosition().y, GetPosition().z);
+	CDebugProc::GetInstance()->Print("\n影の位置：[%f,%f,%f]", GetPosition().x, GetPosition().y, GetPosition().z);
 }
 
 //=====================================================

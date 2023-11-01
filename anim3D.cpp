@@ -95,7 +95,7 @@ void CAnim3D::Update(void)
 void CAnim3D::Draw(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	// ライティングを無効化
 	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
@@ -107,7 +107,7 @@ void CAnim3D::Draw(void)
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 
 #ifdef _DEBUG
-	CManager::GetDebugProc()->Print("\nパス：[%d]", GetIdxTexture());
+	CDebugProc::GetInstance()->Print("\nパス：[%d]", GetIdxTexture());
 #endif
 }
 

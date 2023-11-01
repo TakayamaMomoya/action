@@ -41,28 +41,18 @@ public:
 	void Uninit(void);
 	void Update();
 	void Draw();
-	static CRenderer *GetRenderer(void) { return m_pRenderer; }
-	static CDebugProc *GetDebugProc(void) { return m_pDebugProc; }
 	static CCamera *GetCamera(void) { return m_pCamera; }
 	static CLight *GetLight(void) { return m_pLight; }
-	static CObjectManager *GetObjectManager(void) { return m_pObjectManager; }
-	static CUniversal *GetUniversal(void) { return m_pUniversal; }
 	static void SetMode(CScene::MODE mode);
 	static CScene::MODE GetMode(void) { return m_mode; }
-	static CFade *GetFade(void) { return m_pFade; }
 	static void SetScore(int nScore) { m_nScore = nScore; }
 	static int GetScore(void) { return m_nScore; }
 
 private:
-	static CRenderer *m_pRenderer;	// レンダラーのクラス
-	static CDebugProc *m_pDebugProc;	// デバッグプロシージャのクラス
 	static CCamera *m_pCamera;	// カメラのポインタ
 	static CLight *m_pLight;	// ライトのポインタ
-	static CUniversal *m_pUniversal;	// 汎用処理のポインタ
 	static CScene *m_pScene;	// 現在のシーン
 	static CScene::MODE m_mode;	// 現在のモード
-	static CFade *m_pFade;	// フェードのポインタ
-	static CObjectManager *m_pObjectManager;	// オブジェクト管理のポインタ
 	static int m_nScore;	// スコア
 };
 

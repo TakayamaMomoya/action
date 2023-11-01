@@ -70,6 +70,7 @@ public:
 	void SetScore(int nScore) { m_nScore = nScore; }
 	int GetCntState(void) { return m_nTimerState; }
 	void SetCntState(int nCnt) { m_nTimerState = nCnt; }
+	void DeleteCollision(void);
 
 protected:
 	void RotDest(void);

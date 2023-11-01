@@ -22,7 +22,6 @@
 #include "universal.h"
 #include "game.h"
 #include "player.h"
-#include "objectmanager.h"
 
 //*****************************************************
 // マクロ定義
@@ -72,7 +71,7 @@ CBullet::~CBullet()
 HRESULT CBullet::Init(void)
 {
 	// 汎用処理取得
-	CUniversal *pUniversal = CManager::GetUniversal();
+	CUniversal *pUniversal = CUniversal::GetInstance();
 
 	m_rot.y = atan2f(m_move.x,m_move.z);
 
@@ -130,7 +129,7 @@ void CBullet::Uninit(void)
 void CBullet::Update(void)
 {
 	// 汎用処理取得
-	CUniversal *pUniversal = CManager::GetUniversal();
+	CUniversal *pUniversal = CUniversal::GetInstance();
 
 	// 変数宣言
 	bool bHit = false;
@@ -235,7 +234,7 @@ void CBullet::Death(void)
 void CBullet::Draw(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	D3DXMATRIX mtxRot, mtxTrans;
 

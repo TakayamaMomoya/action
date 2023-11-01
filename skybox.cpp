@@ -70,7 +70,7 @@ void CSkybox::Update(void)
 void CSkybox::Draw(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	if (CRenderer::IsFog())
 	{

@@ -31,21 +31,15 @@
 #include "universal.h"
 #include "particle.h"
 #include "fade.h"
-#include "objectmanager.h"
 #include "block.h"
 #include "inputManager.h"
 
 //*****************************************************
 // 静的メンバ変数宣言
 //*****************************************************
-CRenderer *CManager::m_pRenderer = nullptr;	// レンダラーのポインタ
-CDebugProc *CManager::m_pDebugProc = nullptr;	// デバッグプロシージャのポインタ
 CCamera *CManager::m_pCamera = nullptr;	// カメラのポインタ
 CLight *CManager::m_pLight = nullptr;	// ライトのポインタ
-CUniversal *CManager::m_pUniversal = nullptr;	// 汎用処理へのポインタ
-CObjectManager *CManager::m_pObjectManager = nullptr;	// オブジェクト管理へのポインタ
 CScene *CManager::m_pScene = nullptr;	// シーンへのポインタ
-CFade *CManager::m_pFade = nullptr;	// フェードへのポインタ
 CScene::MODE CManager::m_mode = CScene::MODE_TITLE;	// 現在のモード
 int CManager::m_nScore = 0;	// スコア保存用
 
@@ -70,32 +64,14 @@ CManager::~CManager()
 //=====================================================
 HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 {
-	if (m_pRenderer == nullptr)
-	{// レンダラー生成
-		m_pRenderer = new CRenderer;
-
-		if (m_pRenderer != nullptr)
-		{
-			// レンダラー初期化
-			if (FAILED(m_pRenderer->Init(hWnd, bWindow)))
-			{// 初期化に失敗した場合
-				return E_FAIL;
-			}
-		}
-	}
+	// レンダラーの生成
+	CRenderer::Create(hWnd, bWindow);
 
 	// 入力マネージャー生成
 	CInputManager::Create(hInstance, hWnd);
 
-	if (m_pDebugProc == nullptr)
-	{// デバッグプロシージャ生成
-		m_pDebugProc = new CDebugProc;
-
-		if (m_pDebugProc != nullptr)
-		{// デバッグプロシージャ初期化
-			m_pDebugProc->Init();
-		}
-	}
+	// デバッグ表示の生成
+	CDebugProc::Create();
 
 	// サウンド生成
 	CSound::Create(hWnd);
@@ -131,25 +107,11 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	// テクスチャ管理の生成
 	CTexture::Create();
 
-	if (m_pFade == nullptr)
-	{// フェード生成
-		m_pFade = CFade::Create();
+	// フェードの生成
+	CFade::Create();
 
-		if (m_pFade != nullptr)
-		{
-			m_pFade->Init();
-		}
-	}
-
-	if (m_pUniversal == nullptr)
-	{// 汎用処理生成
-		m_pUniversal = new CUniversal;
-	}
-
-	if (m_pObjectManager == nullptr)
-	{// オブジェクト管理の生成
-		m_pObjectManager = new CObjectManager;
-	}
+	// 汎用処理生成
+	CUniversal::Create();
 
 	// パーティクルの読込
 	CParticle::Load();
@@ -172,15 +134,12 @@ void CManager::Uninit(void)
 		m_pScene->Uninit();
 	}
 
-	if (m_pFade != nullptr)
-	{
-		m_pFade->Uninit();
-	}
+	// フェード終了
+	CFade *pFade = CFade::GetInstance();
 
-	if (m_pObjectManager != nullptr)
-	{// オブジェクト管理の削除
-		delete m_pObjectManager;
-		m_pObjectManager = nullptr;
+	if (pFade != nullptr)
+	{
+		pFade->Uninit();
 	}
 
 	// パーティクル情報破棄
@@ -192,19 +151,20 @@ void CManager::Uninit(void)
 	// ブロック番号削除
 	CBlock::DeleteIdx();
 
-	if (m_pRenderer != nullptr)
-	{// レンダラーの終了・破棄
-		m_pRenderer->Uninit();
+	// レンダラー終了
+	CRenderer *pRenderer = CRenderer::GetInstance();
 
-		delete m_pRenderer;
-		m_pRenderer = nullptr;
+	if (pRenderer != nullptr)
+	{
+		pRenderer->Uninit();
 	}
 
-	if (m_pUniversal != nullptr)
-	{// 汎用処理の終了・破棄
+	// 汎用処理終了
+	CUniversal *pUniversal = CUniversal::GetInstance();
 
-		delete m_pUniversal;
-		m_pUniversal = nullptr;
+	if (pUniversal != nullptr)
+	{
+		pUniversal->Uninit();
 	}
 
 	// 入力マネージャー終了
@@ -223,12 +183,12 @@ void CManager::Uninit(void)
 		pSound = nullptr;
 	}
 
-	if (m_pDebugProc != nullptr)
-	{// デバッグプロシージャの終了・破棄
-		m_pDebugProc->Uninit();
+	// デバッグプロシージャの終了
+	CDebugProc *pDebugProc = CDebugProc::GetInstance();
 
-		delete m_pDebugProc;
-		m_pDebugProc = nullptr;
+	if (pDebugProc != nullptr)
+	{
+		pDebugProc->Uninit();
 	}
 
 	if (m_pLight != nullptr)
@@ -267,9 +227,12 @@ void CManager::Uninit(void)
 //=====================================================
 void CManager::Update(void)
 {
-	if (m_pFade != nullptr)
+	// フェード更新
+	CFade *pFade = CFade::GetInstance();
+
+	if (pFade != nullptr)
 	{
-		m_pFade->Update();
+		pFade->Update();
 	}
 
 	if (m_pScene != nullptr)
@@ -292,10 +255,12 @@ void CManager::Update(void)
 		pSound->Update();
 	}
 
-	if (m_pDebugProc != nullptr)
+	// デバッグプロシージャの更新
+	CDebugProc *pDebugProc = CDebugProc::GetInstance();
+
+	if (pDebugProc != nullptr)
 	{
-		// デバッグプロシージャの更新
-		m_pDebugProc->Update();
+		pDebugProc->Update();
 	}
 
 	if (m_pLight != nullptr)
@@ -323,10 +288,12 @@ void CManager::Draw(void)
 		m_pScene->Draw();
 	}
 
-	if (m_pRenderer != nullptr)
+	// レンダラー描画
+	CRenderer *pRenderer = CRenderer::GetInstance();
+
+	if (pRenderer != nullptr)
 	{
-		// レンダラーの描画
-		m_pRenderer->Draw();
+		pRenderer->Draw();
 	}
 }
 

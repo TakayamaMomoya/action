@@ -222,6 +222,6 @@ void CEnemyManager::Update(void)
 void CEnemyManager::Draw(void)
 {
 #ifdef _DEBUG
-	//CManager::GetDebugProc()->Print("\n敵の位置：[%f,%f,%f]", GetPosition().x, GetPosition().y, GetPosition().z);
+	//CDebugProc::GetInstance()->Print("\n敵の位置：[%f,%f,%f]", GetPosition().x, GetPosition().y, GetPosition().z);
 #endif
 }

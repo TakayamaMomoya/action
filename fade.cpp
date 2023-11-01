@@ -18,6 +18,11 @@
 //*****************************************************
 #define FADE_SPEED			(0.05f)				//フェードのスピード
 
+//*****************************************************
+// 静的メンバ変数宣言
+//*****************************************************
+CFade *CFade::m_pFade = nullptr;	// 自身のポインタ
+
 //=====================================================
 // コンストラクタ
 //=====================================================
@@ -38,6 +43,24 @@ CFade::~CFade()
 }
 
 //=====================================================
+// 生成処理
+//=====================================================
+CFade *CFade::Create(void)
+{
+	if (m_pFade == nullptr)
+	{
+		m_pFade = new CFade;
+
+		if (m_pFade != nullptr)
+		{
+			m_pFade->Init();
+		}
+	}
+
+	return m_pFade;
+}
+
+//=====================================================
 // 初期化処理
 //=====================================================
 HRESULT CFade::Init(void)
@@ -47,7 +70,7 @@ HRESULT CFade::Init(void)
 	m_col = { 0.0f,0.0f,0.0f,0.0f };
 
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	if (m_pVtxBuff == nullptr)
 	{
@@ -94,6 +117,8 @@ void CFade::Uninit(void)
 		m_pVtxBuff->Release();
 		m_pVtxBuff = NULL;
 	}
+
+	delete this;
 }
 
 //=====================================================
@@ -150,7 +175,7 @@ void CFade::Update(void)
 void CFade::Draw(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	//頂点バッファをデータストリームに設定
 	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_2D));
@@ -176,23 +201,6 @@ void CFade::SetFade(CScene::MODE modeNext)
 		m_modeNext = modeNext;
 		m_col = { 0.0f, 0.0f, 0.0f, 0.0f };
 	}
-}
-
-//=====================================================
-// 生成処理
-//=====================================================
-CFade *CFade::Create(void)
-{
-	CFade *pFade = nullptr;
-
-	pFade = new CFade;
-
-	if (pFade != nullptr)
-	{
-		pFade->Init();
-	}
-
-	return pFade;
 }
 
 //=====================================================

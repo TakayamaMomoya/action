@@ -40,6 +40,7 @@ public:
 	float GetWidth(void) { return 0.0f; }	// サイズ取得
 	float GetHeight(void) { return 0.0f; }	// サイズ取得
 	int GetSecond(void) { return m_nSecond; }	// 時間取得
+	void EnableStop(bool bStop) { m_bStop = bStop; }
 	static CTimer *GetInstance(void) { return m_pTimer; }
 
 private:
@@ -49,6 +50,7 @@ private:
 	int m_nCntSecond;	// 一秒計測用カウンター
 	int m_nIdxTexture;	// テクスチャ番号
 	static CTimer *m_pTimer;	// 自身のポインタ
+	bool m_bStop;	// 止めるかどうか
 };
 
 #endif

@@ -248,18 +248,18 @@ void CEdit::Update(void)
 			m_pObjectCursor->SetRot(m_pObjectCursor->GetRot() + rot);
 		}
 
-		CManager::GetDebugProc()->Print("\n//=======================\n");
-		CManager::GetDebugProc()->Print("// エディター\n");
-		CManager::GetDebugProc()->Print("//=======================\n");
-		CManager::GetDebugProc()->Print("エディターの位置：[%f,%f,%f]\n", m_pObjectCursor->GetPosition().x, m_pObjectCursor->GetPosition().y, m_pObjectCursor->GetPosition().z);
-		CManager::GetDebugProc()->Print("エディターの向き：[%f,%f,%f]\n", m_pObjectCursor->GetRot().x, m_pObjectCursor->GetRot().y, m_pObjectCursor->GetRot().z);
-		CManager::GetDebugProc()->Print("移動[IJKL]\n");
-		CManager::GetDebugProc()->Print("上下移動[UO]\n");
-		CManager::GetDebugProc()->Print("設置[ENTER]\n");
-		CManager::GetDebugProc()->Print("保存[8]\n");
-		CManager::GetDebugProc()->Print("選択中のブロック：[%d]:[0]\n", m_nIdxObject);
-		CManager::GetDebugProc()->Print("選択ブロック削除[9]\n");
-		CManager::GetDebugProc()->Print("設置するタイプ：[%d]:[7]\n", m_type);
-		CManager::GetDebugProc()->Print("//=======================\n");
+		CDebugProc::GetInstance()->Print("\n//=======================\n");
+		CDebugProc::GetInstance()->Print("// エディター\n");
+		CDebugProc::GetInstance()->Print("//=======================\n");
+		CDebugProc::GetInstance()->Print("エディターの位置：[%f,%f,%f]\n", m_pObjectCursor->GetPosition().x, m_pObjectCursor->GetPosition().y, m_pObjectCursor->GetPosition().z);
+		CDebugProc::GetInstance()->Print("エディターの向き：[%f,%f,%f]\n", m_pObjectCursor->GetRot().x, m_pObjectCursor->GetRot().y, m_pObjectCursor->GetRot().z);
+		CDebugProc::GetInstance()->Print("移動[IJKL]\n");
+		CDebugProc::GetInstance()->Print("上下移動[UO]\n");
+		CDebugProc::GetInstance()->Print("設置[ENTER]\n");
+		CDebugProc::GetInstance()->Print("保存[8]\n");
+		CDebugProc::GetInstance()->Print("選択中のブロック：[%d]:[0]\n", m_nIdxObject);
+		CDebugProc::GetInstance()->Print("選択ブロック削除[9]\n");
+		CDebugProc::GetInstance()->Print("設置するタイプ：[%d]:[7]\n", m_type);
+		CDebugProc::GetInstance()->Print("//=======================\n");
 	}
 }

@@ -65,7 +65,7 @@ int CModel::Load(char *pPath)
 		if (m_apModel[nCntModel] == nullptr)
 		{
 			// デバイスの取得
-			LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+			LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 			D3DXMATERIAL *pMat;				//マテリアルデータへのポインタ
 
 			m_apModel[nCntModel] = new Model;

@@ -144,8 +144,6 @@ void CEnemyBoss::Uninit(void)
 		pSound->Play(CSound::LABEL_SE_EXPLOSION);
 	}
 
-	CGame::SetState(CGame::STATE_END);
-
 	m_pEnemyBoss = nullptr;
 
 	// 継承クラスの終了
@@ -366,7 +364,7 @@ void CEnemyBoss::UpdateDash(void)
 void CEnemyBoss::UpdateShotUnder(void)
 {
 	// 汎用処理取得
-	CUniversal *pUniversal = CManager::GetUniversal();
+	CUniversal *pUniversal = CUniversal::GetInstance();
 
 	RotDest();
 
@@ -402,6 +400,7 @@ void CEnemyBoss::UpdateShotUnder(void)
 				mtxMazzleVec._42,
 				mtxMazzleVec._43,
 			};
+
 			D3DXVECTOR3 vecBullet = posBullet - posMazzle;
 
 			D3DXVec3Normalize(&vecBullet, &vecBullet);
@@ -448,7 +447,7 @@ void CEnemyBoss::FollowCollision(void)
 	{
 		D3DXVECTOR3 pos = GetMtxPos(IDX_WAIST);
 
-		pos.y -= 10.0f;
+		pos.y -= 25.0f;
 
 #ifdef _DEBUG
 		//dCEffect3D::Create(pos, pCollision->GetRadius(), 10, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
@@ -596,6 +595,8 @@ void CEnemyBoss::Hit(float fDamage)
 
 			fLife = 0.0f;
 
+			CGame::SetState(CGame::STATE_END);
+
 			m_info.state = STATE_NONE;
 			state = CEnemy::STATE_DEATH;
 
@@ -609,6 +610,9 @@ void CEnemyBoss::Hit(float fDamage)
 			{
 				pScore->SetResultScore();
 			}
+
+			// 当たり判定削除
+			DeleteCollision();
 		}
 		else
 		{
@@ -630,12 +634,12 @@ void CEnemyBoss::Draw(void)
 	CEnemy::Draw();
 
 #ifdef _DEBUG
-	CManager::GetDebugProc()->Print("\nボス位置：[%f,%f,%f]", GetPosition().x, GetPosition().y, GetPosition().z);
-	CManager::GetDebugProc()->Print("\nボス体力：[%f]", GetLife());
-	CManager::GetDebugProc()->Print("\nボス状態：[%d]",CEnemy::GetState());
-	CManager::GetDebugProc()->Print("\nボスモーション：[%d]", GetMotion());
-	CManager::GetDebugProc()->Print("\nキー：[%d]", GetKey());
-	CManager::GetDebugProc()->Print("\nフレーム：[%d]", GetFrame());
-	CManager::GetDebugProc()->Print("\nIsFinish：[%d]", IsFinish());
+	CDebugProc::GetInstance()->Print("\nボス位置：[%f,%f,%f]", GetPosition().x, GetPosition().y, GetPosition().z);
+	CDebugProc::GetInstance()->Print("\nボス体力：[%f]", GetLife());
+	CDebugProc::GetInstance()->Print("\nボス状態：[%d]",CEnemy::GetState());
+	CDebugProc::GetInstance()->Print("\nボスモーション：[%d]", GetMotion());
+	CDebugProc::GetInstance()->Print("\nキー：[%d]", GetKey());
+	CDebugProc::GetInstance()->Print("\nフレーム：[%d]", GetFrame());
+	CDebugProc::GetInstance()->Print("\nIsFinish：[%d]", IsFinish());
 #endif
 }

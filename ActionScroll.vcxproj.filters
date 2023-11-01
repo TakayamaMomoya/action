@@ -27,7 +27,6 @@
     <ClCompile Include="object.cpp" />
     <ClCompile Include="object2D.cpp" />
     <ClCompile Include="object3D.cpp" />
-    <ClCompile Include="objectmanager.cpp" />
     <ClCompile Include="objectX.cpp" />
     <ClCompile Include="orbit.cpp" />
     <ClCompile Include="particle.cpp" />
@@ -110,6 +109,8 @@
     <ClCompile Include="pause.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="shockwave.cpp" />
+    <ClCompile Include="meshcylinder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="afterimage.h" />
@@ -138,7 +139,6 @@
     <ClInclude Include="object.h" />
     <ClInclude Include="object2D.h" />
     <ClInclude Include="object3D.h" />
-    <ClInclude Include="objectmanager.h" />
     <ClInclude Include="objectX.h" />
     <ClInclude Include="orbit.h" />
     <ClInclude Include="particle.h" />
@@ -221,6 +221,8 @@
     <ClInclude Include="pause.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="shockwave.h" />
+    <ClInclude Include="meshcylinder.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="input">

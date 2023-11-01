@@ -241,12 +241,8 @@ HRESULT CEnemy::Init(void)
 //=====================================================
 void CEnemy::Uninit(void)
 {
-	if (m_pCollisionSphere != nullptr)
-	{// “–‚½‚è”»’è‚ÌÁ‹
-		m_pCollisionSphere->Uninit();
-
-		m_pCollisionSphere = nullptr;
-	}
+	// “–‚½‚è”»’èíœ
+	DeleteCollision();
 
 	if (m_pShadow != nullptr)
 	{
@@ -263,11 +259,11 @@ void CEnemy::Uninit(void)
 //=====================================================
 void CEnemy::Update(void)
 {
+	// Œp³ƒNƒ‰ƒX‚ÌXV
+	CMotion::Update();
+
 	if (m_state != STATE_DEATH)
 	{
-		// Œp³ƒNƒ‰ƒX‚ÌXV
-		CMotion::Update();
-
 		if (m_pShadow != nullptr)
 		{// ‰e‚Ì’Ç]
 			D3DXVECTOR3 pos = GetMtxPos(0);
@@ -415,12 +411,14 @@ void CEnemy::Hit(float fDamage)
 
 			// ƒXƒRƒAŠÇ—
 			ManageScore();
+
+			// “–‚½‚è”»’èíœ
+			DeleteCollision();
 		}
 		else
 		{
 			m_state = STATE_DAMAGE;
 		}
-
 	}
 }
 
@@ -431,6 +429,26 @@ void CEnemy::Death(void)
 {
 	// ©g‚ÌI—¹
 	Uninit();
+}
+
+//=====================================================
+// “–‚½‚è”»’èíœ
+//=====================================================
+void CEnemy::DeleteCollision(void)
+{
+	if (m_pCollisionSphere != nullptr)
+	{// “–‚½‚è”»’è‚ÌÁ‹
+		m_pCollisionSphere->Uninit();
+
+		m_pCollisionSphere = nullptr;
+	}
+
+	if (m_pCollisionCube != nullptr)
+	{// “–‚½‚è”»’è‚ÌÁ‹
+		m_pCollisionCube->Uninit();
+
+		m_pCollisionCube = nullptr;
+	}
 }
 
 //=====================================================
@@ -460,8 +478,8 @@ void CEnemy::Draw(void)
 	CMotion::Draw();
 
 #ifdef _DEBUG
-	//CManager::GetDebugProc()->Print("\n“G‚ÌˆÊ’uF[%f,%f,%f]", GetPosition().x, GetPosition().y, GetPosition().z);
-	//CManager::GetDebugProc()->Print("\n“G‚Ì”¼ŒaF[%f]", m_pCollisionSphere->GetRadius());
+	//CDebugProc::GetInstance()->Print("\n“G‚ÌˆÊ’uF[%f,%f,%f]", GetPosition().x, GetPosition().y, GetPosition().z);
+	//CDebugProc::GetInstance()->Print("\n“G‚Ì”¼ŒaF[%f]", m_pCollisionSphere->GetRadius());
 #endif
 }
 

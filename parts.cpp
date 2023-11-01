@@ -41,7 +41,7 @@ CParts::~CParts()
 HRESULT CParts::Init(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	return S_OK;
 }
@@ -79,7 +79,7 @@ void CParts::Draw(void)
 	}
 
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	D3DXMATERIAL *pMat;				//マテリアルデータへのポインタ
 	D3DMATERIAL9 matDef;			//現在のマテリアル保存用
@@ -133,7 +133,7 @@ void CParts::DrawShadow(void)
 	}
 
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	D3DXMATERIAL *pMat;				//マテリアルデータへのポインタ
 	D3DMATERIAL9 matDef;			//現在のマテリアル保存用
@@ -180,7 +180,7 @@ void CParts::DrawShadow(void)
 void CParts::SetMatrix(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	// 変数宣言
 	D3DXMATRIX mtxRot, mtxTrans;

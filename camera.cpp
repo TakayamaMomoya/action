@@ -16,7 +16,6 @@
 #include "inputmouse.h"
 #include "debugproc.h"
 #include "game.h"
-#include "objectmanager.h"
 #include "player.h"
 
 //*****************************************************
@@ -392,7 +391,7 @@ void CCamera::SetPosR(void)
 void CCamera::SetCamera(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	//プロジェクションマトリックス==================================================
 	//プロジェクションマトリックス初期化
@@ -428,9 +427,9 @@ void CCamera::SetCamera(void)
 	pDevice->SetTransform(D3DTS_VIEW, &m_camera.mtxView);
 
 #ifdef _DEBUG
-	CManager::GetDebugProc()->Print("\n視点の位置：[%f,%f,%f]", m_camera.posV.x, m_camera.posV.y, m_camera.posV.z);
-	CManager::GetDebugProc()->Print("\n注視点の位置：[%f,%f,%f]", m_camera.posR.x, m_camera.posR.y, m_camera.posR.z);
-	CManager::GetDebugProc()->Print("\nカメラ距離：[%f]", m_camera.fLength);
+	CDebugProc::GetInstance()->Print("\n視点の位置：[%f,%f,%f]", m_camera.posV.x, m_camera.posV.y, m_camera.posV.z);
+	CDebugProc::GetInstance()->Print("\n注視点の位置：[%f,%f,%f]", m_camera.posR.x, m_camera.posR.y, m_camera.posR.z);
+	CDebugProc::GetInstance()->Print("\nカメラ距離：[%f]", m_camera.fLength);
 #endif
 }
 

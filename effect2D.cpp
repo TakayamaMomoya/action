@@ -88,7 +88,7 @@ void CEffect2D::Update(void)
 void CEffect2D::Draw(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	//αブレンディングを加算合成に設定
 	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
@@ -141,7 +141,7 @@ HRESULT CEffect2D::Load(void)
 	if (m_pTexture == nullptr)
 	{
 		// デバイスの取得
-		LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+		LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 		D3DXCreateTextureFromFile
 		(

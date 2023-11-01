@@ -74,6 +74,9 @@ private:
 		MOTION_AIRATTACK,	// 空中攻撃モーション
 		MOTION_PARRY,	// パリィモーション
 		MOTION_DASH,	// ダッシュモーション
+		MOTION_TITLE_NEUTRAL,	// タイトル待機
+		MOTION_TITLE_STANDUP,	// タイトル立ち上がり
+		MOTION_APPER,	// 出現モーション
 		MOTION_MAX
 	};
 	struct AttackInfo
@@ -102,7 +105,9 @@ private:
 		int nCntParry;	// パリィのカウンター
 		int nTimeDash;	// ダッシュのクールタイム
 		int nCntDash;	// ダッシュのカウンター
+		int nTimeDamage;	// ダメージ状態の時間
 		float fSpeedDash;	// ダッシュの速度
+		float fPowJump;	// ジャンプ力
 		bool bSprint;	// ダッシュ状態かどうか
 		bool bAttack;	// 攻撃フラグ
 		float fRadiusParry;	// パリィ判定の半径
@@ -134,9 +139,9 @@ private:
 	void ManageMotion(void);
 	void ManageCollision(void);
 	void RotDest(void);
-	void SetMotion(MOTION motion);
 	void ManageAttack(void);
 	void Death(void);
+	void SetMotion(MOTION motion);
 
 	SInfo m_info;	// 自身の情報
 

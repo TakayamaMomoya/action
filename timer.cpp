@@ -33,6 +33,7 @@ CTimer::CTimer()
 {
 	m_pObjMinute = nullptr;
 	m_pObjSecond = nullptr;
+	m_bStop = false;
 	m_nSecond = 0;
 	m_nCntSecond = 0;
 }
@@ -80,7 +81,8 @@ void CTimer::Uninit(void)
 //=====================================================
 void CTimer::Update(void)
 {
-	if (CGame::GetState() == CGame::STATE_END)
+	if (CGame::GetState() == CGame::STATE_END || 
+		m_bStop)
 	{
 		return;
 	}
@@ -158,7 +160,7 @@ CTimer *CTimer::Create(void)
 //=====================================================
 void CTimer::Draw(void)
 {
-	CDebugProc *pDebugProc = CManager::GetDebugProc();
+	CDebugProc *pDebugProc = CDebugProc::GetInstance();
 
 	if (pDebugProc == nullptr)
 	{

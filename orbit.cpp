@@ -50,7 +50,7 @@ COrbit::~COrbit()
 HRESULT COrbit::Init(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	// テクスチャ読込
 	m_nIdxTexture = CTexture::GetInstance()->Regist("data\\TEXTURE\\EFFECT\\orbit001.png");
@@ -197,7 +197,7 @@ void COrbit::UpdatePolygon(void)
 void COrbit::Draw()
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	D3DXMATRIX mtxRot, mtxTrans;						// 計算用マトリックス
 	LPDIRECT3DTEXTURE9 pTexture = nullptr;
@@ -275,7 +275,7 @@ void COrbit::Draw()
 COrbit *COrbit::Create(D3DXMATRIX mtxWorld, D3DXVECTOR3 m_posOffset1, D3DXVECTOR3 m_posOffset2, D3DXCOLOR col,int nNumEdge)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	// 計算用マトリックス
 	D3DXMATRIX mtxRot, mtxTrans;
@@ -333,7 +333,7 @@ COrbit *COrbit::Create(D3DXMATRIX mtxWorld, D3DXVECTOR3 m_posOffset1, D3DXVECTOR
 void COrbit::SetPositionOffset(D3DXMATRIX mtxWorld,int nIdxOrbit)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	//計算用マトリックス
 	D3DXMATRIX mtxRot, mtxTrans;

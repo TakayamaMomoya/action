@@ -299,7 +299,7 @@ void CPause::Input(void)
 	CInputJoypad *pJoypad = CInputJoypad::GetInstance();
 	CInputManager *pInputManager = CInputManager::GetInstance();
 
-	CFade *pFade = CManager::GetFade();
+	CFade *pFade = CFade::GetInstance();
 
 	if (pFade == nullptr)
 	{
@@ -359,7 +359,7 @@ void CPause::Input(void)
 //====================================================
 void CPause::Fade(MENU menu)
 {
-	CFade *pFade = CManager::GetFade();
+	CFade *pFade = CFade::GetInstance();
 
 	if (pFade == nullptr)
 	{

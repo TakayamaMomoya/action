@@ -169,6 +169,14 @@ HRESULT CPlayer::Init(void)
 
 		// フレーム演出の生成
 		CFrame::Create(20, 120, 70);
+
+		// カメラ距離の設定
+		CCamera *pCamera = CManager::GetCamera();
+
+		if (pCamera != nullptr)
+		{
+			pCamera->SetDist(100.0f);
+		}
 	}
 
 	return S_OK;
@@ -272,6 +280,14 @@ void CPlayer::Update(void)
 				if (pTimer != nullptr)
 				{
 					pTimer->EnableStop(false);
+				}
+
+				// カメラ距離の設定
+				CCamera *pCamera = CManager::GetCamera();
+
+				if (pCamera != nullptr)
+				{
+					pCamera->SetDist(180.0f);
 				}
 			}
 		}

@@ -5024,7 +5024,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Downloads\\Digital_Painting_equirectangular-jpg_cyber_punk_city_273313332_9026993.jpg";
+    "data\\TEXTURE\\BG\\sky01.jpg";
    }
   }
  }
